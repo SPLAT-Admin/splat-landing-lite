@@ -7,18 +7,27 @@ export default function ThankYouPage() {
     <>
       <Head>
         <title>Thank You | SPL@T</title>
-        <meta name="robots" content="noindex" />
+        <meta name="description" content="Thanks for connecting with SPL@T. You're in, babe." />
       </Head>
 
-      <main className="p-8 max-w-xl mx-auto text-center">
-        <h1 className="text-3xl font-bold mb-4">Thanks for SPL@T‑ing 💦</h1>
-        <p className="mb-4">Your submission was received. We’ll be in touch soon.</p>
-        <Link href="/" passHref>
-          <a className="inline-block mt-4 px-4 py-2 bg-black text-white rounded hover:bg-red-800 transition">
-            Go Home
-          </a>
+      <section className="bg-black text-white min-h-screen flex flex-col justify-center items-center text-center px-6 py-20">
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-[color:var(--deep-crimson)]">
+          Thank You 💦
+        </h1>
+        <p className="text-lg md:text-xl text-gray-300 mb-4 max-w-xl">
+          Your submission was received. Whether it was a message, a payment, or a signup—you’ve just made SPL@T a little hotter.
+        </p>
+        <p className="text-md text-gray-400 mb-8 max-w-md">
+          We’ll reach out soon if needed. In the meantime, stay bold. Stay nasty. Stay SPL@T.
+        </p>
+
+        <Link
+          href="/"
+          className="inline-block bg-white text-black px-6 py-3 rounded-full font-bold hover:bg-yellow-300 transition"
+        >
+          Return to Homepage
         </Link>
-      </main>
+      </section>
     </>
   );
 }
