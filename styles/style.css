@@ -1,0 +1,122 @@
+/* === GLOBAL HEADER === */
+.global-header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: #0A0A0A; /* Jet Black */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* === LOGO === */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  max-height: 120px;
+  height: auto;
+}
+
+/* === NAVIGATION === */
+.global-nav a {
+  color: #FFFFFF;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: bold;
+  transition: opacity 0.2s ease;
+}
+
+.global-nav a:hover {
+  opacity: 0.8;
+}
+
+/* === WRAPPER === */
+.main-wrapper {
+  padding-top: 80px; /* Prevent content from hiding behind sticky nav */
+}
+
+/* === BODY === */
+body {
+  margin: 0;
+  background-color: #0A0A0A;
+  font-family: 'Oswald', sans-serif;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* === HERO SECTION === */
+.hero {
+  padding: 60px 20px;
+  background: #0A0A0A;
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.splat-logo {
+  color: #D80D27; /* Deep Crimson */
+}
+
+.hero p {
+  font-size: 1.3rem;
+  margin: 20px 0;
+}
+
+/* === CTA BUTTON === */
+.cta-button {
+  display: inline-block;
+  background: #D80D27;
+  color: #FFFFFF;
+  padding: 14px 30px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.cta-button:hover {
+  background: #a00b1f;
+}
+
+/* === PROGRESS SECTION === */
+.progress {
+  padding: 40px 20px;
+  background: #0A0A0A;
+}
+
+.progress h2 {
+  font-size: 1.8rem;
+  color: #D80D27;
+  margin-bottom: 20px;
+}
+
+.progress ul {
+  list-style: none;
+  padding: 0;
+  font-size: 1.1rem;
+}
+
+.progress ul li {
+  margin: 10px 0;
+}
+
+/* === DONATE SECTION === */
+.donate {
+  padding: 60px 20px;
+  background: #0A0A0A;
+}
+
+.donate h2 {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+}

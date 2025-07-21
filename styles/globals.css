@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+:root {
+  --background: #000000; /* Jet Black */
+  --foreground: #FFFFFF; /* Acid White */
+  --deep-crimson: #dc143c;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "Courier New", Courier, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #000000;
+    --foreground: #FFFFFF;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  color: var(--deep-crimson);
+}
+
+header {
+  background-color: var(--background);
+}
+
+nav a {
+  font-weight: 600;
+}
+
+/* Button styling override (optional) */
+button {
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+/* Optional utility enhancements */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
