@@ -20,6 +20,8 @@ export default function AmbassadorPage() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
 
+  const siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY || '';
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -98,7 +100,9 @@ export default function AmbassadorPage() {
             <input name="number_of_followers" value={form.number_of_followers} onChange={handleChange} placeholder="Number of Followers (est.)" type="number" required className="w-full px-4 py-3 bg-gray-800 text-white rounded" />
             <textarea name="qualifications_why" value={form.qualifications_why} onChange={handleChange} placeholder="Tell us why you're a fit" required className="w-full px-4 py-3 bg-gray-800 text-white rounded h-28" />
             <input name="referral" value={form.referral} onChange={handleChange} placeholder="Referred by (optional)" className="w-full px-4 py-3 bg-gray-800 text-white rounded" />
-            <div className="cf-turnstile" data-sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!}></div>
+            {siteKey && (
+              <div className="cf-turnstile" data-sitekey={siteKey}></div>
+            )}
             <button
               type="submit"
               className="bg-[color:var(--deep-crimson)] hover:bg-red-800 text-white px-6 py-3 rounded w-full font-bold transition"
