@@ -34,13 +34,23 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>SPL@T – No Shame. Just SPL@T.</title>
-        <meta
-          name="description"
-          content="Join the movement. SPL@T is the bold new hookup and cruising app for everyone."
-        />
-      </Head>
+    <Head>
+  <title>SPL@T – No Shame. Just SPL@T.</title>
+  <meta name="description" content="Join the movement. SPL@T is the bold new hookup and cruising app for everyone." />
+  <script
+    defer
+    data-domain="usesplat.com"
+    src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+  ></script>
+  <script
+    dangerouslySetInnerHTML={{
+      __html: `window.plausible = window.plausible || function() {
+        (window.plausible.q = window.plausible.q || []).push(arguments)
+      }`,
+    }}
+  />
+</Head>
+
 
       <section className="text-center py-24 px-6 bg-black text-white">
         <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-tight">SPL@T</h1>

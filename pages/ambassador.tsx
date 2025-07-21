@@ -59,6 +59,18 @@ export default function AmbassadorPage() {
     <>
       <Head>
         <title>Become a SPL@T Ambassador</title>
+        <script
+          defer
+          data-domain="usesplat.com"
+          src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.plausible = window.plausible || function() {
+              (window.plausible.q = window.plausible.q || []).push(arguments)
+            }`,
+          }}
+        />
       </Head>
       <section className="bg-black text-white min-h-screen py-20 px-4">
         <div className="max-w-2xl mx-auto">
