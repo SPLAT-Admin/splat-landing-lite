@@ -1,5 +1,4 @@
-// pages/api/send.ambassador.email.ts
-
+// pages/api/send-ambassador-email.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Resend } from "resend";
 
@@ -18,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const response = await resend.emails.send({
-      from: "SPL@T Ambassadors <ambassador@usesplat.com>",
+      from: "SPL@T Ambassadors <no-reply@usesplat.com>",
       to: [email],
       bcc: ["hello@usesplat.com"],
       subject: "You're in! Thanks for applying to be a SPL@T Ambassador 💦",
@@ -28,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         <p>Until then, stay sexy. Stay bold. Stay SPL@T.</p>
         <br />
         <p>– The SPL@T Team</p>
-        <p style="font-size: 0.8rem; color: gray;">This email was sent via Resend from ambassador@usesplat.com</p>
+        <p style="font-size: 0.8rem; color: gray;">This email was sent via Resend from no-reply@usesplat.com</p>
       `,
     });
 
