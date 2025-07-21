@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 bg-black border-b border-red-700 shadow-md">
+    <header className="sticky top-0 z-50 bg-black border-b border-[color:var(--deep-crimson)] shadow-md">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-center space-x-2">
           <Image
@@ -14,12 +14,12 @@ export default function Header() {
             priority
           />
         </Link>
-        <nav className="flex space-x-6 text-sm md:text-base font-semibold text-white">
-          <Link href="/founder" className="hover:text-red-400">Founder Sale</Link>
-          <Link href="/ambassador" className="hover:text-red-400">Ambassador</Link>
-          <Link href="/merch" className="hover:text-red-400">Merch</Link>
-          <Link href="/advertise" className="hover:text-red-400">Advertise</Link>
-          <Link href="/contactus" className="hover:text-red-400">Contact</Link>
+        <nav className="flex space-x-4 text-sm md:text-base font-semibold text-white">
+          <Link href="/founder" className="hover:text-[color:var(--deep-crimson)]">Founder</Link>
+          <Link href="/ambassador" className="hover:text-[color:var(--deep-crimson)]">Ambassador</Link>
+          <Link href="/merch" className="hover:text-[color:var(--deep-crimson)]">Merch</Link>
+          <Link href="/advertise" className="hover:text-[color:var(--deep-crimson)]">Advertise</Link>
+          <Link href="/contactus" className="hover:text-[color:var(--deep-crimson)]">Contact</Link>
         </nav>
       </div>
     </header>
