@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               priority
             />
           </Link>
-          <nav className="hidden md:flex gap-6 text-sm md:text-base font-semibold">
+          <nav className="flex gap-6 text-sm md:text-base font-semibold">
             <Link href="/founder" className="hover:text-[color:var(--deep-crimson)]">Founder Sale</Link>
             <Link href="/ambassador" className="hover:text-[color:var(--deep-crimson)]">Ambassador</Link>
             <Link href="/merch" className="hover:text-[color:var(--deep-crimson)]">Merch</Link>
