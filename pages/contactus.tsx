@@ -1,101 +1,93 @@
 // pages/contactus.tsx
-'use client';
-
 import Head from 'next/head';
-import { useState, useRef, useEffect } from 'react';
-
-// Define the Turnstile global interface
-interface TurnstileWindow extends Window {
-  turnstile?: {
-    render: (
-      container: string,
-      options: {
-        sitekey: string;
-        callback: (token: string) => void;
-      }
-    ) => void;
-  };
-}
-
-declare const window: TurnstileWindow;
+import { useState } from 'react';
 
 export default function ContactUs() {
-  const formRef = useRef<HTMLFormElement>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [form, setForm] = useState({ name: '', email: '', message: '', captchaToken: '' });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [error, setError] = useState('');
 
-  useEffect(() => {
-    const loadTurnstile = () => {
-      if (window.turnstile) {
-        window.turnstile.render('#cf-turnstile', {
-          sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!,
-          callback: (token: string) => setToken(token),
-        });
-      }
-    };
-    if (typeof window !== 'undefined') {
-      loadTurnstile();
-    }
-  }, []);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setStatus('loading');
+    setError('');
+
+    const token = (window as any).turnstile?.getResponse();
     if (!token) {
-      alert('Please complete the CAPTCHA.');
+      setStatus('error');
+      setError('CAPTCHA not verified');
       return;
     }
 
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
-      message: formData.get('message') as string,
-      captchaToken: token,
-    };
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, captchaToken: token })
+      });
 
-    setStatus('sending');
-    const res = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-
-    if (res.ok) {
+      if (!res.ok) throw new Error('Submission failed');
       setStatus('success');
-      e.currentTarget.reset();
-      setToken(null);
-    } else {
+      setForm({ name: '', email: '', message: '', captchaToken: '' });
+    } catch (err: any) {
       setStatus('error');
+      setError(err.message);
     }
   };
 
   return (
     <>
       <Head>
-        <title>Contact SPL@T</title>
-        <meta name="description" content="Contact the SPL@T team with your questions, pitches, or sexy ideas." />
+        <title>Contact Us | SPL@T</title>
       </Head>
-
-      <main className="py-20 px-4 bg-acid-white text-black min-h-screen">
+      <section className="bg-black text-white min-h-screen py-20 px-4">
         <div className="max-w-xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-4">Contact Us</h2>
-          <p className="mb-6 text-lg">Questions, collabs, or love notes? Slide into our inbox.</p>
-
-          <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
-            <input type="text" name="name" placeholder="Your Name" className="w-full p-3 border rounded" required />
-            <input type="email" name="email" placeholder="Your Email" className="w-full p-3 border rounded" required />
-            <textarea name="message" placeholder="Your Message" rows={5} className="w-full p-3 border rounded" required />
-            <div id="cf-turnstile" className="cf-turnstile" data-theme="light"></div>
-
-            <button type="submit" className="bg-deep-crimson text-white px-6 py-3 rounded hover:bg-black">
-              {status === 'sending' ? 'Sending...' : 'Send Message'}
+          <h1 className="text-4xl font-bold mb-6 text-[color:var(--deep-crimson)]">Contact Us</h1>
+          <p className="mb-8 text-gray-300">Got questions, collab ideas, or just want to say hi? Drop us a line below.</p>
+          <form onSubmit={handleSubmit} className="space-y-4 text-left">
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Your Name"
+              className="w-full px-4 py-3 bg-gray-800 text-white rounded"
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="Your Email"
+              className="w-full px-4 py-3 bg-gray-800 text-white rounded"
+              required
+            />
+            <textarea
+              name="message"
+              value={form.message}
+              onChange={handleChange}
+              placeholder="Your Message"
+              className="w-full px-4 py-3 bg-gray-800 text-white rounded h-32"
+              required
+            />
+            <div className="cf-turnstile" data-sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!}></div>
+            <button
+              type="submit"
+              className="bg-[color:var(--deep-crimson)] hover:bg-red-800 text-white px-6 py-3 rounded w-full font-bold transition"
+              disabled={status === 'loading'}
+            >
+              {status === 'loading' ? 'Sending...' : 'Send Message'}
             </button>
-
-            {status === 'success' && <p className="text-green-600 pt-2">Message sent! We’ll be in touch soon.</p>}
-            {status === 'error' && <p className="text-red-600 pt-2">Something went wrong. Try again.</p>}
+            {status === 'success' && <p className="text-green-500 mt-2">Message sent successfully!</p>}
+            {status === 'error' && <p className="text-red-500 mt-2">{error}</p>}
           </form>
         </div>
-      </main>
+      </section>
     </>
   );
 }
