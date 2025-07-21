@@ -25,12 +25,22 @@ function MyApp({ Component, pageProps }: AppProps) {
               priority
             />
           </Link>
-          <nav className="flex gap-6 text-sm md:text-base font-semibold">
-            <Link href="/founder" className="hover:text-[color:var(--deep-crimson)]">Founder Sale</Link>
-            <Link href="/ambassador" className="hover:text-[color:var(--deep-crimson)]">Ambassador</Link>
-            <Link href="/merch" className="hover:text-[color:var(--deep-crimson)]">Merch</Link>
-            <Link href="/advertise" className="hover:text-[color:var(--deep-crimson)]">Advertise</Link>
-            <Link href="/contactus" className="hover:text-[color:var(--deep-crimson)]">Contact</Link>
+          <nav className="flex gap-4 text-sm md:text-base font-semibold">
+            <Link href="/founder">
+              <span className="px-3 py-1 hover:text-[color:var(--deep-crimson)] transition">Founder</span>
+            </Link>
+            <Link href="/ambassador">
+              <span className="px-3 py-1 hover:text-[color:var(--deep-crimson)] transition">Ambassador</span>
+            </Link>
+            <Link href="/merch">
+              <span className="px-3 py-1 hover:text-[color:var(--deep-crimson)] transition">Merch</span>
+            </Link>
+            <Link href="/advertise">
+              <span className="px-3 py-1 hover:text-[color:var(--deep-crimson)] transition">Advertise</span>
+            </Link>
+            <Link href="/contactus">
+              <span className="px-3 py-1 hover:text-[color:var(--deep-crimson)] transition">Contact Us</span>
+            </Link>
           </nav>
         </div>
       </header>
