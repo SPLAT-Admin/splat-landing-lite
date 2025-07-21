@@ -1,37 +1,36 @@
-import React from 'react';
-import Image from 'next/image';
+// pages/merch.tsx
+import Head from 'next/head';
+import Link from 'next/link';
 
 export default function MerchPage() {
-  const items = [
-    { id: 1, name: 'Deep Crimson Tee', price: '$30', img: '/images/tee1.jpg' },
-    { id: 2, name: 'SPL@T Jockstrap', price: '$25', img: '/images/jock1.jpg' },
-    { id: 3, name: 'Jet Black Cap', price: '$20', img: '/images/cap1.jpg' },
-  ];
-
   return (
-    <div className="p-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">SPL@T Merch</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map((item) => (
-          <div
-            key={item.id}
-            className="border p-4 rounded-lg shadow hover:shadow-lg transition"
-          >
-            <Image
-              src={item.img}
-              alt={item.name}
-              width={500}
-              height={500}
-              className="w-full mb-2 rounded"
-            />
-            <h2 className="text-xl font-semibold">{item.name}</h2>
-            <p className="text-gray-600">{item.price}</p>
-            <button className="mt-2 bg-black text-white px-4 py-2 rounded hover:bg-red-800 transition">
-              Add to Bag
-            </button>
-          </div>
-        ))}
-      </div>
-    </div>
+    <>
+      <Head>
+        <title>SPL@T Merch – Coming Soon</title>
+      </Head>
+
+      <section className="bg-black text-white py-24 px-6 text-center min-h-screen">
+        <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight text-[color:var(--deep-crimson)]">
+          💦 SPL@T Merch
+        </h1>
+        <p className="text-xl md:text-2xl text-gray-300 mb-8 italic">
+          Gear that hits different.
+        </p>
+        <p className="max-w-2xl mx-auto text-lg mb-12">
+          From bold tees and nasty hats to exclusive drop sets that say “I SPL@T and I know it”—our merch
+          is almost ready to flood your closet. Made for the unfiltered, the unapologetic, and the fully expressed.
+        </p>
+        <div className="inline-block bg-white text-black px-8 py-3 rounded-full font-bold text-lg hover:bg-yellow-300 transition cursor-not-allowed">
+          👀 Launching Soon
+        </div>
+
+        <p className="mt-10 text-sm text-gray-500">
+          Want early access? Hit us up at{' '}
+          <Link href="mailto:hello@usesplat.com" className="underline hover:text-red-500">
+            hello@usesplat.com
+          </Link>
+        </p>
+      </section>
+    </>
   );
 }
