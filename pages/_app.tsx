@@ -18,7 +18,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center">
             <Image
-              src="/splat-logo.png"
+              src="/splat-logo.png"/Users/parrot/splat-landing-lite/splat-landing-clean/styles/globals.css
+/Users/parrot/splat-landing-lite/splat-landing-clean/styles/globals.css
+/Users/parrot/splat-landing-lite/splat-landing-clean/styles/globals.css
               alt="SPL@T Logo"
               width={160}
               height={60}
