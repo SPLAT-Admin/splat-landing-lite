@@ -61,6 +61,10 @@ export default function AmbassadorPage() {
         <title>Become a SPL@T Ambassador</title>
         <script
           defer
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        ></script>
+        <script
+          defer
           data-domain="usesplat.com"
           src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
         ></script>
