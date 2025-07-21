@@ -25,21 +25,21 @@ function MyApp({ Component, pageProps }: AppProps) {
               priority
             />
           </Link>
-          <nav className="flex gap-4 text-sm md:text-base font-semibold">
+          <nav className="flex space-x-4 text-sm md:text-base font-semibold">
             <Link href="/founder">
-              <span className="px-3 py-1 hover:text-[color:var(--deep-crimson)] transition">Founder</span>
+              <button className="px-4 py-2 rounded hover:bg-[color:var(--deep-crimson)] hover:text-white transition">Founder</button>
             </Link>
             <Link href="/ambassador">
-              <span className="px-3 py-1 hover:text-[color:var(--deep-crimson)] transition">Ambassador</span>
+              <button className="px-4 py-2 rounded hover:bg-[color:var(--deep-crimson)] hover:text-white transition">Ambassador</button>
             </Link>
             <Link href="/merch">
-              <span className="px-3 py-1 hover:text-[color:var(--deep-crimson)] transition">Merch</span>
+              <button className="px-4 py-2 rounded hover:bg-[color:var(--deep-crimson)] hover:text-white transition">Merch</button>
             </Link>
             <Link href="/advertise">
-              <span className="px-3 py-1 hover:text-[color:var(--deep-crimson)] transition">Advertise</span>
+              <button className="px-4 py-2 rounded hover:bg-[color:var(--deep-crimson)] hover:text-white transition">Advertise</button>
             </Link>
             <Link href="/contactus">
-              <span className="px-3 py-1 hover:text-[color:var(--deep-crimson)] transition">Contact Us</span>
+              <button className="px-4 py-2 rounded hover:bg-[color:var(--deep-crimson)] hover:text-white transition">Contact Us</button>
             </Link>
           </nav>
         </div>
