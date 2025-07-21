@@ -2,7 +2,8 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import Header from '@/components/Header';
+import Image from 'next/image';
+import Link from 'next/link';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -13,7 +14,26 @@ function MyApp({ Component, pageProps }: AppProps) {
         <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
       </Head>
 
-      <Header />
+      <header className="sticky top-0 z-50 bg-black border-b border-[color:var(--deep-crimson)] px-6 py-4 shadow-md">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/splat-logo.png"
+              alt="SPL@T Logo"
+              width={160}
+              height={60}
+              priority
+            />
+          </Link>
+          <nav className="hidden md:flex gap-6 text-sm md:text-base font-semibold">
+            <Link href="/founder" className="hover:text-[color:var(--deep-crimson)]">Founder Sale</Link>
+            <Link href="/ambassador" className="hover:text-[color:var(--deep-crimson)]">Ambassador</Link>
+            <Link href="/merch" className="hover:text-[color:var(--deep-crimson)]">Merch</Link>
+            <Link href="/advertise" className="hover:text-[color:var(--deep-crimson)]">Advertise</Link>
+            <Link href="/contactus" className="hover:text-[color:var(--deep-crimson)]">Contact</Link>
+          </nav>
+        </div>
+      </header>
 
       <div className="min-h-screen bg-black text-white">
         <main>
