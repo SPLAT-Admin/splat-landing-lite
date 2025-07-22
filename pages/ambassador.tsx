@@ -65,7 +65,9 @@ export default function AmbassadorPage() {
         body: JSON.stringify({ ...form, captchaToken: token })
       });
 
-      if (!res.ok) throw new Error('Submission failed');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Submission failed');
+
       setStatus('success');
       setForm({
         first_name: '', last_name: '', preferred_name: '', city: '', state: '', email: '',
