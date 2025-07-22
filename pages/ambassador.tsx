@@ -62,7 +62,8 @@ export default function AmbassadorPage() {
     const submission = {
       ...form,
       number_of_followers: Number(form.number_of_followers),
-      captchaToken: token
+      captchaToken: token,
+      status: 'pending' // Ensure status is set for Supabase
     };
 
     try {
