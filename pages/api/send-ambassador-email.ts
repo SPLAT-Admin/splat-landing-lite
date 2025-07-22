@@ -1,4 +1,7 @@
-export default async function handler(req, res) {
+import type { NextApiRequest, NextApiResponse } from 'next';
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  export default async function handler(req, res) {
   console.log("👀 Ambassador API payload:", req.body);
 
   // CAPTCHA verification
