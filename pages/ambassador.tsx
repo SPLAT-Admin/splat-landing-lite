@@ -19,24 +19,27 @@ export default function AmbassadorPage() {
 
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
-
   const siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY || '';
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if ((window as any).turnstile && siteKey) {
-        const existing = document.querySelector('.cf-turnstile > div');
-        if (!existing) {
-          (window as any).turnstile.render('.cf-turnstile', {
-            sitekey: siteKey,
-            theme: 'dark'
-          });
-        }
-        clearInterval(interval);
-      }
-    }, 500);
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
 
-    return () => clearInterval(interval);
+    const observer = new MutationObserver(() => {
+      if ((window as any).turnstile && siteKey) {
+        (window as any).turnstile.render('#ambassador-turnstile', {
+          sitekey: siteKey,
+          theme: 'dark'
+        });
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => observer.disconnect();
   }, [siteKey]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -80,10 +83,6 @@ export default function AmbassadorPage() {
         <title>Become a SPL@T Ambassador</title>
         <script
           defer
-          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        ></script>
-        <script
-          defer
           data-domain="usesplat.com"
           src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
         ></script>
@@ -117,9 +116,7 @@ export default function AmbassadorPage() {
             <input name="number_of_followers" value={form.number_of_followers} onChange={handleChange} placeholder="Number of Followers (est.)" type="number" required className="w-full px-4 py-3 bg-gray-800 text-white rounded" />
             <textarea name="qualifications_why" value={form.qualifications_why} onChange={handleChange} placeholder="Tell us why you're a fit" required className="w-full px-4 py-3 bg-gray-800 text-white rounded h-28" />
             <input name="referral" value={form.referral} onChange={handleChange} placeholder="Referred by (optional)" className="w-full px-4 py-3 bg-gray-800 text-white rounded" />
-            {siteKey && (
-              <div className="cf-turnstile" data-sitekey={siteKey}></div>
-            )}
+            {siteKey && <div id="ambassador-turnstile" className="my-4"></div>}
             <button
               type="submit"
               className="bg-[color:var(--deep-crimson)] hover:bg-red-800 text-white px-6 py-3 rounded w-full font-bold transition"
