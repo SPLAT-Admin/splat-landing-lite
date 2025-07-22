@@ -59,11 +59,17 @@ export default function AmbassadorPage() {
       return;
     }
 
+    const submission = {
+      ...form,
+      number_of_followers: Number(form.number_of_followers),
+      captchaToken: token
+    };
+
     try {
       const res = await fetch('/api/send-ambassador-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, captchaToken: token })
+        body: JSON.stringify(submission)
       });
 
       const data = await res.json();
