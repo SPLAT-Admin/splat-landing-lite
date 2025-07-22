@@ -1,6 +1,6 @@
 // pages/ambassador.tsx
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function AmbassadorPage() {
   const [form, setForm] = useState({
@@ -21,6 +21,23 @@ export default function AmbassadorPage() {
   const [error, setError] = useState('');
 
   const siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY || '';
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if ((window as any).turnstile && siteKey) {
+        const existing = document.querySelector('.cf-turnstile > div');
+        if (!existing) {
+          (window as any).turnstile.render('.cf-turnstile', {
+            sitekey: siteKey,
+            theme: 'dark'
+          });
+        }
+        clearInterval(interval);
+      }
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [siteKey]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
