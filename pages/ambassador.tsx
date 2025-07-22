@@ -22,24 +22,25 @@ export default function AmbassadorPage() {
   const siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY || '';
 
   useEffect(() => {
+    const loadCaptcha = () => {
+      if ((window as any).turnstile && siteKey) {
+        (window as any).turnstile.render('#ambassador-turnstile', {
+          sitekey: siteKey,
+          theme: 'dark',
+        });
+      }
+    };
+
     const script = document.createElement('script');
     script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
     script.async = true;
     script.defer = true;
+    script.onload = loadCaptcha;
     document.body.appendChild(script);
 
-    const observer = new MutationObserver(() => {
-      if ((window as any).turnstile && siteKey) {
-        (window as any).turnstile.render('#ambassador-turnstile', {
-          sitekey: siteKey,
-          theme: 'dark'
-        });
-        observer.disconnect();
-      }
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-    return () => observer.disconnect();
+    return () => {
+      document.body.removeChild(script);
+    };
   }, [siteKey]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
