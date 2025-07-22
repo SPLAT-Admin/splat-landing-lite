@@ -1,142 +1,42 @@
 // pages/ambassador.tsx
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function AmbassadorPage() {
-  const [form, setForm] = useState({
-    first_name: '',
-    last_name: '',
-    preferred_name: '',
-    city: '',
-    state: '',
-    email: '',
-    social_media_handles: '',
-    number_of_followers: '',
-    qualifications_why: '',
-    referral: '',
-    captchaToken: ''
-  });
-
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [error, setError] = useState('');
-  const siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY || '';
-
-  useEffect(() => {
-    const loadCaptcha = () => {
-      if ((window as any).turnstile && siteKey) {
-        (window as any).turnstile.render('#ambassador-turnstile', {
-          sitekey: siteKey,
-          theme: 'dark',
-        });
-      }
-    };
-
-    const script = document.createElement('script');
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-    script.async = true;
-    script.defer = true;
-    script.onload = loadCaptcha;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, [siteKey]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('loading');
-    setError('');
-
-    const token = (window as any).turnstile?.getResponse();
-    if (!token) {
-      setStatus('error');
-      setError('CAPTCHA not verified');
-      return;
-    }
-
-    const submission = {
-      ...form,
-      number_of_followers: Number(form.number_of_followers),
-      captchaToken: token,
-      status: 'pending' // Ensure status is set for Supabase
-    };
-
-    try {
-      const res = await fetch('/api/send-ambassador-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(submission)
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Submission failed');
-
-      setStatus('success');
-      setForm({
-        first_name: '', last_name: '', preferred_name: '', city: '', state: '', email: '',
-        social_media_handles: '', number_of_followers: '', qualifications_why: '', referral: '', captchaToken: ''
-      });
-    } catch (err: any) {
-      setStatus('error');
-      setError(err.message);
-    }
-  };
-
   return (
     <>
       <Head>
         <title>Become a SPL@T Ambassador</title>
-        <script
-          defer
-          data-domain="usesplat.com"
-          src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
-        ></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.plausible = window.plausible || function() {
-              (window.plausible.q = window.plausible.q || []).push(arguments)
-            }`,
-          }}
-        />
       </Head>
       <section className="bg-black text-white min-h-screen py-20 px-4">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-4xl font-bold text-center mb-6 text-[color:var(--deep-crimson)]">SPL@T Ambassador Program</h1>
-          <p className="text-center mb-8 text-gray-300">
-            Are you bold, sexy, connected, and down to share the SPL@T movement? Whether you're an influencer, club kid, community icon, or just super social — we want you.
+        <div className="max-w-3xl mx-auto text-center">
+          <h1 className="text-4xl font-bold mb-6 text-[color:var(--deep-crimson)]">Join the SPL@T Ambassador Program</h1>
+          <p className="text-lg text-gray-300 mb-4">
+            Are you bold, sexy, connected, and ready to splash the world with the SPL@T movement? Whether you're an influencer,
+            community leader, nightlife royalty, or just fiercely social—SPL@T wants you.
           </p>
-          <p className="text-center mb-10 text-sm text-gray-400">
-            Ambassadors get early access, free perks, and a chance to help shape the gay hookupverse.
+          <p className="mb-6 text-sm text-gray-400">
+            Ambassadors get early access, exclusive perks, promo codes, invites to SPL@T LIVE events, and a voice in the evolution
+            of the hookupverse.
           </p>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
-              <input name="first_name" value={form.first_name} onChange={handleChange} placeholder="First Name" required className="px-4 py-3 bg-gray-800 text-white rounded" />
-              <input name="last_name" value={form.last_name} onChange={handleChange} placeholder="Last Name" required className="px-4 py-3 bg-gray-800 text-white rounded" />
-              <input name="preferred_name" value={form.preferred_name} onChange={handleChange} placeholder="Preferred Name (optional)" className="px-4 py-3 bg-gray-800 text-white rounded" />
-              <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email" required className="px-4 py-3 bg-gray-800 text-white rounded" />
-              <input name="city" value={form.city} onChange={handleChange} placeholder="City" required className="px-4 py-3 bg-gray-800 text-white rounded" />
-              <input name="state" value={form.state} onChange={handleChange} placeholder="State" required className="px-4 py-3 bg-gray-800 text-white rounded" />
-            </div>
-            <input name="social_media_handles" value={form.social_media_handles} onChange={handleChange} placeholder="Social Media Handles (e.g. @usesplat)" required className="w-full px-4 py-3 bg-gray-800 text-white rounded" />
-            <input name="number_of_followers" value={form.number_of_followers} onChange={handleChange} placeholder="Number of Followers (est.)" type="number" required className="w-full px-4 py-3 bg-gray-800 text-white rounded" />
-            <textarea name="qualifications_why" value={form.qualifications_why} onChange={handleChange} placeholder="Tell us why you're a fit" required className="w-full px-4 py-3 bg-gray-800 text-white rounded h-28" />
-            <input name="referral" value={form.referral} onChange={handleChange} placeholder="Referred by (optional)" className="w-full px-4 py-3 bg-gray-800 text-white rounded" />
-            {siteKey && <div id="ambassador-turnstile" className="my-4"></div>}
-            <button
-              type="submit"
-              className="bg-[color:var(--deep-crimson)] hover:bg-red-800 text-white px-6 py-3 rounded w-full font-bold transition"
-              disabled={status === 'loading'}
-            >
-              {status === 'loading' ? 'Submitting...' : 'Apply Now'}
-            </button>
-            {status === 'success' && <p className="text-green-500 mt-2 text-center">Application sent successfully!</p>}
-            {status === 'error' && <p className="text-red-500 mt-2 text-center">{error}</p>}
-          </form>
+
+          <div className="bg-gray-900 rounded-xl p-6 mt-10 text-left text-sm">
+            <h2 className="text-lg font-bold text-white mb-2">SPL@T Ambassador Expectations</h2>
+            <ul className="list-disc list-inside text-gray-300 space-y-1">
+              <li>Must be 21+ years old</li>
+              <li>Follow and promote SPL@T across your social platforms</li>
+              <li>Respect the SPL@T Community Standards (no hate, no shame, no drama)</li>
+              <li>Bring energy, visibility, and queer joy to the world of SPL@T</li>
+            </ul>
+          </div>
+
+          <div className="mt-12">
+            <Link href="/ambassador-apply">
+              <button className="bg-[color:var(--deep-crimson)] hover:bg-red-800 text-white font-bold px-6 py-3 rounded-full text-lg transition">
+                Apply Now
+              </button>
+            </Link>
+          </div>
         </div>
       </section>
     </>
