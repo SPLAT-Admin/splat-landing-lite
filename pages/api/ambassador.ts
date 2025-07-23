@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const supabase = createClient(ba
+const supabase = createClient(
   process.env.SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
@@ -60,7 +60,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   // Insert into Supabase
-  const { error } = await supabase.from('ambassador').insert([{ 
+  const { error } = await supabase.from('ambassador').insert([{
     first_name,
     last_name,
     preferred_name,
@@ -72,7 +72,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     number_of_followers,
     qualifications_why,
     referral,
-    status: 'pending'
+    status: 'pending',
   }]);
 
   if (error) {
@@ -80,7 +80,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(500).json({ error: 'Failed to save ambassador data' });
   }
 
-  // Resend confirmation
+  // Resend confirmation email
   await resend.emails.send({
     from: 'SPL@T Ambassadors <no-reply@usesplat.com>',
     to: [email],
