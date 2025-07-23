@@ -1,29 +1,45 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  export default async function handler(req, res) {
   console.log("👀 Ambassador API payload:", req.body);
 
-  // CAPTCHA verification
-  const token = req.body.captchaToken;
-  const cfRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ secret: process.env.CLOUDFLARE_SECRET_KEY, response: token })
-  });
-  const cfJson = await cfRes.json();
-  console.log("🏁 CAPTCHA verification:", cfJson);
-  if (!cfJson.success) return res.status(403).json({ error: "Captcha failed" });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: "Method Not Allowed" });
+  }
 
-  // Supabase insert
-  const { error: sbError } = await supabase.from('ambassador').insert([{ ... }]);
-  console.log("💾 Supabase insert:", sbError);
-  if (sbError) return res.status(500).json({ error: sbError.message });
+  const { email, name } = req.body;
 
-  // Resend email
-  const emailRes = await resend.emails.send({ ... });
-  console.log("📧 Resend API:", emailRes);
-  if (emailRes.error) return res.status(500).json({ error: emailRes.error });
-  
-  res.status(200).json({ status: "sent" });
+  if (!email || !name) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  try {
+    const response = await resend.emails.send({
+      from: "SPL@T Ambassadors <ambassador@usesplat.com>",
+      to: [email],
+      bcc: ["hello@usesplat.com"],
+      subject: "You're in! Thanks for applying to be a SPL@T Ambassador 💦",
+      html: `
+        <p>Hey ${name},</p>
+        <p>Thanks for applying to be a <strong>SPL@T Ambassador</strong>. We’ll review your submission and get back to you soon.</p>
+        <p>Until then, stay sexy. Stay bold. Stay SPL@T.</p>
+        <br />
+        <p>– The SPL@T Team</p>
+        <p style="font-size: 0.8rem; color: gray;">This email was sent via Resend from ambassador@usesplat.com</p>
+      `,
+    });
+
+    if (response.error) {
+      console.error("Resend API Error:", response.error);
+      return res.status(500).json({ error: "Failed to send email" });
+    }
+
+    return res.status(200).json({ status: "sent" });
+  } catch (err) {
+    console.error("Unhandled Resend Error:", err);
+    return res.status(500).json({ error: "Email failed to send" });
+  }
 }
