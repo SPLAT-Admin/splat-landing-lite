@@ -2,9 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-04-10',
-});
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 const tierPrices: Record<string, string> = {
   tier_1: 'price_1Ronr1D1HTjAgpeBjjv3sw46', // $25 Tier
