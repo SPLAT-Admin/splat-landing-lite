@@ -6,28 +6,12 @@ export default function ContactUsPage() {
   const [form, setForm] = useState({ name: '', email: '', message: '', captchaToken: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
-  const siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY || '';
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
-
-    const observer = new MutationObserver(() => {
-      if ((window as any).turnstile && siteKey) {
-        (window as any).turnstile.render('#contactus-turnstile', {
-          sitekey: siteKey,
-          theme: 'dark',
-        });
-        observer.disconnect();
-      }
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-    return () => observer.disconnect();
-  }, [siteKey]);
+    (window as any).handleCaptcha = (token: string) => {
+      setForm((prev) => ({ ...prev, captchaToken: token }));
+    };
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -38,8 +22,7 @@ export default function ContactUsPage() {
     setStatus('loading');
     setError('');
 
-    const token = (window as any).turnstile?.getResponse();
-    if (!token) {
+    if (!form.captchaToken) {
       setStatus('error');
       setError('CAPTCHA not verified');
       return;
@@ -49,7 +32,7 @@ export default function ContactUsPage() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, captchaToken: token })
+        body: JSON.stringify(form)
       });
 
       if (!res.ok) throw new Error('Submission failed');
@@ -65,6 +48,7 @@ export default function ContactUsPage() {
     <>
       <Head>
         <title>Contact Us | SPL@T</title>
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
       </Head>
       <section className="bg-black text-white min-h-screen py-20 px-4">
         <div className="max-w-xl mx-auto">
@@ -76,7 +60,11 @@ export default function ContactUsPage() {
             <input name="name" value={form.name} onChange={handleChange} placeholder="Your Name" required className="w-full px-4 py-3 bg-gray-800 text-white rounded" />
             <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email Address" required className="w-full px-4 py-3 bg-gray-800 text-white rounded" />
             <textarea name="message" value={form.message} onChange={handleChange} placeholder="Your Message" required className="w-full px-4 py-3 bg-gray-800 text-white rounded h-32" />
-            {siteKey && <div id="contactus-turnstile" className="my-4"></div>}
+            <div
+              className="cf-turnstile my-4"
+              data-sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY}
+              data-callback="handleCaptcha"
+            ></div>
             <button
               type="submit"
               className="bg-[color:var(--deep-crimson)] hover:bg-red-800 text-white px-6 py-3 rounded w-full font-bold transition"
