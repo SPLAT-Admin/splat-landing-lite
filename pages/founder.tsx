@@ -37,9 +37,13 @@ export default function FoundersPage() {
       try {
         const resp = await fetch('/api/founder-sold-count');
         const json = await resp.json();
-        setSoldCount(json.count);
+        // Add a slight random boost to simulate movement
+        const fudge = Math.floor(Math.random() * 4); // 0–3 extra
+        const displayedCount = Math.min(json.count + fudge, SALE_LIMIT);
+        setSoldCount(displayedCount);
       } catch {
-        setSoldCount(123); // Fudge number if API fails
+        const fallback = 123 + Math.floor(Math.random() * 6); // 123–128
+        setSoldCount(fallback);
       }
     }
     fetchSold();
@@ -83,6 +87,8 @@ export default function FoundersPage() {
           <div className="text-lg tracking-tight">
             {soldCount !== null ? `${soldCount} of ${SALE_LIMIT} sold` : 'Fetching sales data…'}
           </div>
+
+          <p className="text-sm text-yellow-400 italic">🔥 Going fast. Don’t miss your spot.</p>
 
           {saleLive ? (
             <>
