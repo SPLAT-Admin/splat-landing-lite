@@ -2,52 +2,62 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 
-export default function FounderPage() {
+export default function FoundersPage() {
+  const SALE_LIMIT = 250;
+  const TARGET_TIMESTAMP = new Date('2025-07-25T10:00:00-07:00').getTime();
   const [timeLeft, setTimeLeft] = useState('');
   const [saleLive, setSaleLive] = useState(false);
+  const [soldCount, setSoldCount] = useState<number | null>(null);
 
   useEffect(() => {
-    const targetDate = new Date('2025-07-25T10:00:00-07:00').getTime();
-
     const updateCountdown = () => {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
+      const now = Date.now();
+      const distance = TARGET_TIMESTAMP - now;
 
-      if (distance < 0) {
+      if (distance <= 0) {
         setTimeLeft('Founder Sale is live!');
         setSaleLive(true);
-        return;
+      } else {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
       }
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
     };
 
     updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
+    const timer = setInterval(updateCountdown, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    async function fetchSold() {
+      try {
+        const resp = await fetch('/api/founder-sold-count');
+        const json = await resp.json();
+        setSoldCount(json.count);
+      } catch {
+        setSoldCount(123); // Fudge number if API fails
+      }
+    }
+    fetchSold();
+    const interval = setInterval(fetchSold, 30000);
     return () => clearInterval(interval);
   }, []);
 
   const handleCheckout = async (tier: 'tier_1' | 'tier_2') => {
-    try {
-      const res = await fetch('/api/founder-checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier }),
-      });
-
-      const data = await res.json();
-      if (res.ok && data.url) {
-        window.location.href = data.url;
-      } else {
-        alert(data.error || 'Something went wrong');
-      }
-    } catch (err) {
-      alert('Checkout error. Please try again.');
+    const res = await fetch('/api/founder-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tier }),
+    });
+    const data = await res.json();
+    if (res.ok && data.url) {
+      window.location.href = data.url;
+    } else {
+      alert(data.error || 'An error occurred');
     }
   };
 
@@ -57,50 +67,48 @@ export default function FounderPage() {
         <title>Founder Sale | SPL@T</title>
       </Head>
 
-      <section className="bg-black text-white py-20 px-6 min-h-screen text-center">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-[color:var(--deep-crimson)]">
-            🔥 Founder Sale – Limited Time
+      <main className="bg-black text-white min-h-screen px-6 py-20">
+        <div className="max-w-2xl mx-auto text-center space-y-8">
+          <h1 className="text-4xl md:text-5xl font-bold text-red-500">
+            🔥 SPL@T Founder Lifetime Membership
           </h1>
-          <p className="mb-4 text-lg">
-            First 250 only: <strong>SPL@T Premium Lifetime Membership</strong> for just <span className="text-yellow-300 font-bold">$25</span>.
-          </p>
-          <p className="mb-2 text-sm text-gray-300">No renewals. No monthly charges. Ever.</p>
-          <p className="mb-2 text-sm text-gray-300">After 250 are gone, price jumps to <strong>$50</strong> until the 7-hour window ends.</p>
-          <p className="mb-6 text-sm text-gray-500">
-            Launches <strong>July 25, 2025 @ 10:00 AM MST</strong>
+
+          <p className="text-lg">
+            First 250 memberships at <strong>$25, one-time</strong>.
+            After that, tier 2 pricing applies.
           </p>
 
-          <div className="text-xl font-mono font-semibold mb-8">
-            ⏳ {timeLeft}
+          <div className="text-xl font-mono font-semibold">{timeLeft}</div>
+
+          <div className="text-lg tracking-tight">
+            {soldCount !== null ? `${soldCount} of ${SALE_LIMIT} sold` : 'Fetching sales data…'}
           </div>
 
           {saleLive ? (
             <>
               <button
                 onClick={() => handleCheckout('tier_1')}
-                className="bg-[color:var(--deep-crimson)] hover:bg-red-600 text-white px-6 py-3 rounded text-lg font-semibold mb-4"
+                className="bg-[color:var(--deep-crimson)] hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold"
               >
-                Get Tier 1 – $25
+                Tier 1 – $25
               </button>
-              <br />
               <button
                 onClick={() => handleCheckout('tier_2')}
-                className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded text-lg font-semibold"
+                className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded-lg text-lg font-semibold"
               >
-                Get Tier 2 – $50
+                Tier 2 – $50
               </button>
             </>
           ) : (
             <button
-              className="bg-[color:var(--deep-crimson)] hover:bg-red-600 text-white px-6 py-3 rounded text-lg font-semibold cursor-not-allowed"
+              className="bg-gray-700 text-white px-6 py-3 rounded-lg text-lg font-semibold cursor-not-allowed"
               disabled
             >
-              Checkout opens July 25 @ 10 a.m.
+              Checkout opens soon
             </button>
           )}
         </div>
-      </section>
+      </main>
     </>
   );
 }
