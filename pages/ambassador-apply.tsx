@@ -1,6 +1,7 @@
 // pages/ambassador-apply.tsx
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import Script from 'next/script';
 
 export default function AmbassadorApply() {
   const [formData, setFormData] = useState({
@@ -25,6 +26,27 @@ export default function AmbassadorApply() {
     (window as any).handleCaptcha = (token: string) => {
       setFormData((prev) => ({ ...prev, captchaToken: token }));
     };
+  }, []);
+
+  useEffect(() => {
+    const turnstileInterval = setInterval(() => {
+      const turnstile = (window as any).turnstile;
+      const widgetContainer = document.querySelector('.cf-turnstile');
+
+      if (turnstile && widgetContainer && !widgetContainer.hasAttribute('data-rendered')) {
+        console.log('🔄 Forcing Turnstile render...');
+        turnstile.render(widgetContainer, {
+          sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!,
+          callback: (token: string) => {
+            setFormData((prev) => ({ ...prev, captchaToken: token }));
+          },
+        });
+        widgetContainer.setAttribute('data-rendered', 'true');
+        clearInterval(turnstileInterval);
+      }
+    }, 500);
+
+    return () => clearInterval(turnstileInterval);
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -58,8 +80,13 @@ export default function AmbassadorApply() {
     <>
       <Head>
         <title>Apply to be a SPL@T Ambassador</title>
-        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
       </Head>
+
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        strategy="afterInteractive"
+        async
+      />
 
       <div className="min-h-screen bg-[color:var(--deep-crimson)] text-white px-4 py-12">
         <div className="max-w-2xl mx-auto">
@@ -90,13 +117,11 @@ export default function AmbassadorApply() {
               <textarea name="qualifications_why" required placeholder="Why do you want to be an Ambassador?" onChange={handleChange} className="p-3 rounded bg-[color:var(--deep-crimson)] text-white placeholder-white" rows={4} />
               <input type="text" name="referral" placeholder="Referral (if any)" onChange={handleChange} className="p-3 rounded bg-[color:var(--deep-crimson)] text-white placeholder-white" />
 
-              {typeof window !== 'undefined' && (
-                <div
-                  className="cf-turnstile"
-                  data-sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY}
-                  data-callback="handleCaptcha"
-                ></div>
-              )}
+              <div
+                className="cf-turnstile"
+                data-sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY}
+                data-callback="handleCaptcha"
+              ></div>
 
               <button
                 type="submit"
