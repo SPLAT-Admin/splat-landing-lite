@@ -40,6 +40,26 @@ export default function Home() {
       </Head>
 
       <main className="text-white bg-black px-6 py-24">
+        {/* FLASH SALE HERO BLOCK */}
+        <section className="relative bg-black text-white overflow-hidden py-20">
+          <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-red-600 via-yellow-300 to-red-600 opacity-20 mix-blend-screen"></div>
+          <div className="relative z-10 max-w-4xl mx-auto text-center space-y-6">
+            <h1 className="text-6xl md:text-7xl font-extrabold animate-pulse text-[color:var(--deep-crimson)]">
+              HUGE FOUNDER SALE<br />GOING ON NOW 💥💦
+            </h1>
+            <p className="text-xl text-gray-300">
+              Limited to the first 250—enjoy a one-time lifetime membership for just $25.
+            </p>
+            <a
+              href="/founder"
+              className="inline-block bg-yellow-300 hover:bg-yellow-400 text-black px-8 py-4 rounded-full font-bold text-xl animate-bounce"
+            >
+              JOIN NOW
+            </a>
+            <div className="text-sm text-gray-400">⏳ {timeLeft}</div>
+          </div>
+        </section>
+
         <section className="text-center max-w-4xl mx-auto">
           <h1 className="text-5xl font-bold mb-4 text-red-500">SPL@T</h1>
           <p className="text-xl mb-6">Where bold connection meets powerful discovery. Join now for early access to our mobile-first social networking experience.</p>
