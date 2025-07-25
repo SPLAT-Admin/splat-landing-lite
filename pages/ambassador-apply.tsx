@@ -24,29 +24,9 @@ export default function AmbassadorApply() {
 
   useEffect(() => {
     (window as any).handleCaptcha = (token: string) => {
+      console.log("Captcha token received:", token);
       setFormData((prev) => ({ ...prev, captchaToken: token }));
     };
-  }, []);
-
-  useEffect(() => {
-    const turnstileInterval = setInterval(() => {
-      const turnstile = (window as any).turnstile;
-      const widgetContainer = document.querySelector('.cf-turnstile');
-
-      if (turnstile && widgetContainer && !widgetContainer.hasAttribute('data-rendered')) {
-        console.log('🔄 Forcing Turnstile render...');
-        turnstile.render(widgetContainer, {
-          sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!,
-          callback: (token: string) => {
-            setFormData((prev) => ({ ...prev, captchaToken: token }));
-          },
-        });
-        widgetContainer.setAttribute('data-rendered', 'true');
-        clearInterval(turnstileInterval);
-      }
-    }, 500);
-
-    return () => clearInterval(turnstileInterval);
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -57,6 +37,8 @@ export default function AmbassadorApply() {
     e.preventDefault();
     setError('');
 
+    console.log("Form submitting with captchaToken:", formData.captchaToken);
+
     try {
       const response = await fetch('/api/ambassador', {
         method: 'POST',
@@ -65,14 +47,16 @@ export default function AmbassadorApply() {
       });
 
       if (!response.ok) {
-        const err = await response.json();
-        setError(err.error || 'Submission failed');
+        const errJson = await response.json().catch(() => null);
+        console.error('Server rejected with status', response.status, errJson);
+        setError(errJson?.error || `Submission failed (${response.status})`);
         return;
       }
 
       setSubmitted(true);
     } catch (err) {
-      setError('Something went wrong');
+      console.error('Network or unexpected error:', err);
+      setError(`Something went wrong: ${err}`);
     }
   };
 
