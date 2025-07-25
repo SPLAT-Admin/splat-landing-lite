@@ -1,12 +1,6 @@
 // pages/founder.tsx
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
 
 export default function FounderPage() {
   const [timeLeft, setTimeLeft] = useState('');
@@ -38,27 +32,22 @@ export default function FounderPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const handlePurchase = async (tier: 'tier_1' | 'tier_2') => {
-    const email = prompt('Enter your email for confirmation:');
-    if (!email) return;
+  const handleCheckout = async (tier: 'tier_1' | 'tier_2') => {
+    try {
+      const res = await fetch('/api/founder-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier }),
+      });
 
-    const fakeCheckoutId = 'chk_' + Math.random().toString(36).substr(2, 9);
-    const amount = tier === 'tier_1' ? 25 : 50;
-
-    const { error } = await supabase.from('founder_purchases').insert([
-      {
-        email,
-        stripe_checkout_id: fakeCheckoutId,
-        purchase_amount: amount,
-        tier,
-        status: 'completed'
+      const data = await res.json();
+      if (res.ok && data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || 'Something went wrong');
       }
-    ]);
-
-    if (error) {
-      alert('Error recording purchase: ' + error.message);
-    } else {
-      alert("🎉 Purchase logged! You'll receive a confirmation soon.");
+    } catch (err) {
+      alert('Checkout error. Please try again.');
     }
   };
 
@@ -89,14 +78,14 @@ export default function FounderPage() {
           {saleLive ? (
             <>
               <button
-                onClick={() => handlePurchase('tier_1')}
+                onClick={() => handleCheckout('tier_1')}
                 className="bg-[color:var(--deep-crimson)] hover:bg-red-600 text-white px-6 py-3 rounded text-lg font-semibold mb-4"
               >
                 Get Tier 1 – $25
               </button>
               <br />
               <button
-                onClick={() => handlePurchase('tier_2')}
+                onClick={() => handleCheckout('tier_2')}
                 className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded text-lg font-semibold"
               >
                 Get Tier 2 – $50
