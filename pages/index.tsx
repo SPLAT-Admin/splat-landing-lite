@@ -35,90 +35,66 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>SPL@T – No Shame. Just SPL@T.</title>
-        <meta name="description" content="Join the movement. SPL@T is the bold new hookup and cruising app for everyone." />
-        <script
-          defer
-          data-domain="usesplat.com"
-          src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
-        ></script>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.plausible = window.plausible || function() {
-              (window.plausible.q = window.plausible.q || []).push(arguments)
-            }`,
-          }}
-        />
+        <title>SPL@T – Community Discovery App</title>
+        <meta name="description" content="Join the movement. SPL@T is a bold new social networking experience for local connection and community discovery." />
       </Head>
 
-      <section className="text-center py-24 px-6 bg-black text-white">
-        <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-tight">SPL@T</h1>
-
-        <section className="max-w-4xl mx-auto text-lg text-white space-y-6 mt-6">
-          <p>
-            <strong>SPL@T™</strong> is a bold, unapologetic platform for connection and community. Built with radical authenticity, it reimagines queer digital spaces with speed, safety, and intention. Designed for queer users who want something radically different. Built from the ground up, SPL@T delivers a sleek, edgy, and inclusive experience where authentic self-expression, safety, and affordability are not optional—they’re foundational.
-          </p>
-          <p>
-            Our mission is to make meaningful queer connection accessible to everyone—without price gouging or financial gatekeeping. At just $4.99/month, SPL@T™ offers a compelling alternative to legacy platforms charging hundreds per year for outdated, bloated features.
-          </p>
-          <p>
-            SPL@T™ puts privacy and security front and center. We implement robust user verifications, including bot prevention, Turnstile CAPTCHA, and photo checks, to keep every interaction real and safe. Every feature—from our immersive SP@T Map™ view to the community-powered SPL@T Live Lobby™—is crafted to honor radical sex-positivity and protect user identity.
-          </p>
-          <p>
-            This isn’t just another dating app. SPL@T is a movement. We’re building a complete digital biosphere—a fiercely authentic SPL@Tverse™ where queer folks can cruise, connect, and thrive with zero shame and total control.
-          </p>
+      <main className="text-white bg-black px-6 py-24">
+        <section className="text-center max-w-4xl mx-auto">
+          <h1 className="text-5xl font-bold mb-4 text-red-500">SPL@T</h1>
+          <p className="text-xl mb-6">Where bold connection meets powerful discovery. Join now for early access to our mobile-first social networking experience.</p>
+          <Link href="#" className="inline-block bg-red-500 text-white px-6 py-3 rounded font-bold hover:bg-red-600 transition">Join the Waitlist</Link>
         </section>
 
-        <p className="text-xl md:text-2xl text-gray-300 mt-10 italic">
-          No Shame. Just SPL@T.
-        </p>
-      </section>
+        <section className="mt-16 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">What's Included</h2>
+          <ul className="list-disc list-inside text-lg space-y-2">
+            <li>Personalized discovery filters</li>
+            <li>Private messaging and profile customization</li>
+            <li>Map-based user exploration</li>
+            <li>Enhanced privacy and blocking tools</li>
+          </ul>
+        </section>
 
-      <section className="bg-[color:var(--deep-crimson)] text-white py-20 px-6 text-center">
-        <h2 className="text-3xl md:text-5xl font-extrabold mb-4">🔥 Founder Sale – Limited Time</h2>
-        <p className="mb-2 text-lg">
-          First 250 only:{' '}
-          <strong>SPL@T Premium Lifetime Membership</strong> for just{' '}
-          <span className="text-yellow-300 text-xl font-bold">$25</span>.
-        </p>
-        <p className="mb-2 text-sm">No renewals. No monthly charges. Ever.</p>
-        <p className="mb-6 text-sm">
-          After 250 are gone, price jumps to $50 until the 7-hour window ends.
-        </p>
-        <p className="font-semibold mb-4 text-lg">
-          Live <strong>July 25 @ 10 a.m. MST</strong>
-        </p>
-        <div className="text-2xl font-mono font-bold mb-6">⏳ {timeLeft}</div>
-        <Link
-          href="/founder"
-          className="inline-block bg-white text-black px-8 py-3 rounded-full font-bold text-lg hover:bg-yellow-300 transition"
-        >
-          Join the Founder Sale
-        </Link>
-      </section>
+        <section className="mt-16 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">Pricing</h2>
+          <p className="text-lg">SPL@T Premium is just <strong>$4.99/month</strong>. You’ll be billed securely at checkout and can cancel anytime through your account settings.</p>
+        </section>
 
-      <section className="bg-black text-white py-20 px-6 text-center">
-        <h3 className="text-2xl md:text-3xl font-bold mb-6 text-[color:var(--deep-crimson)]">
-          We’re almost live.
-        </h3>
-        <ul className="list-disc list-inside text-left max-w-xl mx-auto mb-8 text-gray-300">
-          <li className="mb-2">Android build is nearly done</li>
-          <li>Beta testing launches soon</li>
-        </ul>
-        <Link
-          href="/contactus"
-          className="inline-block underline text-lg hover:text-red-500"
-        >
-          Help fund SPL@T’s launch →
-        </Link>
-      </section>
+        <section className="mt-16 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">Support</h2>
+          <p className="text-lg">Email us at <a href="mailto:support@usesplat.com" className="underline text-red-400">support@usesplat.com</a> with any questions. We’re here to help.</p>
+        </section>
 
-      <footer className="text-center text-sm text-gray-400 bg-black py-12">
-        <p>© 2025 SPLAT, LLC • usesplat.com</p>
-        <p className="mt-2 max-w-xl mx-auto px-4">
-          Want to sponsor a SP@T location or SPL@T LIVE event? Ask us about our upcoming sponsorship deck.
-        </p>
-      </footer>
+        <section className="mt-16 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">Legal</h2>
+          <ul className="list-disc list-inside text-lg space-y-2">
+            <li><a href="#" className="underline">Privacy Policy</a></li>
+            <li><a href="#" className="underline">Terms of Use</a></li>
+            <li><a href="#" className="underline">Refund Policy</a></li>
+          </ul>
+        </section>
+
+        <section className="mt-16 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">Security</h2>
+          <p className="text-lg">Payments are processed via Stripe and fully encrypted. We never store card data. All transactions are PCI-compliant and secure.</p>
+        </section>
+
+        <section className="mt-16 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">FAQ</h2>
+          <p className="text-lg mb-4"><strong>What is SPL@T?</strong><br/>A community discovery app that helps you connect and explore based on interests and location.</p>
+          <p className="text-lg mb-4"><strong>When am I charged?</strong><br/>Billing occurs during checkout, with monthly recurring charges.</p>
+          <p className="text-lg mb-4"><strong>How do I cancel?</strong><br/>Log in and manage your subscription via settings at any time.</p>
+        </section>
+
+        <section className="text-center mt-16">
+          <p className="text-lg italic text-gray-300">No Shame. Just SPL@T.</p>
+        </section>
+
+        <footer className="text-center text-sm text-gray-400 mt-24">
+          <p>© 2025 SPLAT, LLC • usesplat.com</p>
+        </footer>
+      </main>
     </>
   );
 }
