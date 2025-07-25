@@ -1,10 +1,14 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import HeroFlashSale from '@/components/HeroFlashSale';
-import WaitlistForm from '@/components/WaitlistForm';
+import dynamic from 'next/dynamic';
+import { Dialog } from '@headlessui/react';
+
+const WaitlistForm = dynamic(() => import('@/components/WaitlistForm'), { ssr: false });
 
 export default function Home() {
   const [timeLeft, setTimeLeft] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const targetDate = new Date('2025-07-25T10:00:00-07:00').getTime();
@@ -45,9 +49,26 @@ export default function Home() {
         <section className="text-center max-w-4xl mx-auto bg-[color:var(--deep-crimson)] p-10 rounded-xl shadow-lg">
           <h1 className="text-5xl font-bold mb-4 text-white">SPL@T</h1>
           <p className="text-xl mb-6 text-gray-100">Where bold connection meets powerful discovery. Join now for early access to our mobile-first social networking experience.</p>
-          <section id="waitlist-form" className="mt-10 max-w-xl mx-auto">
-            <WaitlistForm />
-          </section>
+          <button
+            onClick={() => setIsOpen(true)}
+            className="inline-block bg-white text-black px-6 py-3 rounded font-bold hover:bg-yellow-300 transition mb-6"
+          >
+            Join the Waitlist
+          </button>
+
+          <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
+            <Dialog.Panel className="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl">
+              <Dialog.Title className="text-2xl font-bold text-black mb-4">Join the SPL@T Waitlist</Dialog.Title>
+              <WaitlistForm />
+              <button
+                onClick={() => setIsOpen(false)}
+                className="mt-4 text-sm text-gray-600 underline"
+              >
+                Close
+              </button>
+            </Dialog.Panel>
+          </Dialog>
+
           <div className="text-left max-w-3xl mx-auto mt-10">
             <h2 className="text-3xl font-bold mb-4 text-white">What's Included</h2>
             <ul className="list-disc list-inside text-lg text-white space-y-2">
