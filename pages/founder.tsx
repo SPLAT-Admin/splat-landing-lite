@@ -42,7 +42,6 @@ export default function FounderPage() {
     const email = prompt('Enter your email for confirmation:');
     if (!email) return;
 
-    // simulate Stripe checkout ID for testing
     const fakeCheckoutId = 'chk_' + Math.random().toString(36).substr(2, 9);
     const amount = tier === 'tier_1' ? 25 : 50;
 
@@ -59,7 +58,7 @@ export default function FounderPage() {
     if (error) {
       alert('Error recording purchase: ' + error.message);
     } else {
-      alert('🎉 Purchase logged! You'll receive a confirmation soon.');
+      alert("🎉 Purchase logged! You'll receive a confirmation soon.");
     }
   };
 
