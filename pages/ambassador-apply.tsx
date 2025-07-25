@@ -1,7 +1,6 @@
 // pages/ambassador-apply.tsx
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import Script from 'next/script';
 
 export default function AmbassadorApply() {
   const [formData, setFormData] = useState({
@@ -81,7 +80,7 @@ export default function AmbassadorApply() {
                 <input type="text" name="city" required placeholder="City" onChange={handleChange} className="p-3 rounded bg-[color:var(--deep-crimson)] text-white placeholder-white" />
                 <select name="state" required onChange={handleChange} className="p-3 rounded bg-[color:var(--deep-crimson)] text-white">
                   <option value="">Select State</option>
-                  {['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'].map(state => (
+                  {["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"].map(state => (
                     <option key={state} value={state}>{state}</option>
                   ))}
                 </select>
@@ -91,7 +90,13 @@ export default function AmbassadorApply() {
               <textarea name="qualifications_why" required placeholder="Why do you want to be an Ambassador?" onChange={handleChange} className="p-3 rounded bg-[color:var(--deep-crimson)] text-white placeholder-white" rows={4} />
               <input type="text" name="referral" placeholder="Referral (if any)" onChange={handleChange} className="p-3 rounded bg-[color:var(--deep-crimson)] text-white placeholder-white" />
 
-              <div className="cf-turnstile" data-sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!} data-callback="handleCaptcha"></div>
+              {typeof window !== 'undefined' && (
+                <div
+                  className="cf-turnstile"
+                  data-sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY}
+                  data-callback="handleCaptcha"
+                ></div>
+              )}
 
               <button
                 type="submit"
