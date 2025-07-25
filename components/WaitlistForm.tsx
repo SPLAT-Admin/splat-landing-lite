@@ -42,8 +42,9 @@ export default function WaitlistForm() {
 
       const data = await res.json();
       if (res.ok) {
-        if (window?.plausible) {
-          window.plausible('Waitlist Signup', { props: { location: 'waitlist-page' } });
+        // Safe Plausible tracking (optional)
+        if (typeof window !== 'undefined' && 'plausible' in window) {
+          (window as any).plausible?.('Waitlist Signup', { props: { location: 'waitlist-page' } });
         }
         router.push('/thanks');
       } else {
