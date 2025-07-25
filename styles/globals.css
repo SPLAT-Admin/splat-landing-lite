@@ -56,3 +56,10 @@ img {
   height: auto;
   display: block;
 }
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  outline: 2px solid var(--deep-crimson);
+  outline-offset: 2px;
+}
