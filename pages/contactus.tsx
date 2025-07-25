@@ -1,5 +1,6 @@
 // pages/contactus.tsx
 import Head from 'next/head';
+import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
 export default function ContactUsPage() {
@@ -9,6 +10,7 @@ export default function ContactUsPage() {
 
   useEffect(() => {
     (window as any).handleCaptcha = (token: string) => {
+      console.log("Captcha received:", token);
       setForm((prev) => ({ ...prev, captchaToken: token }));
     };
   }, []);
@@ -48,8 +50,14 @@ export default function ContactUsPage() {
     <>
       <Head>
         <title>Contact Us | SPL@T</title>
-        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
       </Head>
+
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        strategy="afterInteractive"
+        async
+      />
+
       <section className="bg-black text-white min-h-screen py-20 px-4">
         <div className="max-w-xl mx-auto">
           <h1 className="text-4xl font-bold text-center mb-6 text-[color:var(--deep-crimson)]">Contact Us</h1>
@@ -60,11 +68,14 @@ export default function ContactUsPage() {
             <input name="name" value={form.name} onChange={handleChange} placeholder="Your Name" required className="w-full px-4 py-3 bg-gray-800 text-white rounded" />
             <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email Address" required className="w-full px-4 py-3 bg-gray-800 text-white rounded" />
             <textarea name="message" value={form.message} onChange={handleChange} placeholder="Your Message" required className="w-full px-4 py-3 bg-gray-800 text-white rounded h-32" />
+
             <div
               className="cf-turnstile my-4"
               data-sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY}
               data-callback="handleCaptcha"
+              data-theme="dark"
             ></div>
+
             <button
               type="submit"
               className="bg-[color:var(--deep-crimson)] hover:bg-red-800 text-white px-6 py-3 rounded w-full font-bold transition"
