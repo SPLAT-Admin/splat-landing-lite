@@ -34,27 +34,42 @@ export default function Home() {
 
   return (
     <>
-    <Head>
-  <title>SPL@T – No Shame. Just SPL@T.</title>
-  <meta name="description" content="Join the movement. SPL@T is the bold new hookup and cruising app for everyone." />
-  <script
-    defer
-    data-domain="usesplat.com"
-    src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
-  ></script>
-  <script
-    dangerouslySetInnerHTML={{
-      __html: `window.plausible = window.plausible || function() {
-        (window.plausible.q = window.plausible.q || []).push(arguments)
-      }`,
-    }}
-  />
-</Head>
-
+      <Head>
+        <title>SPL@T – No Shame. Just SPL@T.</title>
+        <meta name="description" content="Join the movement. SPL@T is the bold new hookup and cruising app for everyone." />
+        <script
+          defer
+          data-domain="usesplat.com"
+          src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.plausible = window.plausible || function() {
+              (window.plausible.q = window.plausible.q || []).push(arguments)
+            }`,
+          }}
+        />
+      </Head>
 
       <section className="text-center py-24 px-6 bg-black text-white">
         <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-tight">SPL@T</h1>
-        <p className="text-xl md:text-2xl text-gray-300 mb-6 italic">
+
+        <section className="max-w-4xl mx-auto text-lg text-white space-y-6 mt-6">
+          <p>
+            <strong>SPL@T™</strong> is a bold, unapologetic platform for connection and community. Built with radical authenticity, it reimagines queer digital spaces with speed, safety, and intention. Designed for queer users who want something radically different. Built from the ground up, SPL@T delivers a sleek, edgy, and inclusive experience where authentic self-expression, safety, and affordability are not optional—they’re foundational.
+          </p>
+          <p>
+            Our mission is to make meaningful queer connection accessible to everyone—without price gouging or financial gatekeeping. At just $4.99/month, SPL@T™ offers a compelling alternative to legacy platforms charging hundreds per year for outdated, bloated features.
+          </p>
+          <p>
+            SPL@T™ puts privacy and security front and center. We implement robust user verifications, including bot prevention, Turnstile CAPTCHA, and photo checks, to keep every interaction real and safe. Every feature—from our immersive SP@T Map™ view to the community-powered SPL@T Live Lobby™—is crafted to honor radical sex-positivity and protect user identity.
+          </p>
+          <p>
+            This isn’t just another dating app. SPL@T is a movement. We’re building a complete digital biosphere—a fiercely authentic SPL@Tverse™ where queer folks can cruise, connect, and thrive with zero shame and total control.
+          </p>
+        </section>
+
+        <p className="text-xl md:text-2xl text-gray-300 mt-10 italic">
           No Shame. Just SPL@T.
         </p>
       </section>
