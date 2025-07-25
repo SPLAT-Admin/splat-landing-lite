@@ -22,7 +22,6 @@ export default function FoundersPage() {
         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
         setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
       }
     };
@@ -37,7 +36,6 @@ export default function FoundersPage() {
       try {
         const resp = await fetch('/api/founder-sold-count');
         const json = await resp.json();
-        // Add a slight random boost to simulate movement
         const fudge = Math.floor(Math.random() * 4); // 0–3 extra
         const displayedCount = Math.min(json.count + fudge, SALE_LIMIT);
         setSoldCount(displayedCount);
@@ -52,16 +50,27 @@ export default function FoundersPage() {
   }, []);
 
   const handleCheckout = async (tier: 'tier_1' | 'tier_2') => {
-    const res = await fetch('/api/founder-checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tier }),
-    });
-    const data = await res.json();
-    if (res.ok && data.url) {
-      window.location.href = data.url;
-    } else {
-      alert(data.error || 'An error occurred');
+    console.log('Checkout clicked for:', tier);
+    try {
+      const res = await fetch('/api/founder-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier }),
+      });
+
+      console.log('Response status:', res.status);
+
+      const data = await res.json();
+      console.log('Stripe data:', data);
+
+      if (res.ok && data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || 'An error occurred');
+      }
+    } catch (err) {
+      console.error('Fetch error:', err);
+      alert('Something went wrong while contacting Stripe.');
     }
   };
 
