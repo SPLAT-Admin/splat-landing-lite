@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET!);
   } catch (err: any) {
-    console.error('❌ Webhook signature verification error:', err.message);
+    console.error('❌ Webhook signature verification failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
@@ -38,10 +38,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const email = session.customer_details?.email;
     const amount = session.amount_total ? session.amount_total / 100 : null;
-    const tier = amount === 25 ? 'tier_1' : amount === 50 ? 'tier_2' : 'unknown';
+    const tier = amount === 25 ? 'tier_1' : amount === 50 ? 'tier_2' : null;
 
-    if (email && amount) {
-      const { error } = await supabase
+    if (!email || !amount || !tier) {
+      console.warn('⚠️ Invalid founder purchase payload:', { email, amount, tier });
+      return res.status(400).send('Missing required purchase data');
+    }
+
+    try {
+      await supabase
         .from('founder_purchases')
         .insert([
           {
@@ -54,14 +59,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         ])
         .throwOnError();
 
-      if (error) {
-        console.error('❌ Supabase insert error:', error.message);
-        return res.status(500).send(`Supabase insert error: ${error.message}`);
-      }
-
-      console.log(`✅ Founder recorded: ${email} | $${amount} | ${tier}`);
-    } else {
-      console.warn('⚠️ Missing email or amount on checkout.session.completed');
+      console.log(`✅ Founder purchase saved: ${email} | $${amount} | ${tier}`);
+    } catch (err: any) {
+      console.error('❌ Supabase insert failed:', err.message || err);
+      return res.status(500).send('Supabase insert failed');
     }
   }
 
