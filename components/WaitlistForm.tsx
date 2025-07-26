@@ -1,84 +1,113 @@
-import Head from 'next/head';
-import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import HeroFlashSale from '@/components/HeroFlashSale';
-import { Dialog } from '@headlessui/react';
+'use client';
+import { useState, useEffect } from 'react';
+import Script from 'next/script';
+import { useRouter } from 'next/router';
 
-const WaitlistForm = dynamic(() => import('@/components/WaitlistForm'), {
-  ssr: false,
-  loading: () => <p className="text-white">Loading form...</p>,
-});
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string;
 
-export default function Home() {
-  const [timeLeft, setTimeLeft] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+export default function WaitlistForm() {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [referralSource, setReferralSource] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const targetDate = new Date('2025-07-25T10:00:00-07:00').getTime();
-    const updateCountdown = () => {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
-      if (distance < 0) {
-        setTimeLeft('Founder Sale is live!');
-        return;
-      }
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
-    };
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-    return () => clearInterval(interval);
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref') || params.get('utm_source');
+    if (ref) setReferralSource(ref);
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.turnstile && document.getElementById('cf-turnstile')) {
+      window.turnstile.render('#cf-turnstile', {
+        sitekey: TURNSTILE_SITE_KEY,
+        callback: (token: string) => {
+          const input = document.getElementById('turnstile-token') as HTMLInputElement;
+          if (input) input.value = token;
+        },
+      });
+    }
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage('');
+
+    const token = (document.getElementById('turnstile-token') as HTMLInputElement)?.value;
+    if (!token) {
+      setMessage('CAPTCHA verification required.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          token,
+          referral_source: referralSource,
+          marketing_channel: 'waitlist-page',
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        if (typeof window !== 'undefined' && 'plausible' in window) {
+          (window as any).plausible?.('Waitlist Signup', { props: { location: 'waitlist-page' } });
+        }
+        router.push('/thanks');
+      } else {
+        setMessage(data.error || 'Something went wrong.');
+      }
+    } catch (err) {
+      setMessage('Network error. Try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <>
-      <Head>
-        <title>SPL@T – Community Discovery App</title>
-        <meta name="description" content="Join the movement. SPL@T is a bold new social networking experience for local connection and community discovery." />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <form onSubmit={handleSubmit} className="space-y-6 bg-white rounded-2xl p-6 shadow-xl">
+      <div>
+        <label htmlFor="email" className="block text-lg font-bold text-black mb-1">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@example.com"
+          className="w-full px-4 py-2 rounded border border-gray-300 text-black"
+        />
+      </div>
 
-      <main className="text-white bg-black px-6 py-24 min-h-screen">
-        <HeroFlashSale />
+      <div id="cf-turnstile" className="mt-4"></div>
+      <input type="hidden" id="turnstile-token" name="token" />
 
-        <section className="text-center max-w-4xl mx-auto bg-[color:var(--deep-crimson)] p-10 rounded-xl shadow-lg">
-          <h1 className="text-5xl font-bold mb-4 text-white">SPL@T</h1>
-          <p className="text-xl mb-6 text-gray-100">Where bold connection meets powerful discovery. Join now for early access to our mobile-first social networking experience.</p>
-          <button
-            onClick={() => setIsOpen(true)}
-            className="inline-block bg-white text-black px-6 py-3 rounded font-bold hover:bg-yellow-300 transition mb-6"
-          >
-            Join the Waitlist
-          </button>
+      <button
+        type="submit"
+        className="w-full bg-red-600 text-white py-2 rounded-xl font-bold hover:bg-red-700 transition"
+        disabled={loading}
+      >
+        {loading ? 'Submitting…' : 'Join Waitlist'}
+      </button>
 
-          <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-6">
-            <Dialog.Panel className="bg-white rounded-2xl p-6 w-full max-w-md mx-auto shadow-2xl">
-              <Dialog.Title className="text-2xl font-bold text-black mb-4">Join the SPL@T Waitlist</Dialog.Title>
-              <WaitlistForm />
-              <button
-                onClick={() => setIsOpen(false)}
-                className="mt-4 text-sm text-gray-600 underline"
-              >
-                Close</button>
-            </Dialog.Panel>
-          </Dialog>
+      {message && <p className="mt-3 text-center text-sm text-red-600 font-medium">{message}</p>}
 
-          <div className="text-left max-w-3xl mx-auto mt-10">
-            <h2 className="text-3xl font-bold mb-4 text-white">What's Included</h2>
-            <ul className="list-disc list-inside text-lg text-white space-y-2">
-              <li>Personalized discovery filters</li>
-              <li>Private messaging and profile customization</li>
-              <li>Map-based user exploration</li>
-              <li>Enhanced privacy and blocking tools</li>
-            </ul>
-            <h2 className="text-3xl font-bold mb-4 mt-10 text-white">Pricing</h2>
-            <p className="text-lg text-white">SPL@T Premium is just <strong>$4.99/month</strong>. You’ll be billed securely at checkout and can cancel anytime through your account settings.</p>
-          </div>
-        </section>
-      </main>
-    </>
+      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
+    </form>
   );
+}
+
+// Allow global declaration of window.turnstile
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (id: string, options: { sitekey: string; callback: (token: string) => void }) => void;
+    };
+  }
 }
