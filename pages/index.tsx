@@ -1,6 +1,10 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import Script from 'next/script';
 import { useRouter } from 'next/router';
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string;
 
 export default function WaitlistForm() {
   const [email, setEmail] = useState('');
@@ -18,7 +22,7 @@ export default function WaitlistForm() {
   useEffect(() => {
     if (typeof window !== 'undefined' && window.turnstile && document.getElementById('cf-turnstile')) {
       window.turnstile.render('#cf-turnstile', {
-        sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!,
+        sitekey: TURNSTILE_SITE_KEY,
         callback: (token: string) => {
           const input = document.getElementById('turnstile-token') as HTMLInputElement;
           if (input) input.value = token;
@@ -96,4 +100,13 @@ export default function WaitlistForm() {
       <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
     </form>
   );
+}
+
+// Allow global declaration of window.turnstile
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (id: string, options: { sitekey: string; callback: (token: string) => void }) => void;
+    };
+  }
 }
