@@ -72,30 +72,32 @@ export default function WaitlistForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <label htmlFor="email" className="block text-lg font-medium text-black">Email Address</label>
-      <input
-        type="email"
-        id="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="you@example.com"
-        className="w-full px-4 py-2 rounded text-black border border-gray-300"
-      />
+    <form onSubmit={handleSubmit} className="space-y-6 bg-white rounded-2xl p-6 shadow-2xl border border-gray-300 max-w-md mx-auto">
+      <div>
+        <label htmlFor="email" className="block text-lg font-bold text-black mb-1">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@example.com"
+          className="w-full px-4 py-2 rounded-lg border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-red-500"
+        />
+      </div>
 
       <div id="cf-turnstile" className="mt-4"></div>
       <input type="hidden" id="turnstile-token" name="token" />
 
       <button
         type="submit"
-        className="w-full bg-red-500 text-white py-2 rounded font-bold hover:bg-red-600 transition"
+        className="w-full bg-red-600 text-white py-3 rounded-xl text-lg font-bold hover:bg-red-700 transition shadow-md"
         disabled={loading}
       >
         {loading ? 'Submitting…' : 'Join Waitlist'}
       </button>
 
-      {message && <p className="mt-2 text-center text-sm text-gray-700">{message}</p>}
+      {message && <p className="mt-3 text-center text-sm text-red-600 font-medium">{message}</p>}
 
       <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
     </form>
