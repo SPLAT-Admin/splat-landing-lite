@@ -1,4 +1,12 @@
 // components/WaitlistForm.tsx
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (id: string, options: { sitekey: string; callback: (token: string) => void }) => void;
+    };
+  }
+}
+
 import { useState, useEffect } from 'react';
 import Script from 'next/script';
 import { useRouter } from 'next/router';
