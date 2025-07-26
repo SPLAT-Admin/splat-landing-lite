@@ -1,112 +1,118 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Script from 'next/script';
-import { useRouter } from 'next/router';
+import Head from 'next/head';
+import dynamic from 'next/dynamic';
+import { Dialog } from '@headlessui/react';
+import HeroFlashSale from '@/components/HeroFlashSale';
 
-const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY as string;
+const WaitlistForm = dynamic(() => import('@/components/WaitlistForm'), { ssr: false });
 
-export default function WaitlistForm() {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [referralSource, setReferralSource] = useState<string | null>(null);
-  const router = useRouter();
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const ref = params.get('ref') || params.get('utm_source');
-    if (ref) setReferralSource(ref);
-  }, []);
+export default function Home() {
+  const [timeLeft, setTimeLeft] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.turnstile && document.getElementById('cf-turnstile')) {
-      window.turnstile.render('#cf-turnstile', {
-        sitekey: TURNSTILE_SITE_KEY,
-        callback: (token: string) => {
-          const input = document.getElementById('turnstile-token') as HTMLInputElement;
-          if (input) input.value = token;
-        },
-      });
-    }
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage('');
-
-    const token = (document.getElementById('turnstile-token') as HTMLInputElement)?.value;
-    if (!token) {
-      setMessage('CAPTCHA verification required.');
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const res = await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          token,
-          referral_source: referralSource,
-          marketing_channel: 'waitlist-page',
-        }),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        if (typeof window !== 'undefined' && 'plausible' in window) {
-          (window as any).plausible?.('Waitlist Signup', { props: { location: 'waitlist-page' } });
-        }
-        router.push('/thanks');
-      } else {
-        setMessage(data.error || 'Something went wrong.');
+    const targetDate = new Date('2025-07-25T10:00:00-07:00').getTime();
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+      if (distance < 0) {
+        setTimeLeft('Founder Sale is live!');
+        return;
       }
-    } catch (err) {
-      setMessage('Network error. Try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+    };
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <label htmlFor="email" className="block text-lg font-medium text-black">Email Address</label>
-      <input
-        type="email"
-        id="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="you@example.com"
-        className="w-full px-4 py-2 rounded text-black border border-gray-300"
-      />
+    <>
+      <Head>
+        <title>SPL@T – Community Discovery App</title>
+        <meta name="description" content="Join the movement. SPL@T is a bold new social networking experience for local connection and community discovery." />
+      </Head>
 
-      <div id="cf-turnstile" className="mt-4"></div>
-      <input type="hidden" id="turnstile-token" name="token" />
+      <main className="text-white bg-black px-6 py-24">
+        <HeroFlashSale />
 
-      <button
-        type="submit"
-        className="w-full bg-red-500 text-white py-2 rounded font-bold hover:bg-red-600 transition"
-        disabled={loading}
-      >
-        {loading ? 'Submitting…' : 'Join Waitlist'}
-      </button>
+        <section className="text-center max-w-4xl mx-auto bg-[color:var(--deep-crimson)] p-10 rounded-xl shadow-lg">
+          <h1 className="text-5xl font-bold mb-4 text-white">SPL@T</h1>
+          <p className="text-xl mb-6 text-gray-100">Where bold connection meets powerful discovery. Join now for early access to our mobile-first social networking experience.</p>
+          <button
+            onClick={() => setIsOpen(true)}
+            className="inline-block bg-white text-black px-6 py-3 rounded font-bold hover:bg-yellow-300 transition mb-6"
+          >
+            Join the Waitlist
+          </button>
 
-      {message && <p className="mt-2 text-center text-sm text-gray-700">{message}</p>}
+          <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+            <Dialog.Panel className="bg-white text-black rounded-2xl p-6 w-full max-w-md mx-auto shadow-2xl">
+              <Dialog.Title className="text-xl font-bold mb-4 text-center">Join the SPL@T Waitlist</Dialog.Title>
+              <WaitlistForm />
+              <button onClick={() => setIsOpen(false)} className="mt-4 w-full text-center text-sm text-gray-600 underline">
+                Close
+              </button>
+            </Dialog.Panel>
+          </Dialog>
 
-      <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
-    </form>
+          <div className="text-left max-w-3xl mx-auto mt-10">
+            <h2 className="text-3xl font-bold mb-4 text-white">What's Included</h2>
+            <ul className="list-disc list-inside text-lg text-white space-y-2">
+              <li>Personalized discovery filters</li>
+              <li>Private messaging and profile customization</li>
+              <li>Map-based user exploration</li>
+              <li>Enhanced privacy and blocking tools</li>
+            </ul>
+
+            <h2 className="text-3xl font-bold mb-4 mt-10 text-white">Pricing</h2>
+            <p className="text-lg text-white">SPL@T Premium is just <strong>$4.99/month</strong>. You’ll be billed securely at checkout and can cancel anytime through your account settings.</p>
+          </div>
+        </section>
+
+        <section className="mt-16 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">Support</h2>
+          <p className="text-lg">Email us at <a href="mailto:support@usesplat.com" className="underline text-red-400">support@usesplat.com</a> with any questions. We’re here to help.</p>
+        </section>
+
+        <section className="mt-16 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">Legal</h2>
+          <ul className="list-disc list-inside text-lg space-y-2">
+            <li><a href="#" className="underline">Privacy Policy</a></li>
+            <li><a href="#" className="underline">Terms of Use</a></li>
+            <li><a href="#" className="underline">Refund Policy</a></li>
+          </ul>
+        </section>
+
+        <section className="mt-16 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">Security</h2>
+          <p className="text-lg">Payments are processed via Stripe and fully encrypted. We never store card data. All transactions are PCI-compliant and secure.</p>
+        </section>
+
+        <section className="mt-16 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-4">FAQ</h2>
+          <p className="text-lg mb-4"><strong>What is SPL@T?</strong><br/>A community discovery app that helps you connect and explore based on interests and location.</p>
+          <p className="text-lg mb-4"><strong>When am I charged?</strong><br/>Billing occurs during checkout, with monthly recurring charges.</p>
+          <p className="text-lg mb-4"><strong>How do I cancel?</strong><br/>Log in and manage your subscription via settings at any time.</p>
+        </section>
+
+        <section className="text-center mt-16">
+          <p className="text-lg italic text-gray-300">No Shame. Just SPL@T.</p>
+        </section>
+
+        <footer className="text-center text-sm text-gray-400 mt-24">
+          <p>© 2025 SPLAT, LLC • usesplat.com</p>
+        </footer>
+      </main>
+    </>
   );
 }
-
-// Allow global declaration of window.turnstile
-declare global {
-  interface Window {
-    turnstile?: {
-      render: (id: string, options: { sitekey: string; callback: (token: string) => void }) => void;
-    };
-  }
+    }
+  ]
 }
