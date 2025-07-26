@@ -67,9 +67,11 @@ export default function Home() {
           No Shame. Just SPL@T.
         </section>
 
-        <footer className="text-center text-sm text-gray-400 mt-24">
-          <p>© 2025 SPLAT, LLC • usesplat.com</p>
-        </footer>
+<footer className="text-center text-sm text-gray-400 mt-24 space-y-1">
+  <p>© 2025 SPLAT, LLC • usesplat.com</p>
+  <p>971 S University Ave, Suite 1088‑84601, Provo, Utah</p>
+  <p>Toll-Free: 844‑420‑8333</p>
+</footer>
       </main>
     </>
   );
