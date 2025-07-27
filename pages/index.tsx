@@ -46,27 +46,33 @@ export default function Home() {
         </section>
 
         <section className="preview">
-          <h2>Here’s a preview of SPL@T in action:</h2>
+          <h2>Have any additional questions?</h2>
           <ul>
-            <li>Profile Grid View</li>
-            <li>SP@T Map View</li>
-            <li>Secure Chat Interface</li>
-            <li>Quick and simple onboarding</li>
+            <li>Contact use at Mailto:Support@usesplat.com</li>
           </ul>
         </section>
 
         <footer>
           <nav className="footer-links">
+
             <a href="#">Terms of Service</a>
+
+
             <a href="#">Privacy Policy</a>
+
+
             <a href="#">Contact Us</a>
+
+
             <a href="#">Safety Guidelines</a>
+
           </nav>
           <div className="business-info">
             <p><strong>SPLAT, LLC</strong></p>
             <p>971 S University Ave, Suite 1088</p>
             <p>Provo, Utah 84601</p>
             <p>Phone: <a href="tel:8444308333">844-430-8333</a></p>
+            <p>&copy; 2025 SPLAT, LLC – <a href="mailto:Support@usesplat.com">Support@usesplat.com</a></p>
           </div>
         </footer>
       </main>
