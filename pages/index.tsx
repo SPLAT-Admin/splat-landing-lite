@@ -65,4 +65,25 @@ export default function Home() {
               Contact Us
             </a>
           </div>
-          <div className="mt-
+          <div className="mt-8 text-center text-sm text-white/70">
+            SPL@T launches 2025.
+            <span className="text-yellow-400 font-semibold"> First 250 get it all for $25.</span>
+            No subscriptions. No barriers. No limits.
+          </div>
+        </div>
+      </main>
+
+      {/* FOOTER */}
+      <footer className="w-full py-5 flex flex-col md:flex-row items-center justify-between bg-black/80 border-t border-white/10 px-6 gap-2">
+        <div className="text-xs text-white/40 flex gap-3">
+          <a href="/privacy" className="hover:text-white/80">Privacy</a>
+          <a href="/terms" className="hover:text-white/80">Terms</a>
+          <a href="https://instagram.com/splatapp" className="hover:text-white/80" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </div>
+        <div className="text-xs text-white/40 mt-1 md:mt-0">
+          &copy; {new Date().getFullYear()} SPL@T. All rights reserved.
+        </div>
+      </footer>
+    </div>
+  );
+}
