@@ -48,7 +48,7 @@ export default function Home() {
         <section className="preview">
           <h2>Have any additional questions?</h2>
           <ul>
-            <li>Contact use at Mailto:Support@usesplat.com</li>
+            <li>Contact use at Support@usesplat.com</li>
           </ul>
         </section>
 
