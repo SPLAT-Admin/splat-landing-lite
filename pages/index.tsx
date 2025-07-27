@@ -4,104 +4,90 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="bg-black min-h-screen flex flex-col justify-between font-sans">
+    <div className="bg-black min-h-screen flex flex-col font-sans">
       <Head>
-        <title>SPL@T – LGBTQ+ Community & Connection</title>
-        <meta name="description" content="SPL@T is a new kind of platform for LGBTQ+ people to connect, find community, and participate in a safe, inclusive digital environment. Discover the SPL@TVerse, our suite of features designed for genuine connection and self-expression." />
-        <meta property="og:title" content="SPL@T – LGBTQ+ Community & Connection" />
-        <meta property="og:description" content="Join SPL@T and be part of a next-generation LGBTQ+ community—safe, innovative, and inclusive. Discover SPL@T App, SP@T Map, and more." />
-        <meta property="og:image" content="/splat-og-hero.jpg" />
+        <title>SPL@T – Connect, Explore, Belong</title>
+        <meta name="description" content="SPL@T is a modern SaaS platform empowering LGBTQ+ connection and discovery. Explore the SPL@TVerse: safe, inclusive, community-powered digital experiences." />
       </Head>
 
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-center px-6">
-        <section className="max-w-3xl w-full text-center space-y-8 mt-8 mb-14">
-          <p className="text-lg md:text-2xl text-white/90 font-medium mx-auto max-w-xl mb-6">
-            SPL@T is an LGBTQ+ community platform designed for authentic connection, inclusivity, and self-expression.
-            <br />
-            We put safety and respect at the center of everything, giving you a vibrant space to meet, chat, and participate.
-            <br /><br />
-            <span className="block mt-3">
-              For support or questions, email us at <a href="mailto:support@usesplat.com" className="underline text-yellow-300">support@usesplat.com</a>.
-            </span>
+      {/* MAIN CONTENT */}
+      <main className="flex-1 w-full flex flex-col items-center justify-start px-4 md:px-0">
+        {/* Hero Section */}
+        <section className="w-full max-w-5xl text-center mt-14 md:mt-20 mb-20">
+          <h1 className="text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-tight drop-shadow-xl">
+            Welcome to <span className="text-[color:var(--deep-crimson,#e11d48)]">SPL@T</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-white/90 font-medium max-w-2xl mx-auto mb-8">
+            SPL@T is a next-generation SaaS platform created for the LGBTQ+ community and allies—built for connection, self-expression, and safe exploration. <br />
+            Experience authentic community with innovative features, live digital spaces, and powerful privacy controls.
           </p>
-          <div className="flex flex-col md:flex-row gap-6 justify-center mt-2 mb-3">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mt-6">
             <Link
               href="/founder"
-              className="w-64 mx-auto flex items-center justify-center gap-2 bg-[color:var(--deep-crimson,#e11d48)] hover:bg-red-700 active:scale-95 text-white text-xl font-bold rounded-full py-4 shadow-lg transition-all duration-150 mb-3 md:mb-0"
+              className="bg-[color:var(--deep-crimson,#e11d48)] hover:bg-red-700 text-white text-xl font-bold rounded-full px-10 py-4 shadow-lg transition-all duration-150"
             >
-              Founder Sale: Lifetime Access
+              Join as a Founder Member
             </Link>
             <a
-              href="mailto:team@usesplat.com"
-              className="w-64 mx-auto flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 text-lg font-semibold rounded-full py-4 shadow transition-all duration-150"
+              href="mailto:support@usesplat.com"
+              className="bg-white/10 hover:bg-white/20 text-white border border-white/20 text-lg font-semibold rounded-full px-10 py-4 shadow transition-all duration-150"
             >
-              Contact Us
+              Contact Support
             </a>
           </div>
-          <div className="mt-10 text-center text-sm text-white/70">
-            SPL@T launches 2025. The first 250 members receive special lifetime access.
+        </section>
+
+        {/* What is SPL@T */}
+        <section className="w-full max-w-4xl mx-auto mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-6">What is SPL@T?</h2>
+          <p className="text-lg text-white/80 text-center mb-4">
+            SPL@T is a software-as-a-service (SaaS) app that empowers LGBTQ+ people and allies to connect, communicate, and discover safe community spaces—online and in real life. 
+            With robust privacy options, advanced filters, and intuitive design, SPL@T supports meaningful engagement and real-time exploration.
+          </p>
+          <ul className="text-white/80 text-lg max-w-2xl mx-auto space-y-3 list-inside list-disc text-left md:text-center">
+            <li>Private & group chat, with safety at the core</li>
+            <li>Live map for discovering welcoming spaces and events</li>
+            <li>Personalized handles, profiles, and privacy controls</li>
+            <li>Completely ad-free for all founder members</li>
+            <li>Created and led by LGBTQ+ innovators</li>
+          </ul>
+        </section>
+
+        {/* The SPL@TVerse */}
+        <section className="w-full max-w-5xl mx-auto mb-20 pt-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-10">Explore the SPL@TVerse</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 px-2">
+            <div className="bg-gradient-to-br from-red-950 via-black to-black rounded-2xl p-8 shadow-lg flex flex-col items-center hover:scale-105 transition-all duration-200">
+              <span className="text-4xl mb-3">📱</span>
+              <div className="font-bold text-xl text-white mb-1">SPL@T App</div>
+              <div className="text-white/80 text-base text-center">Seamless communication with chat, media sharing, and customizable profiles. Your privacy, your pace, your people.</div>
+            </div>
+            <div className="bg-gradient-to-br from-red-950 via-black to-black rounded-2xl p-8 shadow-lg flex flex-col items-center hover:scale-105 transition-all duration-200">
+              <span className="text-4xl mb-3">🗺️</span>
+              <div className="font-bold text-xl text-white mb-1">SP@T Map</div>
+              <div className="text-white/80 text-base text-center">Explore LGBTQ+ inclusive spaces, businesses, and events near you and worldwide. See live activity and join community gatherings with safety in mind.</div>
+            </div>
+            <div className="bg-gradient-to-br from-red-950 via-black to-black rounded-2xl p-8 shadow-lg flex flex-col items-center hover:scale-105 transition-all duration-200">
+              <span className="text-4xl mb-3">🎤</span>
+              <div className="font-bold text-xl text-white mb-1">Live Lobby</div>
+              <div className="text-white/80 text-base text-center">Participate in moderated live conversations, panels, and Q&As. Share your voice and find real-time support and connection.</div>
+            </div>
+            <div className="bg-gradient-to-br from-red-950 via-black to-black rounded-2xl p-8 shadow-lg flex flex-col items-center hover:scale-105 transition-all duration-200">
+              <span className="text-4xl mb-3">🏷️</span>
+              <div className="font-bold text-xl text-white mb-1">Handles & Codes</div>
+              <div className="text-white/80 text-base text-center">Unique, customizable usernames and invitation codes. Stay anonymous, stay creative, stay safe—your identity, your terms.</div>
+            </div>
           </div>
         </section>
 
-        {/* SPL@TVerse Section */}
-        <section className="max-w-3xl w-full mt-8 text-center space-y-10 mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-5">
-            Discover the SPL@TVerse
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <div className="bg-white/5 rounded-xl p-8 shadow flex flex-col items-center">
-              <span className="text-3xl mb-3">📱</span>
-              <div className="font-bold text-lg text-[color:var(--deep-crimson,#e11d48)] mb-2">SPL@T App</div>
-              <div className="text-white/80 text-base">Connect, join conversations, and find community in a private, inclusive space.</div>
+        {/* Why SPL@T? */}
+        <section className="w-full max-w-4xl mx-auto mb-24">
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-6">Why SPL@T?</h2>
+          <div className="flex flex-col md:flex-row gap-10 justify-center items-center">
+            <div className="flex-1 text-lg text-white/80 text-center px-2">
+              <strong className="text-white font-semibold">Inclusive & Respectful:</strong>  
+              SPL@T was designed to welcome everyone. Whether you’re looking to build friendships, find events, or join in conversation, you’ll find your place here.
             </div>
-            <div className="bg-white/5 rounded-xl p-8 shadow flex flex-col items-center">
-              <span className="text-3xl mb-3">🗺️</span>
-              <div className="font-bold text-lg text-[color:var(--deep-crimson,#e11d48)] mb-2">SP@T Map</div>
-              <div className="text-white/80 text-base">A live map to explore LGBTQ+ spaces, events, and activities—find your people online and IRL, safely and respectfully.</div>
-            </div>
-            <div className="bg-white/5 rounded-xl p-8 shadow flex flex-col items-center">
-              <span className="text-3xl mb-3">🎤</span>
-              <div className="font-bold text-lg text-[color:var(--deep-crimson,#e11d48)] mb-2">SPL@T Live Lobby</div>
-              <div className="text-white/80 text-base">Participate in live, moderated conversations and community forums—always supportive, always welcoming.</div>
-            </div>
-            <div className="bg-white/5 rounded-xl p-8 shadow flex flex-col items-center">
-              <span className="text-3xl mb-3">🏷️</span>
-              <div className="font-bold text-lg text-[color:var(--deep-crimson,#e11d48)] mb-2">SPL@T Handles & Codes</div>
-              <div className="text-white/80 text-base">Personalize your experience with unique handles and codes—safe, creative ways to connect and share.</div>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      {/* FOOTER */}
-      <footer className="w-full py-8 flex flex-col items-center justify-center bg-black/90 border-t border-white/10 px-6 mt-8">
-        <div className="flex gap-5 flex-wrap items-center justify-center mb-3">
-          <a href="/privacy" className="text-xs text-white/70 hover:text-white underline">Privacy Policy</a>
-          <span className="text-white/30">|</span>
-          <a href="/terms" className="text-xs text-white/70 hover:text-white underline">Terms of Service</a>
-          <span className="text-white/30">|</span>
-          <a href="/community" className="text-xs text-white/70 hover:text-white underline">Community Standards</a>
-          <span className="text-white/30">|</span>
-          <a href="https://instagram.com/splatapp" target="_blank" rel="noopener noreferrer" className="text-xs text-white/70 hover:text-white underline">Instagram</a>
-          <span className="text-white/30">|</span>
-          <a href="mailto:support@usesplat.com" className="text-xs text-white/70 hover:text-white underline">Support</a>
-        </div>
-        <div className="flex flex-col items-center gap-1 mt-1 text-center">
-          <div className="text-xs text-white/50">
-            SPLAT, LLC
-          </div>
-          <div className="text-xs text-white/50">
-            971 S University Avenue, Suite 1088, Provo, Utah 84601
-          </div>
-          <div className="text-xs text-white/50">
-            Phone: <a href="tel:18444208333" className="underline hover:text-white">844-420-8333</a>
-          </div>
-        </div>
-        <div className="text-xs text-white/40 mt-3">
-          &copy; {new Date().getFullYear()} SPLAT, LLC. All rights reserved.
-        </div>
-      </footer>
-    </div>
-  );
-}
+            <div className="flex-1 text-lg text-white/80 text-center px-2">
+              <strong className="text-white font-semibold">Private & Secure:</strong>
+              State-of-the-art security and customizable privacy controls let you be yourself with confidence, wherever you go in the SPL
