@@ -50,7 +50,6 @@ export default function FoundersPage() {
   }, []);
 
   const handleCheckout = async (tier: 'tier_1' | 'tier_2') => {
-    console.log('Checkout clicked for:', tier);
     try {
       const res = await fetch('/api/founder-checkout', {
         method: 'POST',
@@ -58,10 +57,7 @@ export default function FoundersPage() {
         body: JSON.stringify({ tier }),
       });
 
-      console.log('Response status:', res.status);
-
       const data = await res.json();
-      console.log('Stripe data:', data);
 
       if (res.ok && data.url) {
         window.location.href = data.url;
@@ -69,10 +65,11 @@ export default function FoundersPage() {
         alert(data.error || 'An error occurred');
       }
     } catch (err) {
-      console.error('Fetch error:', err);
       alert('Something went wrong while contacting Stripe.');
     }
   };
+
+  const tier1Available = saleLive && soldCount !== null && soldCount < SALE_LIMIT;
 
   return (
     <>
@@ -82,44 +79,87 @@ export default function FoundersPage() {
 
       <main className="bg-black text-white min-h-screen px-6 py-20">
         <div className="max-w-2xl mx-auto text-center space-y-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-red-500">
+          <h1 className="text-4xl md:text-5xl font-bold text-red-500 drop-shadow-xl">
             🔥 SPL@T Founder Lifetime Membership
           </h1>
 
           <p className="text-lg">
-            First 250 memberships at <strong>$25, one-time</strong>.
-            After that, tier 2 pricing applies.
+            First 250 at <span className="text-red-400 font-bold">$25</span>.<br/>
+            After that: <span className="text-yellow-400 font-bold">$50</span>.
           </p>
 
           <div className="text-xl font-mono font-semibold">{timeLeft}</div>
 
           <div className="text-lg tracking-tight">
-            {soldCount !== null ? `${soldCount} of ${SALE_LIMIT} sold` : 'Fetching sales data…'}
+            {soldCount !== null ? (
+              <span>
+                <span className={soldCount >= SALE_LIMIT ? "text-yellow-400 font-bold" : "text-green-400 font-bold"}>
+                  {soldCount}
+                </span>
+                <span className="text-gray-300"> / {SALE_LIMIT} sold</span>
+              </span>
+            ) : 'Fetching sales data…'}
           </div>
 
-          <p className="text-sm text-yellow-400 italic">🔥 Going fast. Don’t miss your spot.</p>
+          <p className="text-sm text-yellow-400 italic animate-pulse">
+            {soldCount !== null && soldCount >= SALE_LIMIT
+              ? "🔥 Tier 1 sold out. Next 250 will never get this price."
+              : "🔥 Going fast. Don’t miss your spot."
+            }
+          </p>
 
           {saleLive ? (
-            <>
+            <div className="flex flex-col gap-4 mt-4 items-center">
               <button
                 onClick={() => handleCheckout('tier_1')}
-                className="bg-[color:var(--deep-crimson)] hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold"
+                disabled={!tier1Available}
+                className={`
+                  w-full max-w-xs transition-all duration-150
+                  flex items-center justify-center gap-2
+                  px-8 py-4 rounded-2xl text-xl font-bold shadow-lg
+                  ${
+                    tier1Available
+                      ? "bg-[color:var(--deep-crimson)] hover:bg-red-700 active:scale-95 text-white"
+                      : "bg-gray-800 text-gray-400 cursor-not-allowed"
+                  }
+                  relative
+                `}
               >
-                Tier 1 – $25
+                <span className="inline-flex items-center gap-1">
+                  💦 Tier 1 – $25
+                  {!tier1Available && (
+                    <span className="ml-2 bg-yellow-400 text-black text-xs font-semibold px-2 py-1 rounded-full animate-bounce">
+                      SOLD OUT
+                    </span>
+                  )}
+                </span>
               </button>
-              <button
-                onClick={() => handleCheckout('tier_2')}
-                className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded-lg text-lg font-semibold"
-              >
-                Tier 2 – $50
-              </button>
-            </>
+              {/* Show Tier 2 only when Tier 1 is sold out */}
+              {soldCount !== null && soldCount >= SALE_LIMIT && (
+                <button
+                  onClick={() => handleCheckout('tier_2')}
+                  className={`
+                    w-full max-w-xs transition-all duration-150
+                    flex items-center justify-center gap-2
+                    px-8 py-4 rounded-2xl text-xl font-bold shadow-lg
+                    bg-yellow-400 hover:bg-yellow-300 text-black active:scale-95
+                  `}
+                >
+                  <span className="inline-flex items-center gap-1">
+                    🚀 Tier 2 – $50
+                  </span>
+                </button>
+              )}
+            </div>
           ) : (
             <button
-              className="bg-gray-700 text-white px-6 py-3 rounded-lg text-lg font-semibold cursor-not-allowed"
+              className="w-full max-w-xs bg-gray-700 text-white px-8 py-4 rounded-2xl text-xl font-semibold cursor-not-allowed opacity-70"
               disabled
             >
-              Checkout opens soon
+              <span className="inline-flex gap-2 items-center">
+                <svg width="20" height="20" fill="none" className="animate-spin"><circle cx="10" cy="10" r="8" stroke="white" strokeWidth="3" /></svg>
+                Checkout opens soon
+              </span>
             </button>
           )}
         </div>
