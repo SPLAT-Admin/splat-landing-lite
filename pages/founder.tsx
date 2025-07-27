@@ -1,4 +1,3 @@
-// pages/founder.tsx
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 
@@ -77,7 +76,6 @@ export default function FoundersPage() {
         <title>Founder Sale | SPL@T</title>
       </Head>
       <main className="bg-black min-h-screen flex flex-col justify-center items-center">
-        {/* Optionally: show countdown or stats above the button */}
         <div className="mb-8 text-center">
           <h1 className="text-3xl md:text-4xl font-extrabold text-red-500 mb-3 drop-shadow">
             SPL@T Founder Lifetime
@@ -122,3 +120,22 @@ export default function FoundersPage() {
               <div className="w-48 h-16 rounded-full bg-gray-700 text-gray-400 text-xl font-bold shadow-inner flex items-center justify-center select-none cursor-not-allowed relative">
                 <span className="inline-flex items-center gap-2">
                   Sold Out
+                </span>
+              </div>
+            )}
+          </>
+        ) : (
+          <button
+            className="w-48 h-16 rounded-full bg-gray-800 text-white text-xl font-bold shadow-lg flex items-center justify-center select-none cursor-not-allowed opacity-80"
+            disabled
+          >
+            <span className="inline-flex items-center gap-2">
+              <svg width="20" height="20" fill="none" className="animate-spin"><circle cx="10" cy="10" r="8" stroke="white" strokeWidth="3" /></svg>
+              Opens Soon
+            </span>
+          </button>
+        )}
+      </main>
+    </>
+  );
+}
