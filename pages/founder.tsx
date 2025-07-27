@@ -13,7 +13,6 @@ export default function FoundersPage() {
     const updateCountdown = () => {
       const now = Date.now();
       const distance = TARGET_TIMESTAMP - now;
-
       if (distance <= 0) {
         setTimeLeft('Founder Sale is live!');
         setSaleLive(true);
@@ -36,11 +35,11 @@ export default function FoundersPage() {
       try {
         const resp = await fetch('/api/founder-sold-count');
         const json = await resp.json();
-        const fudge = Math.floor(Math.random() * 4); // 0–3 extra
+        const fudge = Math.floor(Math.random() * 4);
         const displayedCount = Math.min(json.count + fudge, SALE_LIMIT);
         setSoldCount(displayedCount);
       } catch {
-        const fallback = 123 + Math.floor(Math.random() * 6); // 123–128
+        const fallback = 123 + Math.floor(Math.random() * 6);
         setSoldCount(fallback);
       }
     }
@@ -70,100 +69,56 @@ export default function FoundersPage() {
   };
 
   const tier1Available = saleLive && soldCount !== null && soldCount < SALE_LIMIT;
+  const tier2Available = saleLive && soldCount !== null && soldCount >= SALE_LIMIT;
 
   return (
     <>
       <Head>
         <title>Founder Sale | SPL@T</title>
       </Head>
-
-      <main className="bg-black text-white min-h-screen px-6 py-20">
-        <div className="max-w-2xl mx-auto text-center space-y-8">
-          <h1 className="text-4xl md:text-5xl font-bold text-red-500 drop-shadow-xl">
-            🔥 SPL@T Founder Lifetime Membership
+      <main className="bg-black min-h-screen flex flex-col justify-center items-center">
+        {/* Optionally: show countdown or stats above the button */}
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-red-500 mb-3 drop-shadow">
+            SPL@T Founder Lifetime
           </h1>
-
-          <p className="text-lg">
-            First 250 at <span className="text-red-400 font-bold">$25</span>.<br/>
-            After that: <span className="text-yellow-400 font-bold">$50</span>.
-          </p>
-
-          <div className="text-xl font-mono font-semibold">{timeLeft}</div>
-
-          <div className="text-lg tracking-tight">
+          <div className="text-md font-mono font-semibold text-white/80 mb-1">{timeLeft}</div>
+          <div className="text-sm text-white/60">
             {soldCount !== null ? (
-              <span>
+              <>
                 <span className={soldCount >= SALE_LIMIT ? "text-yellow-400 font-bold" : "text-green-400 font-bold"}>
                   {soldCount}
                 </span>
                 <span className="text-gray-300"> / {SALE_LIMIT} sold</span>
-              </span>
-            ) : 'Fetching sales data…'}
+              </>
+            ) : 'Fetching sales…'}
           </div>
-
-          <p className="text-sm text-yellow-400 italic animate-pulse">
-            {soldCount !== null && soldCount >= SALE_LIMIT
-              ? "🔥 Tier 1 sold out. Next 250 will never get this price."
-              : "🔥 Going fast. Don’t miss your spot."
-            }
-          </p>
-
-          {saleLive ? (
-            <div className="flex flex-col gap-4 mt-4 items-center">
+        </div>
+        {saleLive ? (
+          <>
+            {tier1Available && (
               <button
                 onClick={() => handleCheckout('tier_1')}
-                disabled={!tier1Available}
-                className={`
-                  w-full max-w-xs transition-all duration-150
-                  flex items-center justify-center gap-2
-                  px-8 py-4 rounded-2xl text-xl font-bold shadow-lg
-                  ${
-                    tier1Available
-                      ? "bg-[color:var(--deep-crimson)] hover:bg-red-700 active:scale-95 text-white"
-                      : "bg-gray-800 text-gray-400 cursor-not-allowed"
-                  }
-                  relative
-                `}
+                className="w-48 h-16 rounded-full bg-[color:var(--deep-crimson)] text-white text-xl font-bold shadow-2xl flex items-center justify-center transition-all duration-150 hover:scale-105 hover:bg-red-700 focus:ring-4 focus:ring-red-400/40 active:scale-95 relative"
+                style={{ fontSize: '1.45rem', letterSpacing: '.01em' }}
               >
-                <span className="inline-flex items-center gap-1">
-                  💦 Tier 1 – $25
-                  {!tier1Available && (
-                    <span className="ml-2 bg-yellow-400 text-black text-xs font-semibold px-2 py-1 rounded-full animate-bounce">
-                      SOLD OUT
-                    </span>
-                  )}
+                <span className="inline-flex items-center gap-2">
+                  💦 Purchase Now <span className="text-base font-medium">($25)</span>
                 </span>
               </button>
-              {/* Show Tier 2 only when Tier 1 is sold out */}
-              {soldCount !== null && soldCount >= SALE_LIMIT && (
-                <button
-                  onClick={() => handleCheckout('tier_2')}
-                  className={`
-                    w-full max-w-xs transition-all duration-150
-                    flex items-center justify-center gap-2
-                    px-8 py-4 rounded-2xl text-xl font-bold shadow-lg
-                    bg-yellow-400 hover:bg-yellow-300 text-black active:scale-95
-                  `}
-                >
-                  <span className="inline-flex items-center gap-1">
-                    🚀 Tier 2 – $50
-                  </span>
-                </button>
-              )}
-            </div>
-          ) : (
-            <button
-              className="w-full max-w-xs bg-gray-700 text-white px-8 py-4 rounded-2xl text-xl font-semibold cursor-not-allowed opacity-70"
-              disabled
-            >
-              <span className="inline-flex gap-2 items-center">
-                <svg width="20" height="20" fill="none" className="animate-spin"><circle cx="10" cy="10" r="8" stroke="white" strokeWidth="3" /></svg>
-                Checkout opens soon
-              </span>
-            </button>
-          )}
-        </div>
-      </main>
-    </>
-  );
-}
+            )}
+            {tier2Available && !tier1Available && (
+              <button
+                onClick={() => handleCheckout('tier_2')}
+                className="w-48 h-16 rounded-full bg-yellow-400 text-black text-xl font-bold shadow-2xl flex items-center justify-center transition-all duration-150 hover:scale-105 hover:bg-yellow-300 focus:ring-4 focus:ring-yellow-200/50 active:scale-95 relative"
+                style={{ fontSize: '1.45rem', letterSpacing: '.01em' }}
+              >
+                <span className="inline-flex items-center gap-2">
+                  🚀 Purchase Now <span className="text-base font-medium">($50)</span>
+                </span>
+              </button>
+            )}
+            {!tier1Available && !tier2Available && (
+              <div className="w-48 h-16 rounded-full bg-gray-700 text-gray-400 text-xl font-bold shadow-inner flex items-center justify-center select-none cursor-not-allowed relative">
+                <span className="inline-flex items-center gap-2">
+                  Sold Out
