@@ -12,10 +12,6 @@ export default function Home() {
         <header className="hero">
           <h1>SPL@T – A Modern Way to Meet Nearby LGBTQ+ Adults</h1>
           <p>Connect with real people in your area through a private, location-based social networking app. Designed for adult users seeking authentic, respectful connections.</p>
-          <div className="cta-buttons">
-            <button>Get Started</button>
-            <button>Learn More</button>
-          </div>
         </header>
 
         <section className="features">
@@ -57,7 +53,6 @@ export default function Home() {
             <li>Secure Chat Interface</li>
             <li>Quick and simple onboarding</li>
           </ul>
-          <p>(Screenshots should be PG and follow app store content rules — no nudity, no suggestive imagery.)</p>
         </section>
 
         <footer>
