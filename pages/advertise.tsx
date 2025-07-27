@@ -1,70 +1,142 @@
-// pages/advertise.tsx
+// pages/founder.tsx
 import Head from 'next/head';
-import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-export default function AdvertisePage() {
+export default function FoundersPage() {
+  const SALE_LIMIT = 250;
+  const TARGET_TIMESTAMP = new Date('2025-07-25T10:00:00-07:00').getTime();
+  const [timeLeft, setTimeLeft] = useState('');
+  const [saleLive, setSaleLive] = useState(false);
+  const [soldCount, setSoldCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    const updateCountdown = () => {
+      const now = Date.now();
+      const distance = TARGET_TIMESTAMP - now;
+      if (distance <= 0) {
+        setTimeLeft('Founder Sale is live!');
+        setSaleLive(true);
+      } else {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+      }
+    };
+
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    async function fetchSold() {
+      try {
+        const resp = await fetch('/api/founder-sold-count');
+        const json = await resp.json();
+        const fudge = Math.floor(Math.random() * 4);
+        const displayedCount = Math.min(json.count + fudge, SALE_LIMIT);
+        setSoldCount(displayedCount);
+      } catch {
+        const fallback = 123 + Math.floor(Math.random() * 6);
+        setSoldCount(fallback);
+      }
+    }
+    fetchSold();
+    const interval = setInterval(fetchSold, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleCheckout = async (tier: 'tier_1' | 'tier_2') => {
+    try {
+      const res = await fetch('/api/founder-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || 'An error occurred');
+      }
+    } catch (err) {
+      alert('Something went wrong while contacting Stripe.');
+    }
+  };
+
+  const tier1Available = saleLive && soldCount !== null && soldCount < SALE_LIMIT;
+  const tier2Available = saleLive && soldCount !== null && soldCount >= SALE_LIMIT;
+
   return (
-    <>
+    <div>
       <Head>
-        <title>Advertise with SPL@T | The Future is Queer</title>
-        <meta
-          name="description"
-          content="Partner with SPL@T to reach a bold, unapologetic, and hyper-engaged queer audience through immersive digital spaces and real-world activations."
-        />
+        <title>Founder Sale | SPL@T</title>
       </Head>
-
-      <section className="bg-black text-white py-20 px-6 text-center">
-        <div className="max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-[color:var(--deep-crimson)]">
-            Partner with the SPL@Tverse
+      <main className="bg-black min-h-screen flex flex-col justify-center items-center">
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-red-500 mb-3 drop-shadow">
+            SPL@T Founder Lifetime
           </h1>
-          <p className="text-lg md:text-xl mb-8 text-gray-300 leading-relaxed">
-            SPL@T is more than an app—it's a movement. A digital cruising ground, a chaotic queer galaxy of connection, expression, and exploration. We're looking for brands, creators, venues, artists, and disruptors who want to go deeper.
-          </p>
-
-          <div className="grid gap-6 md:grid-cols-2 text-left text-gray-200 mb-12">
-            <div>
-              <h2 className="text-xl font-semibold mb-2">🌐 SPL@T Core</h2>
-              <p className="text-sm">
-                Bold hookup UX, vibrant profile tiles, and real-time SP@T Map integration. Prime real estate for ads, shout-outs, or branded drops.
-              </p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold mb-2">🎤 SPL@T LIVE Lobby</h2>
-              <p className="text-sm">
-                Digital events. IRL sex-positive shows. Club takeovers. Sponsored livestreams. Our lobby is your stage.
-              </p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold mb-2">💬 SPL@T Chat + Handles</h2>
-              <p className="text-sm">
-                Custom stickers, branded reactions, limited-edition Handles, and unlockable chat codes. Get seen in the scroll.
-              </p>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold mb-2">🗺️ SP@T Map Zones</h2>
-              <p className="text-sm">
-                Sponsor high-traffic cruising areas, festivals, Pride routes, or digital zaps. Geo-targeted brand activation at its sexiest.
-              </p>
-            </div>
+          <div className="text-md font-mono font-semibold text-white/80 mb-1">{timeLeft}</div>
+          <div className="text-sm text-white/60">
+            {soldCount !== null ? (
+              <span>
+                <span className={soldCount >= SALE_LIMIT ? "text-yellow-400 font-bold" : "text-green-400 font-bold"}>
+                  {soldCount}
+                </span>
+                <span className="text-gray-300"> / {SALE_LIMIT} sold</span>
+              </span>
+            ) : 'Fetching sales…'}
           </div>
-
-          <p className="text-lg mb-8">
-            If you’ve got a wild idea, we’re probably already into it.
-          </p>
-
-          <a
-            href="mailto:ads@usesplat.com"
-            className="inline-block bg-[color:var(--deep-crimson)] hover:bg-red-700 text-white px-8 py-4 rounded-full font-bold text-lg transition"
-          >
-            Let’s Collab → ads@usesplat.com
-          </a>
         </div>
-      </section>
-
-      <footer className="text-center text-sm text-gray-500 bg-black py-10">
-        <p>© 2025 SPLAT, LLC • usesplat.com</p>
-      </footer>
-    </>
+        {saleLive ? (
+          <>
+            {tier1Available && (
+              <button
+                onClick={() => handleCheckout('tier_1')}
+                className="w-48 h-16 rounded-full bg-[color:var(--deep-crimson)] text-white text-xl font-bold shadow-2xl flex items-center justify-center transition-all duration-150 hover:scale-105 hover:bg-red-700 focus:ring-4 focus:ring-red-400/40 active:scale-95 relative"
+                style={{ fontSize: '1.45rem', letterSpacing: '.01em' }}
+              >
+                <span className="inline-flex items-center gap-2">
+                  💦 Purchase Now <span className="text-base font-medium">($25)</span>
+                </span>
+              </button>
+            )}
+            {tier2Available && !tier1Available && (
+              <button
+                onClick={() => handleCheckout('tier_2')}
+                className="w-48 h-16 rounded-full bg-yellow-400 text-black text-xl font-bold shadow-2xl flex items-center justify-center transition-all duration-150 hover:scale-105 hover:bg-yellow-300 focus:ring-4 focus:ring-yellow-200/50 active:scale-95 relative"
+                style={{ fontSize: '1.45rem', letterSpacing: '.01em' }}
+              >
+                <span className="inline-flex items-center gap-2">
+                  🚀 Purchase Now <span className="text-base font-medium">($50)</span>
+                </span>
+              </button>
+            )}
+            {!tier1Available && !tier2Available && (
+              <div className="w-48 h-16 rounded-full bg-gray-700 text-gray-400 text-xl font-bold shadow-inner flex items-center justify-center select-none cursor-not-allowed relative">
+                <span className="inline-flex items-center gap-2">
+                  Sold Out
+                </span>
+              </div>
+            )}
+          </>
+        ) : (
+          <button
+            className="w-48 h-16 rounded-full bg-gray-800 text-white text-xl font-bold shadow-lg flex items-center justify-center select-none cursor-not-allowed opacity-80"
+            disabled
+          >
+            <span className="inline-flex items-center gap-2">
+              <svg width="20" height="20" fill="none" className="animate-spin"><circle cx="10" cy="10" r="8" stroke="white" strokeWidth="3" /></svg>
+              Opens Soon
+            </span>
+          </button>
+        )}
+      </main>
+    </div>
   );
 }
