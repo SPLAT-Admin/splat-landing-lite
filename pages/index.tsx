@@ -6,6 +6,7 @@ export default function Home() {
       <Head>
         <title>SPL@T – A Modern Way to Meet Nearby LGBTQ+ Adults</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Connect with real people nearby through a private, location-based social networking app for LGBTQ+ adults. Respectful. Secure. Modern." />
       </Head>
       <main>
         <header className="hero">
@@ -66,7 +67,12 @@ export default function Home() {
             <a href="#">Contact Us</a>
             <a href="#">Safety Guidelines</a>
           </nav>
-          <p>SPL@T is intended for adults 18+ only.</p>
+          <div className="business-info">
+            <p><strong>SPLAT, LLC</strong></p>
+            <p>971 S University Ave, Suite 1088</p>
+            <p>Provo, Utah 84601</p>
+            <p>Phone: <a href="tel:8444308333">844-430-8333</a></p>
+          </div>
         </footer>
       </main>
     </>
