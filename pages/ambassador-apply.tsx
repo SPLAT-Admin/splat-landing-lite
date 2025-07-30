@@ -22,22 +22,40 @@ export default function AmbassadorApply() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
+  // Ensure Turnstile renders fresh each mount (Next.js hydration safe)
   useEffect(() => {
-    (window as any).handleCaptcha = (token: string) => {
-      console.log("Captcha token received:", token);
-      setFormData((prev) => ({ ...prev, captchaToken: token }));
+    const renderTurnstile = () => {
+      if (window.turnstile && process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY) {
+        try {
+          window.turnstile.render('#cf-turnstile-container', {
+            sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY,
+            callback: (token) => {
+              setFormData((prev) => ({ ...prev, captchaToken: token }));
+            },
+            theme: 'dark',
+            refreshExpired: 'auto'
+          });
+        } catch (err) {
+          console.error('Turnstile render error:', err);
+        }
+      }
     };
+
+    renderTurnstile();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    console.log("Form submitting with captchaToken:", formData.captchaToken);
+    if (!formData.captchaToken) {
+      setError('Please complete the CAPTCHA.');
+      return;
+    }
 
     try {
       const response = await fetch('/api/ambassador', {
@@ -48,14 +66,12 @@ export default function AmbassadorApply() {
 
       if (!response.ok) {
         const errJson = await response.json().catch(() => null);
-        console.error('Server rejected with status', response.status, errJson);
         setError(errJson?.error || `Submission failed (${response.status})`);
         return;
       }
 
       setSubmitted(true);
     } catch (err) {
-      console.error('Network or unexpected error:', err);
       setError(`Something went wrong: ${err}`);
     }
   };
@@ -70,6 +86,18 @@ export default function AmbassadorApply() {
         src="https://challenges.cloudflare.com/turnstile/v0/api.js"
         strategy="afterInteractive"
         async
+        onLoad={() => {
+          if (window.turnstile) {
+            window.turnstile.render('#cf-turnstile-container', {
+              sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY,
+              callback: (token) => {
+                setFormData((prev) => ({ ...prev, captchaToken: token }));
+              },
+              theme: 'dark',
+              refreshExpired: 'auto'
+            });
+          }
+        }}
       />
 
       <div className="min-h-screen bg-[color:var(--deep-crimson)] text-white px-4 py-12">
@@ -101,11 +129,7 @@ export default function AmbassadorApply() {
               <textarea name="qualifications_why" required placeholder="Why do you want to be an Ambassador?" onChange={handleChange} className="p-3 rounded bg-[color:var(--deep-crimson)] text-white placeholder-white" rows={4} />
               <input type="text" name="referral" placeholder="Referral (if any)" onChange={handleChange} className="p-3 rounded bg-[color:var(--deep-crimson)] text-white placeholder-white" />
 
-              <div
-                className="cf-turnstile"
-                data-sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY}
-                data-callback="handleCaptcha"
-              ></div>
+              <div id="cf-turnstile-container" className="my-4"></div>
 
               <button
                 type="submit"
