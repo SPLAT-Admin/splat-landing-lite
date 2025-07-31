@@ -12,12 +12,13 @@ export default splatApiHandler(async (req, res) => {
   }
 
   const emailResult = await sendEmail({
-  to: body.email,
     to: "support@usesplat.com",
-    subject: \`New Contact Submission from \${body.name}\`,
-    html: \`
-      <p><strong>Name:</strong> \${body.name}</p>
-  const emailResult = await sendEmail({
+    subject: `New Contact Submission from ${body.name}`,
+    html: `<p><strong>Name:</strong> ${body.name}</p>
+    <p><strong>Email:</strong> ${body.email}</p>
+    <p><strong>Message:</strong></p>
+    <p>${body.message}</p>`
+  } as EmailParams);
     to: "support@usesplat.com",
     subject: `New Contact Submission from ${body.name}`,
     html: `<p><strong>Name:</strong> ${body.name}</p>
