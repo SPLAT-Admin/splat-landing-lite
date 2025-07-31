@@ -1,6 +1,4 @@
 import { splatApiHandler, sendError, verifyCaptcha, validateForm, sendSuccess } from '../../lib';
-import { sendEmail } from '../../lib/sendEmail';
-import { verifyCaptcha, sendEmail, validateForm, sendSuccess } from '../../lib/sendEmail';
 import { AmbassadorForm } from '../../types';
 import { createClient } from '@supabase/supabase-js';
 
