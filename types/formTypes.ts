@@ -6,7 +6,7 @@ export type AmbassadorForm = {
   city: string;
   state: string;
   social_media_handles: string;
-  number_of_followers: number;
+  number_of_followers: string;
   qualifications_why: string;
   referral?: string;
   captchaToken: string;
