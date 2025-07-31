@@ -103,7 +103,7 @@ export default function AmbassadorApply() {
 
               <SplatCaptcha 
                 containerId="cf-turnstile-ambassador"
-                onVerify={(token) => setFormData(prev => ({ ...prev, captchaToken: token }))}
+                onVerify={(token) => setFormData((prev: AmbassadorForm) => ({ ...prev, captchaToken: token }))}
               />
 
               <button type="submit"
