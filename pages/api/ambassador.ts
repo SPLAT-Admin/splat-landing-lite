@@ -55,4 +55,3 @@ if (!emailResult.success) return sendError(res, 500, "Failed to send confirmatio
 
 return sendSuccess(res, "Application submitted successfully");
 });
-});
