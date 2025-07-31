@@ -3,6 +3,8 @@ import type { EmailParams } from "../../lib/sendEmail";
 import { sendEmail } from "../../lib/sendEmail";
 import { AmbassadorForm } from "../../types";
 import { createClient } from "@supabase/supabase-js";
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
