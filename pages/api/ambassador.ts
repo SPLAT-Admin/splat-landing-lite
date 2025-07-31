@@ -1,99 +1,70 @@
-// pages/api/ambassador.ts
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { Resend } from 'resend';
+import { 
+  verifyCaptcha, 
+  sendEmail, 
+  validateForm, 
+  sendSuccess, 
+  sendError, 
+  splatApiHandler 
+} from '../../lib';
+import { AmbassadorForm } from '../../types';
 import { createClient } from '@supabase/supabase-js';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Supabase
 const supabase = createClient(
   process.env.SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
+export default splatApiHandler(async (req, res) => {
+  const body: AmbassadorForm = req.body;
+
+  // Validate required fields
+  const validation = validateForm(body, [
+    "first_name", "last_name", "email", "dob", "city", "state",
+    "social_media_handles", "number_of_followers", "qualifications_why", "captchaToken"
+  ]);
+  if (!validation.valid) {
+    return sendError(res, 400, validation.errors.join(', '));
   }
 
-  const {
-    first_name,
-    last_name,
-    preferred_name,
-    email,
-    dob,
-    city,
-    state,
-    social_media_handles,
-    number_of_followers,
-    qualifications_why,
-    referral,
-    captchaToken,
-  } = req.body;
-
-  if (
-    !first_name ||
-    !last_name ||
-    !email ||
-    !dob ||
-    !city ||
-    !state ||
-    !social_media_handles ||
-    !number_of_followers ||
-    !qualifications_why ||
-    !captchaToken
-  ) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
-
-  // CAPTCHA verification
-  const captchaRes = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      secret: process.env.CLOUDFLARE_SECRET_KEY,
-      response: captchaToken,
-    }),
-  });
-
-  const captchaData = await captchaRes.json();
-  if (!captchaData.success) {
-    return res.status(403).json({ error: 'CAPTCHA verification failed' });
+  // CAPTCHA check
+  if (!(await verifyCaptcha(body.captchaToken))) {
+    return sendError(res, 403, 'CAPTCHA verification failed');
   }
 
   // Insert into Supabase
   const { error } = await supabase.from('ambassador').insert([{
-    first_name,
-    last_name,
-    preferred_name,
-    email,
-    dob,
-    city,
-    state,
-    social_media_handles,
-    number_of_followers,
-    qualifications_why,
-    referral,
+    first_name: body.first_name,
+    last_name: body.last_name,
+    preferred_name: body.preferred_name,
+    email: body.email,
+    dob: body.dob,
+    city: body.city,
+    state: body.state,
+    social_media_handles: body.social_media_handles,
+    number_of_followers: body.number_of_followers,
+    qualifications_why: body.qualifications_why,
+    referral: body.referral,
     status: 'pending',
   }]);
 
   if (error) {
     console.error('Supabase insert error:', error);
-    return res.status(500).json({ error: 'Failed to save ambassador data' });
+    return sendError(res, 500, 'Failed to save ambassador data');
   }
 
-  // Resend confirmation email
-  await resend.emails.send({
-    from: 'SPL@T Ambassadors <no-reply@usesplat.com>',
-    to: [email],
+  // Send confirmation email
+  await sendEmail({
+    to: body.email,
     subject: "You're in! Thanks for applying to be a SPL@T Ambassador 💦",
     html: `
-      <p>Hey ${preferred_name || first_name},</p>
+      <p>Hey ${body.preferred_name || body.first_name},</p>
       <p>Thanks for applying to be a <strong>SPL@T Ambassador</strong>. We’ll review your submission and get back to you soon.</p>
       <p>Until then, stay sexy. Stay bold. Stay SPL@T.</p>
       <br />
       <p>– The SPL@T Team</p>
-      <p style="font-size: 0.8rem; color: gray;">This email was sent via Resend from no-reply@usesplat.com</p>
-    `,
+    `
   });
 
-  return res.status(200).json({ status: 'submitted' });
-}
+  return sendSuccess(res, "Application submitted successfully");
+});
