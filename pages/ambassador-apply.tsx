@@ -1,4 +1,3 @@
-// pages/ambassador-apply.tsx
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
@@ -22,33 +21,32 @@ export default function AmbassadorApply() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
-  // Ensure Turnstile renders fresh each mount (Next.js hydration safe)
   useEffect(() => {
     const renderTurnstile = () => {
-      if (window.turnstile && process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY) {
-        try {
-          window.turnstile.render('#cf-turnstile-container', {
-            sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY,
-            callback: (token) => {
-              setFormData((prev) => ({ ...prev, captchaToken: token }));
-            },
-            theme: 'dark',
-            refreshExpired: 'auto'
-          });
-        } catch (err) {
-          console.error('Turnstile render error:', err);
-        }
+      if (!process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY) {
+        console.warn("⚠️ NEXT_PUBLIC_CLOUDFLARE_SITE_KEY is missing. Turnstile will not load.");
+        return;
+      }
+      if (window.turnstile) {
+        window.turnstile.render('#cf-turnstile-container', {
+          sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY,
+          callback: (token: string) => {
+            setFormData(prev => ({ ...prev, captchaToken: token }));
+          },
+          theme: 'dark',
+          refreshExpired: 'auto'
+        });
       }
     };
 
     renderTurnstile();
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -85,13 +83,12 @@ export default function AmbassadorApply() {
       <Script
         src="https://challenges.cloudflare.com/turnstile/v0/api.js"
         strategy="afterInteractive"
-        async
         onLoad={() => {
           if (window.turnstile) {
             window.turnstile.render('#cf-turnstile-container', {
               sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY,
-              callback: (token) => {
-                setFormData((prev) => ({ ...prev, captchaToken: token }));
+              callback: (token: string) => {
+                setFormData(prev => ({ ...prev, captchaToken: token }));
               },
               theme: 'dark',
               refreshExpired: 'auto'
@@ -129,7 +126,7 @@ export default function AmbassadorApply() {
               <textarea name="qualifications_why" required placeholder="Why do you want to be an Ambassador?" onChange={handleChange} className="p-3 rounded bg-[color:var(--deep-crimson)] text-white placeholder-white" rows={4} />
               <input type="text" name="referral" placeholder="Referral (if any)" onChange={handleChange} className="p-3 rounded bg-[color:var(--deep-crimson)] text-white placeholder-white" />
 
-              <div id="cf-turnstile-container" className="my-4"></div>
+              <div id="cf-turnstile-container" className="flex justify-center my-4"></div>
 
               <button
                 type="submit"
