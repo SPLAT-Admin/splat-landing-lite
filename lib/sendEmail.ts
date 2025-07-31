@@ -1,3 +1,4 @@
+import { Resend } from 'resend';
 export interface EmailParams {
   to: string;
   subject: string;
