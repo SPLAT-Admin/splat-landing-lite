@@ -1,5 +1,5 @@
-import { splatApiHandler, sendError } from '../../lib';
-import { verifyCaptcha, sendEmail, validateForm, sendSuccess } from '../../lib';
+import { splatApiHandler, sendError } from '../../lib/sendEmail';
+import { verifyCaptcha, sendEmail, validateForm, sendSuccess } from '../../lib/sendEmail';
 import { ContactForm } from '../../types';
 
 export default splatApiHandler(async (req, res) => {
