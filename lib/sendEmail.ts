@@ -23,7 +23,13 @@ export async function sendEmail({ to, subject, html, from }: EmailParams) {
       html,
     });
 
-    return { success: true, id: response?.id };
+    // ✅ Proper Resend response access
+    if (response?.error) {
+      console.error("❌ Resend API error:", response.error);
+      return { success: false, error: response.error };
+    }
+
+    return { success: true, id: response?.data?.id ?? null };
   } catch (err) {
     console.error("❌ Email send failed:", err);
     return { success: false, error: err };
