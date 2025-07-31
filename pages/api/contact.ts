@@ -1,13 +1,7 @@
-import { splatApiHandler, sendError, verifyCaptcha, validateForm, sendSuccess } from '../../lib';
+import { splatApiHandler, sendError, verifyCaptcha, validateForm, sendSuccess } from "../../lib";
 import type { EmailParams } from "../../lib/sendEmail";
-import type { EmailParams } from '../../lib/sendEmail';
-import type { EmailParams } from '../../lib/sendEmail';
-import { sendEmail } from '../../lib/sendEmail';
-import { ContactForm } from '../../types';
-
-export default splatApiHandler(async (req, res) => {
-  const body: ContactForm = req.body;
-
+import { sendEmail } from "../../lib/sendEmail";
+import { ContactForm } from "../../types";
   const validation = validateForm(body, ["name", "email", "message", "captchaToken"]);
   if (!validation.valid) return sendError(res, 400, validation.errors.join(', '));
 
