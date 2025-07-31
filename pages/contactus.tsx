@@ -87,7 +87,7 @@ export default function ContactUsPage() {
 
             <SplatCaptcha 
               containerId="cf-turnstile-contact"
-              onVerify={(token) => setForm(prev => ({ ...prev, captchaToken: token }))}
+              onVerify={(token) => setForm((prev: ContactForm) => ({ ...prev, captchaToken: token }))}
             />
 
             <button
