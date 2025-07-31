@@ -50,10 +50,6 @@ export default splatApiHandler(async (req, res) => {
     <br />
     <p>– The SPL@T Team</p>`
   } as EmailParams);
-      <p>– The SPL@T Team</p>
-    \`
-  });
-
   if (!emailResult.success) return sendError(res, 500, 'Failed to send confirmation email');
 
   return sendSuccess(res, "Application submitted successfully");
