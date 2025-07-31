@@ -2,6 +2,7 @@ import { splatApiHandler, sendError, verifyCaptcha, validateForm, sendSuccess } 
 import type { EmailParams } from "../../lib/sendEmail";
 import { sendEmail } from "../../lib/sendEmail";
 import { ContactForm } from "../../types";
+  const body: ContactForm = req.body;
   const validation = validateForm(body, ["name", "email", "message", "captchaToken"]);
   if (!validation.valid) return sendError(res, 400, validation.errors.join(', '));
 
