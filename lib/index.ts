@@ -1,5 +1,5 @@
-export { verifyCaptcha } from './verifyCaptcha';
-export { sendEmail } from './sendEmail';
-export { validateForm } from './validateForm';
-export { sendSuccess, sendError } from './apiResponse';
-export { splatApiHandler } from './splatApiHandler';
+export * from './verifyCaptcha';
+export * from './sendEmail';
+export * from './validateForm';
+export * from './apiResponse';
+export * from './splatApiHandler';
