@@ -11,8 +11,8 @@ interface EmailParams {
 
 export async function sendEmail({ to, subject, html, from }: EmailParams) {
   if (!process.env.RESEND_API_KEY) {
-    console.error("❌ RESEND_API_KEY is missing in environment.");
-    return { success: false, error: "Missing RESEND API key" };
+    console.error("❌ RESEND_API_KEY is missing.");
+    return { success: false, error: "Missing API key" };
   }
 
   try {
@@ -23,15 +23,14 @@ export async function sendEmail({ to, subject, html, from }: EmailParams) {
       html,
     });
 
-    // ✅ Proper Resend response access
-    if (response?.error) {
-      console.error("❌ Resend API error:", response.error);
+    if (response.error) {
+      console.error("Resend API error:", response.error);
       return { success: false, error: response.error };
     }
 
-    return { success: true, id: response?.data?.id ?? null };
+    return { success: true, id: response.data?.id || null };
   } catch (err) {
-    console.error("❌ Email send failed:", err);
+    console.error("Email send failed:", err);
     return { success: false, error: err };
   }
 }
