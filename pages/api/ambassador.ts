@@ -47,12 +47,9 @@ export default splatApiHandler(async (req, res) => {
     html: `<p>Hey ${body.preferred_name || body.first_name},</p>
     <p>Thanks for applying to be a <strong>SPL@T Ambassador</strong>. We’ll review your submission and get back to you soon.</p>
     <p>Until then, stay sexy. Stay bold. Stay SPL@T.</p>
-    <br /><p>– The SPL@T Team</p>`
+    <br />
+    <p>– The SPL@T Team</p>`
   } as EmailParams);
-      <p>Hey \${body.preferred_name || body.first_name},</p>
-      <p>Thanks for applying to be a <strong>SPL@T Ambassador</strong>. We’ll review your submission and get back to you soon.</p>
-      <p>Until then, stay sexy. Stay bold. Stay SPL@T.</p>
-      <br />
       <p>– The SPL@T Team</p>
     \`
   });
