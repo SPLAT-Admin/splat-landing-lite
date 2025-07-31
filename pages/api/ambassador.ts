@@ -9,7 +9,6 @@ import {
 import { AmbassadorForm } from '../../types';
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase
 const supabase = createClient(
   process.env.SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -18,21 +17,16 @@ const supabase = createClient(
 export default splatApiHandler(async (req, res) => {
   const body: AmbassadorForm = req.body;
 
-  // Validate required fields
   const validation = validateForm(body, [
     "first_name", "last_name", "email", "dob", "city", "state",
     "social_media_handles", "number_of_followers", "qualifications_why", "captchaToken"
   ]);
-  if (!validation.valid) {
-    return sendError(res, 400, validation.errors.join(', '));
-  }
+  if (!validation.valid) return sendError(res, 400, validation.errors.join(', '));
 
-  // CAPTCHA check
   if (!(await verifyCaptcha(body.captchaToken))) {
     return sendError(res, 403, 'CAPTCHA verification failed');
   }
 
-  // Insert into Supabase
   const { error } = await supabase.from('ambassador').insert([{
     first_name: body.first_name,
     last_name: body.last_name,
@@ -53,18 +47,19 @@ export default splatApiHandler(async (req, res) => {
     return sendError(res, 500, 'Failed to save ambassador data');
   }
 
-  // Send confirmation email
-  await sendEmail({
+  const emailResult = await sendEmail({
     to: body.email,
     subject: "You're in! Thanks for applying to be a SPL@T Ambassador 💦",
-    html: `
-      <p>Hey ${body.preferred_name || body.first_name},</p>
+    html: \`
+      <p>Hey \${body.preferred_name || body.first_name},</p>
       <p>Thanks for applying to be a <strong>SPL@T Ambassador</strong>. We’ll review your submission and get back to you soon.</p>
       <p>Until then, stay sexy. Stay bold. Stay SPL@T.</p>
       <br />
       <p>– The SPL@T Team</p>
-    `
+    \`
   });
+
+  if (!emailResult.success) return sendError(res, 500, 'Failed to send confirmation email');
 
   return sendSuccess(res, "Application submitted successfully");
 });
