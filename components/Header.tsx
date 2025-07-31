@@ -14,7 +14,7 @@ export default function Header() {
             priority
           />
         </Link>
-        <nav className="flex space-x-4 text-sm md:text-base font-semibold text-white">
+        <nav className="flex gap-x-8 text-lg font-medium text-sm md:text-base font-semibold text-white">
           <Link href="/founder" className="hover:text-[color:var(--deep-crimson)]">Founder</Link>
           <Link href="/ambassador" className="hover:text-[color:var(--deep-crimson)]">Ambassador</Link>
           <Link href="/merch" className="hover:text-[color:var(--deep-crimson)]">Merch</Link>
