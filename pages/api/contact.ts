@@ -1,4 +1,5 @@
 import { splatApiHandler, sendError, verifyCaptcha, validateForm, sendSuccess } from '../../lib';
+import { sendEmail } from '../../lib/sendEmail';
 import { ContactForm } from '../../types';
 
 export default splatApiHandler(async (req, res) => {
