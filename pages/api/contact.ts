@@ -26,4 +26,3 @@ export default splatApiHandler(async (req, res) => {
 
   return sendSuccess(res, "Message sent successfully");
 });
-});
