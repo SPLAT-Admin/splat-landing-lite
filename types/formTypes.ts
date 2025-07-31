@@ -1,6 +1,7 @@
 export type AmbassadorForm = {
   first_name: string;
   last_name: string;
+  preferred_name?: string;
   email: string;
   dob: string;
   city: string;
