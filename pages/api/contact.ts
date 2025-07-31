@@ -23,7 +23,6 @@ import { ContactForm } from "../../types";
     <p><strong>Message:</strong></p>
     <p>${body.message}</p>`
   } as EmailParams);
-  if (!emailResult.success) return sendError(res, 500, 'Failed to send email');
 
   return sendSuccess(res, "Message sent successfully");
 });
