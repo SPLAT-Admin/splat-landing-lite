@@ -44,11 +44,11 @@ export default splatApiHandler(async (req, res) => {
 const emailResult = await sendEmail({
   to: body.email,
   subject: "You're in! Thanks for applying to be a SPL@T Ambassador 💦",
-  html: `<p>Hey ${body.preferred_name || body.first_name},</p>
-  <p>Thanks for applying to be a <strong>SPL@T Ambassador</strong>. We’ll review your submission and get back to you soon.</p>
-  <p>Until then, stay sexy. Stay bold. Stay SPL@T.</p>
+  html: `<p>Hey ${body.preferred_name || body.first_name},</p>\
+  <p>Thanks for applying to be a <strong>SPL@T Ambassador</strong>. We’ll review your submission and get back to you soon.</p>\
+  <p>Until then, stay sexy. Stay bold. Stay SPL@T.</p>\
   <br />
-  <p>– The SPL@T Team</p>`
+  <p>– The SPL@T Team</p>`\
 } as EmailParams);
 
 if (!emailResult.success) return sendError(res, 500, "Failed to send confirmation email");
