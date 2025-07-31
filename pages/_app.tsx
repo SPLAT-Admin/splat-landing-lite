@@ -1,9 +1,6 @@
-// pages/_app.tsx
-import '@/styles/globals.css';
+import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import Image from 'next/image';
-import Link from 'next/link';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -11,44 +8,49 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>SPL@T</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
       </Head>
 
-      <header className="sticky top-0 z-50 bg-black border-b border-[color:var(--deep-crimson)] px-6 py-4 shadow-md">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center">
-            <Image
-              src="/splat-logo.png"
-              alt="SPL@T Logo"
-              width={160}
-              height={60}
-              priority
-            />
-          </Link>
-          <nav className="flex gap-3 text-sm md:text-base font-semibold">
-            <Link href="/founder">
-              <button className="px-4 py-2 rounded hover:bg-[color:var(--deep-crimson)] hover:text-white transition">Founder</button>
-            </Link>
-            <Link href="/ambassador">
-              <button className="px-4 py-2 rounded hover:bg-[color:var(--deep-crimson)] hover:text-white transition">Ambassador</button>
-            </Link>
-            <Link href="/merch">
-              <button className="px-4 py-2 rounded hover:bg-[color:var(--deep-crimson)] hover:text-white transition">Merch</button>
-            </Link>
-            <Link href="/advertise">
-              <button className="px-4 py-2 rounded hover:bg-[color:var(--deep-crimson)] hover:text-white transition">Advertise</button>
-            </Link>
-            <Link href="/contactus">
-              <button className="px-4 py-2 rounded hover:bg-[color:var(--deep-crimson)] hover:text-white transition">Contact Us</button>
-            </Link>
-          </nav>
-        </div>
-      </header>
-
-      <div className="min-h-screen bg-black text-white">
-        <main>
+      <div className="min-h-screen flex flex-col justify-between bg-[color:var(--deep-crimson)] text-white">
+        <main className="flex-grow">
           <Component {...pageProps} />
         </main>
+
+        <footer className="text-center text-white py-6 bg-black border-t-2 border-[color:var(--deep-crimson)] shadow-[0_-1px_8px_rgba(139,0,0,0.5)]">
+          <p className="mb-2 text-sm md:text-base">
+            © 2025 SPLAT, LLC | 
+            <a href="https://www.usesplat.com" 
+               className="mx-1 hover:text-[color:var(--deep-crimson)] transition-colors duration-200">
+              www.usesplat.com
+            </a> | 
+            <a href="mailto:Support@usesplat.com" 
+               className="mx-1 hover:text-[color:var(--deep-crimson)] transition-colors duration-200">
+              Support@usesplat.com
+            </a>
+          </p>
+          
+          <p className="mb-3 text-sm md:text-base">
+            SPLAT, LLC | 971 S University Ave, Suite 1088 Provo, Utah 84601 | 
+            <a href="tel:8444308333" 
+               className="ml-1 hover:text-[color:var(--deep-crimson)] transition-colors duration-200">
+              844-430-8333
+            </a>
+          </p>
+          
+          <div className="flex justify-center flex-wrap gap-4 text-xs md:text-sm">
+            <a href="/sitemap" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">
+              Site Map
+            </a>
+            <a href="/terms" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">
+              Terms of Service
+            </a>
+            <a href="/privacy" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">
+              Privacy Policy
+            </a>
+            <a href="/community-standards" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">
+              SPL@T Community Standards
+            </a>
+          </div>
+        </footer>
       </div>
     </>
   );
