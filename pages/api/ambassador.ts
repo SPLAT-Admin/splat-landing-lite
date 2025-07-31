@@ -43,7 +43,6 @@ export default splatApiHandler(async (req, res) => {
 
   const emailResult = await sendEmail({
   to: body.email,
-    to: body.email,
     subject: "You're in! Thanks for applying to be a SPL@T Ambassador 💦",
     html: \`
       <p>Hey \${body.preferred_name || body.first_name},</p>
