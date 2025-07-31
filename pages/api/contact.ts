@@ -23,9 +23,6 @@ export default splatApiHandler(async (req, res) => {
   if (!emailResult.success) return sendError(res, 500, "Failed to send email");
 
   return sendSuccess(res, "Message sent successfully");
-});
-  return sendSuccess(res, "Message sent successfully");
-});
-
+  if (!emailResult.success) return sendError(res, 500, "Failed to send email");
   return sendSuccess(res, "Message sent successfully");
 });
