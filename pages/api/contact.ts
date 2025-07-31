@@ -11,14 +11,19 @@ export default splatApiHandler(async (req, res) => {
     return sendError(res, 403, 'CAPTCHA verification failed');
   }
 
-  const emailResult = await sendEmail({
-    to: "support@usesplat.com",
-    subject: `New Contact Submission from ${body.name}`,
-    html: `<p><strong>Name:</strong> ${body.name}</p>\
-    <p><strong>Email:</strong> ${body.email}</p>\
-    <p><strong>Message:</strong></p>\
-    <p>${body.message}</p>`\
-  } as EmailParams);
+const emailResult = await sendEmail({
+  to: "support@usesplat.com",
+  subject: `New Contact Submission from ${body.name}`,
+  html: `<p><strong>Name:</strong> ${body.name}</p>
+<p><strong>Email:</strong> ${body.email}</p>
+<p><strong>Message:</strong></p>
+<p>${body.message}</p>`
+} as EmailParams);
+
+if (!emailResult.success) return sendError(res, 500, "Failed to send email");
+
+return sendSuccess(res, "Message sent successfully");
+});
 
   if (!emailResult.success) return sendError(res, 500, "Failed to send email");
 
