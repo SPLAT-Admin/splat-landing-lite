@@ -5,7 +5,7 @@ import {
   sendSuccess, 
   sendError, 
   splatApiHandler 
-} from '../../lib';
+} from '../../lib/index';
 import { ContactForm } from '../../types';
 
 export default splatApiHandler(async (req, res) => {

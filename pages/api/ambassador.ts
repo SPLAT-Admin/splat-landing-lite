@@ -5,7 +5,7 @@ import {
   sendSuccess, 
   sendError, 
   splatApiHandler 
-} from '../../lib';
+} from '../../lib/index';
 import { AmbassadorForm } from '../../types';
 import { createClient } from '@supabase/supabase-js';
 
