@@ -21,7 +21,7 @@ export default function Footer() {
         </a>
       </p>
       
-      <div className="flex justify-center flex-wrap gap-4 text-xs md:text-sm">
+      <div className="flex justify-center flex-wrap gap-20 text-xs md:text-sm">
         <a href="/sitemap" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">
           Site Map
         </a>
