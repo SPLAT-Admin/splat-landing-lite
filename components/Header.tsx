@@ -4,17 +4,17 @@ import Image from 'next/image';
 export default function Header() {
   return (
     <header className="sticky top-0 z-50 bg-black border-b border-[color:var(--deep-crimson)] shadow-md">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-10 py-6">
         <Link href="/" className="flex items-center space-x-2">
           <Image
             src="/splat-logo.png"
             alt="SPL@T Logo"
-            width={160}
-            height={60}
+            width={260}
+            height={160}
             priority
           />
         </Link>
-        <nav className="flex gap-x-8 text-lg font-medium text-sm md:text-base font-semibold text-white">
+        <nav className="flex gap-x-15 text-lg font-medium text-sm md:text-base font-semibold text-white">
           <Link href="/founder" className="hover:text-[color:var(--deep-crimson)]">Founder</Link>
           <Link href="/ambassador" className="hover:text-[color:var(--deep-crimson)]">Ambassador</Link>
           <Link href="/merch" className="hover:text-[color:var(--deep-crimson)]">Merch</Link>
