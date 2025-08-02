@@ -1,7 +1,6 @@
-// components/HeroFlashSale.tsx
 import Link from 'next/link';
 
-export default function HeroFlashSale() {
+export function HeroFlashSale() {
   return (
     <div className="bg-red-600 text-white py-6 px-4 text-center rounded-lg shadow-lg animate-pulse mb-12">
       <h2 className="text-2xl md:text-3xl font-extrabold mb-2 uppercase tracking-wider">
