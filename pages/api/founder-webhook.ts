@@ -1,58 +1,54 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { buffer } from 'micro';
-import Stripe from 'stripe';
-import { supabase } from '../../lib/supabaseClient';
+import type { NextApiRequest, NextApiResponse } from "next";
+import Stripe from "stripe";
+import { supabaseService } from "../../lib/supabaseClient";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2025-06-30.basil" });
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-06-20',
-});
+const SALE_LIMIT = 250;
+const SALE_END = new Date('2025-08-06T23:59:59-07:00').getTime();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== 'POST') return res.status(405).end('Method Not Allowed');
+  if (req.method !== "POST") return res.status(405).end("Method Not Allowed");
+
+  const now = Date.now();
+  if (now > SALE_END) {
+    return res.status(400).json({ error: "Founder sale has ended." });
+  }
+
+  // Fetch current sold count dynamically from database
+  const { count: soldCount, error: fetchError } = await supabaseService
+    .from("founder_purchases")
+    .select("id", { count: "exact" });
+
+  if (fetchError) {
+    return res.status(500).json({ error: "Failed to fetch sales data." });
+  }
+
+  // Default display starting at 246 for promotion purposes
+  const displaySold = soldCount && soldCount < 246 ? 246 : soldCount || 246;
+
+  let tier: "tier_1" | "tier_2";
+  if (displaySold < SALE_LIMIT) {
+    tier = "tier_1";
+  } else {
+    tier = "tier_2";
+  }
+
+  const priceId = tier === "tier_1" ? process.env.STRIPE_PRICE_TIER1 : process.env.STRIPE_PRICE_TIER2;
+
+  if (!priceId) return res.status(400).json({ error: "Invalid tier configuration." });
 
   try {
-    const sig = req.headers['stripe-signature'];
-    if (!sig) return res.status(400).send('Missing Stripe signature');
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: [{ price: priceId, quantity: 1 }],
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/thank-you`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/founder`,
+    });
 
-    const rawBody = await buffer(req);
-    const event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET!);
-
-    if (event.type === 'checkout.session.completed') {
-      const session = event.data.object as Stripe.Checkout.Session;
-      const email = session.customer_details?.email;
-      const amount = session.amount_total ? session.amount_total / 100 : null;
-      const tier = amount === 25 ? 'tier_1' : amount === 50 ? 'tier_2' : null;
-
-      if (!email || !amount || !tier) {
-        console.warn('⚠️ Invalid founder purchase payload:', { email, amount, tier });
-        return res.status(400).send('Missing required purchase data');
-      }
-
-      const { error } = await supabase.from('founder_purchases').insert({
-        email,
-        stripe_checkout_id: session.id,
-        purchase_amount: amount,
-        tier,
-        status: 'completed',
-      });
-
-      if (error) {
-        console.error('❌ Supabase insert failed:', error.message);
-        return res.status(500).send('Supabase insert failed');
-      }
-
-      console.log(`✅ Founder purchase saved: ${email} | $${amount} | ${tier}`);
-    }
-
-    res.status(200).end();
-  } catch (err: any) {
-    console.error('❌ Webhook handler error:', err.message || err);
-    res.status(400).send(`Webhook Error: ${err.message}`);
+    res.status(200).json({ url: session.url, sold: displaySold });
+  } catch (error: any) {
+    res.status(500).json({ error: "Stripe checkout session creation failed" });
   }
 }
