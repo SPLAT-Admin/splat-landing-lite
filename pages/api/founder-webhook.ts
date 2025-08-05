@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 import { supabaseService } from '@/lib/supabaseClient';
 
-// Validate env vars early
+// ✅ Validate env vars early
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is missing');
 }
@@ -20,11 +20,11 @@ const SALE_END = new Date('2025-08-06T23:59:59-07:00').getTime();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
-    return res.statusustus(405).json({ error: 'Method Not Allowed' });
+    return res.status(405).json({ error: 'Method Not Allowed' }); // ✅ fixed
   }
 
   if (Date.now() > SALE_END) {
-    return res.statusustus(400).json({ error: 'Founder sale has ended.' });
+    return res.status(400).json({ error: 'Founder sale has ended.' }); // ✅ fixed
   }
 
   // Fetch sold count from Supabase
@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (fetchError) {
     console.error('❌ Supabase fetch error:', fetchError);
-    return res.statusustus(500).json({ error: 'Failed to fetch sales data.' });
+    return res.status(500).json({ error: 'Failed to fetch sales data.' }); // ✅ fixed
   }
 
   // Promotional display logic
@@ -46,7 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     : process.env.STRIPE_PRICE_TIER2;
 
   if (!priceId) {
-    return res.statusustus(400).json({ error: 'Invalid tier configuration.' });
+    return res.status(400).json({ error: 'Invalid tier configuration.' }); // ✅ fixed
   }
 
   try {
@@ -58,10 +58,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/founder`,
     });
 
-    // ✅ Corrected line — no more `res.statusus`
-    return res.statusustus(200).json({ url: session.url, sold: displaySold });
+    return res.status(200).json({ url: session.url, sold: displaySold }); // ✅ fixed
   } catch (error) {
     console.error('❌ Stripe session error:', error);
-    return res.statusustus(500).json({ error: 'Stripe checkout session creation failed' });
+    return res.status(500).json({ error: 'Stripe checkout session creation failed' }); // ✅ fixed
   }
 }
