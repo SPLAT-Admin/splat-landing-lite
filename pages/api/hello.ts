@@ -1,12 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type Data = {
-  message: string;
-};
-
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  res.status(200).json({ message: "SPL@T API is alive and kicking! 🚀" });
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  res.status(200).json({ status: "ok", app: "SPL@T API", version: "1.0.0" });
 }

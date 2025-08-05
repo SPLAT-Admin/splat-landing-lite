@@ -59,42 +59,13 @@ export default function ContactUsPage() {
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Your Name"
-              required
-              className="w-full px-4 py-3 bg-black border border-gray-700 rounded text-white focus:outline-none focus:border-[#851725]"
-            />
-            <input
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="Email Address"
-              required
-              className="w-full px-4 py-3 bg-black border border-gray-700 rounded text-white focus:outline-none focus:border-[#851725]"
-            />
-            <textarea
-              name="message"
-              value={form.message}
-              onChange={handleChange}
-              placeholder="Your Message"
-              required
-              className="w-full px-4 py-3 bg-black border border-gray-700 rounded text-white h-32 focus:outline-none focus:border-[#851725]"
-            />
+            <input name="name" value={form.name} onChange={handleChange} placeholder="Your Name" required className="w-full px-4 py-3 bg-black border border-gray-700 rounded text-white focus:outline-none focus:border-[#851725]" />
+            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email Address" required className="w-full px-4 py-3 bg-black border border-gray-700 rounded text-white focus:outline-none focus:border-[#851725]" />
+            <textarea name="message" value={form.message} onChange={handleChange} placeholder="Your Message" required className="w-full px-4 py-3 bg-black border border-gray-700 rounded text-white h-32 focus:outline-none focus:border-[#851725]" />
 
-            <SplatCaptcha 
-              containerId="cf-turnstile-contact"
-              onVerify={(token) => setForm((prev: ContactForm) => ({ ...prev, captchaToken: token }))}
-            />
+            <SplatCaptcha containerId="cf-turnstile-contact" onVerify={(token) => setForm((prev: ContactForm) => ({ ...prev, captchaToken: token }))} />
 
-            <button
-              type="submit"
-              className="bg-[#851725] hover:bg-red-800 text-white px-6 py-3 rounded-full w-full font-bold transition shadow-md hover:shadow-lg"
-              disabled={status === 'loading'}
-            >
+            <button type="submit" className="bg-[#851725] hover:bg-red-800 text-white px-6 py-3 rounded-full w-full font-bold transition shadow-md hover:shadow-lg" disabled={status === 'loading'}>
               {status === 'loading' ? 'Sending...' : 'Send Message'}
             </button>
 

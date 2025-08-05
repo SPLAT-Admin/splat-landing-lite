@@ -10,10 +10,22 @@ export default function Footer() {
         SPLAT, LLC | 971 S University Ave, Suite 1088 Provo, Utah 84601 | 
         <a href="tel:8444308333" className="ml-1 hover:text-[color:var(--deep-crimson)] transition-colors duration-200">844-430-8333</a>
       </p>
-      <div className="flex justify-center flex-wrap gap-20 text-xs md:text-sm">
+      <div className="flex justify-center flex-wrap gap-6 text-xs md:text-sm">
         <a href="/sitemap" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">Site Map</a>
+
+
+
+
         <a href="/terms" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">Terms of Service</a>
+
+
+
+
         <a href="/privacy" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">Privacy Policy</a>
+
+
+
+        
         <a href="/community-standards" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">SPL@T Community Standards</a>
       </div>
     </footer>
