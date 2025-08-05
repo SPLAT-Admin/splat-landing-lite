@@ -1,4 +1,3 @@
-// components/SplatCaptcha.tsx
 import { useEffect } from 'react';
 
 type SplatCaptchaProps = {
