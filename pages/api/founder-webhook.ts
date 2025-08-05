@@ -15,7 +15,7 @@ if (!process.env.NEXT_PUBLIC_BASE_URL) {
   throw new Error('NEXT_PUBLIC_BASE_URL is missing');
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2023-10-16' });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2023-10-16' });
 
 const SALE_LIMIT = 250;
 const SALE_END = new Date('2025-08-06T23:59:59-07:00').getTime();
