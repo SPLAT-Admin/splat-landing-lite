@@ -1,9 +1,15 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.status(200).json({
+interface StatusResponse {
+  uptime: number;
+  status: 'healthy' | 'degraded' | 'down';
+  timestamp: string;
+}
+
+export default function handler(req: NextApiRequest, res: NextApiResponse<StatusResponse>) {
+  return res.status(200).json({
     uptime: process.uptime(),
-    status: "healthy",
-    timestamp: new Date().toISOString(),
+    status: 'healthy',
+    timestamp: new Date().toISOString()
   });
 }
