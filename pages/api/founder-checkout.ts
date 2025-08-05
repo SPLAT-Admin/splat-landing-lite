@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 
-// Validate env vars
+// Validate env vars early
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is missing');
 }
@@ -14,7 +14,7 @@ if (!process.env.NEXT_PUBLIC_BASE_URL) {
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2023-10-16' as any });
 
-// Temporary in-memory sale tracking (replace with DB in prod)
+// Temporary in-memory sale tracking (replace with persistent DB tracking in production)
 let soldCount = 246;
 const SALE_LIMIT = 250;
 const SALE_END = new Date('2025-08-06T23:59:59-07:00').getTime();
@@ -36,7 +36,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 
-  const priceId = tier === 'tier_1' ? process.env.STRIPE_PRICE_TIER1 : process.env.STRIPE_PRICE_TIER2;
+  const priceId = tier === 'tier_1'
+    ? process.env.STRIPE_PRICE_TIER1
+    : process.env.STRIPE_PRICE_TIER2;
+
   if (!priceId) {
     return res.status(400).json({ error: 'Invalid tier configuration.' });
   }
