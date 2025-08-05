@@ -1,4 +1,3 @@
-// pages/thank-you.tsx
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -11,7 +10,7 @@ export default function ThankYouPage() {
       </Head>
 
       <section className="bg-black text-white min-h-screen flex flex-col justify-center items-center text-center px-6 py-20">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-[color:var(--deep-crimson)]">
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-6 text-[#851725]">
           Thank You 💦
         </h1>
         <p className="text-lg md:text-xl text-gray-300 mb-4 max-w-xl">

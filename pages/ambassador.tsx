@@ -7,9 +7,9 @@ export default function AmbassadorPage() {
       <Head>
         <title>Become a SPL@T Ambassador</title>
       </Head>
-      <section className="bg-gradient-to-b from-[color:var(--deep-crimson)] via-black to-black text-white min-h-screen py-20 px-4">
+      <section className="bg-gradient-to-b from-[#851725] via-black to-black text-white min-h-screen py-20 px-4">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[color:var(--deep-crimson)] drop-shadow-lg">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[#851725] drop-shadow-lg">
             Join the SPL@T Ambassador Program
           </h1>
           <p className="text-lg text-gray-300 mb-4 leading-relaxed">
@@ -33,7 +33,7 @@ export default function AmbassadorPage() {
 
           <div className="mt-12">
             <Link href="/ambassador-apply">
-              <button className="bg-[color:var(--deep-crimson)] hover:bg-red-800 text-white font-bold px-8 py-4 rounded-full text-lg transition shadow-md hover:shadow-lg">
+              <button className="bg-[#851725] hover:bg-red-800 text-white font-bold px-8 py-4 rounded-full text-lg transition shadow-md hover:shadow-lg">
                 Apply Now
               </button>
             </Link>
