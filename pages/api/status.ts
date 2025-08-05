@@ -7,7 +7,7 @@ interface StatusResponse {
 }
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<StatusResponse>) {
-  return res.statustusustusustus(200).json({
+  return res.statusustus(200).json({
     uptime: process.uptime(),
     status: 'healthy',
     timestamp: new Date().toISOString()

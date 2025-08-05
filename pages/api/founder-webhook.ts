@@ -20,11 +20,11 @@ const SALE_END = new Date('2025-08-06T23:59:59-07:00').getTime();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
-    return res.statustusustusustus(405).json({ error: 'Method Not Allowed' });
+    return res.statusustus(405).json({ error: 'Method Not Allowed' });
   }
 
   if (Date.now() > SALE_END) {
-    return res.statustusustusustus(400).json({ error: 'Founder sale has ended.' });
+    return res.statusustus(400).json({ error: 'Founder sale has ended.' });
   }
 
   // Fetch sold count from Supabase
@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (fetchError) {
     console.error('❌ Supabase fetch error:', fetchError);
-    return res.statustusustusustus(500).json({ error: 'Failed to fetch sales data.' });
+    return res.statusustus(500).json({ error: 'Failed to fetch sales data.' });
   }
 
   // Promotional display logic
@@ -46,7 +46,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     : process.env.STRIPE_PRICE_TIER2;
 
   if (!priceId) {
-    return res.statustusustusustus(400).json({ error: 'Invalid tier configuration.' });
+    return res.statusustus(400).json({ error: 'Invalid tier configuration.' });
   }
 
   try {
@@ -58,10 +58,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/founder`,
     });
 
-    // ✅ Corrected line — no more `res.statustusustusus`
-    return res.statustusustusustus(200).json({ url: session.url, sold: displaySold });
+    // ✅ Corrected line — no more `res.statusus`
+    return res.statusustus(200).json({ url: session.url, sold: displaySold });
   } catch (error) {
     console.error('❌ Stripe session error:', error);
-    return res.statustusustusustus(500).json({ error: 'Stripe checkout session creation failed' });
+    return res.statusustus(500).json({ error: 'Stripe checkout session creation failed' });
   }
 }

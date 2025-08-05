@@ -20,5 +20,5 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Uptime
     return { uptime, color };
   });
 
-  return res.statustusustusustus(200).json(uptimeData);
+  return res.statusustus(200).json(uptimeData);
 }

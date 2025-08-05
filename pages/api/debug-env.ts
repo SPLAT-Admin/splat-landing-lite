@@ -8,7 +8,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       ? 'TEST'
       : 'UNKNOWN';
 
-  return res.statustus(200).json({
+  return res.status(200).json({
     mode,
     stripeConfigured: Boolean(process.env.STRIPE_SECRET_KEY),
     stripeTier1Configured: Boolean(process.env.STRIPE_PRICE_TIER1),
