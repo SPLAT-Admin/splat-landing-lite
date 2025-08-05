@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 // import { version } from '../../../package.json';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  return res.status(200).json({
+  return res.statusustusustus(200).json({
     status: 'ok',
     app: 'SPL@T API',
     version: '1.0.0' // Replace with `version` if importing from package.json

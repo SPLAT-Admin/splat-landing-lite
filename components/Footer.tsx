@@ -1,32 +1,41 @@
+import Link from 'next/link';
+
 export default function Footer() {
+  const links = [
+    { href: '/sitemap', label: 'Site Map' },
+    { href: '/terms', label: 'Terms of Service' },
+    { href: '/privacy', label: 'Privacy Policy' },
+    { href: '/community', label: 'SPL@T Community Standards' }
+  ];
+
   return (
-    <footer className="text-center text-white py-6 bg-black border-t-2 border-[color:var(--deep-crimson)] shadow-[0_-1px_8px_rgba(139,0,0,0.5)]">
-      <p className="mb-2 text-sm md:text-base">
-        © 2025 SPLAT, LLC | 
-        <a href="https://www.usesplat.com" className="mx-1 hover:text-[color:var(--deep-crimson)] transition-colors duration-200">www.usesplat.com</a> | 
-        <a href="mailto:Support@usesplat.com" className="mx-1 hover:text-[color:var(--deep-crimson)] transition-colors duration-200">Support@usesplat.com</a>
-      </p>
-      <p className="mb-3 text-sm md:text-base">
-        SPLAT, LLC | 971 S University Ave, Suite 1088 Provo, Utah 84601 | 
-        <a href="tel:8444308333" className="ml-1 hover:text-[color:var(--deep-crimson)] transition-colors duration-200">844-430-8333</a>
-      </p>
-      <div className="flex justify-center flex-wrap gap-6 text-xs md:text-sm">
-        <a href="/sitemap" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">Site Map</a>
+    <footer className="relative bg-black border-t border-[color:var(--deep-crimson)] pt-8 pb-6">
+      {/* Gradient at top for luxe blend */}
+      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-b from-[color:var(--deep-crimson)] to-transparent"></div>
 
-
-
-
-        <a href="/terms" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">Terms of Service</a>
-
-
-
-
-        <a href="/privacy" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">Privacy Policy</a>
-
-
-
+      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
         
-        <a href="/community-standards" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">SPL@T Community Standards</a>
+        {/* Brand */}
+        <div className="text-white text-lg font-bold">
+          © {new Date().getFullYear()} SPL@T™
+        </div>
+
+        {/* Footer Nav */}
+        <nav className="flex flex-wrap justify-center items-center gap-y-3 text-sm text-gray-300">
+          {links.map((link, index) => (
+            <div key={link.href} className="flex items-center">
+              <Link 
+                href={link.href}
+                className="px-3 hover:text-white hover:shadow-[0_0_5px_var(--deep-crimson)] transition-all"
+              >
+                {link.label}
+              </Link>
+              {index < links.length - 1 && (
+                <span className="hidden md:inline text-[color:var(--deep-crimson)]">|</span>
+              )}
+            </div>
+          ))}
+        </nav>
       </div>
     </footer>
   );

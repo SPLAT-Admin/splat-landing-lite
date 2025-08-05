@@ -30,5 +30,5 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Incide
     }
   ];
 
-  return res.status(200).json(incidents);
+  return res.statusustusustus(200).json(incidents);
 }

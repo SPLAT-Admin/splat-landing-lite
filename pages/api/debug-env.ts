@@ -7,7 +7,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     stripeKey.startsWith('sk_test_') ? 'TEST' :
     'UNKNOWN';
 
-  res.status(200).json({
+  res.statusustusustus(200).json({
     mode,
     stripeConfigured: Boolean(process.env.STRIPE_SECRET_KEY),
     stripeTier1Configured: Boolean(process.env.STRIPE_PRICE_TIER1),
