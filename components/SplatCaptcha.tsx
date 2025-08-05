@@ -1,56 +1,37 @@
+// components/SplatCaptcha.tsx
 import { useEffect } from 'react';
-import Script from 'next/script';
 
-declare global {
-  interface Window {
-    turnstile?: any;
-  }
-}
-
-interface SplatCaptchaProps {
-  siteKey?: string;
+type SplatCaptchaProps = {
   containerId: string;
   onVerify: (token: string) => void;
-}
+};
 
-export default function SplatCaptcha({ 
-  siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY || '', 
-  containerId, 
-  onVerify 
-}: SplatCaptchaProps) {
-
+export default function SplatCaptcha({ containerId, onVerify }: SplatCaptchaProps) {
   useEffect(() => {
-    if (!siteKey) {
-      console.warn("⚠️ NEXT_PUBLIC_CLOUDFLARE_SITE_KEY is missing.");
-      return;
-    }
-    if (window.turnstile) {
-      window.turnstile.render(`#${containerId}`, {
-        sitekey: siteKey,
-        callback: onVerify,
-        theme: 'dark',
-        refreshExpired: 'auto'
-      });
-    }
-  }, [siteKey, containerId, onVerify]);
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
 
-  return (
-    <>
-      <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        strategy="afterInteractive"
-        onLoad={() => {
-          if (window.turnstile) {
-            window.turnstile.render(`#${containerId}`, {
-              sitekey: siteKey,
-              callback: onVerify,
-              theme: 'dark',
-              refreshExpired: 'auto'
-            });
-          }
-        }}
-      />
-      <div id={containerId} className="flex justify-center my-4"></div>
-    </>
-  );
+    script.onload = () => {
+      if (window.turnstile) {
+        try {
+          window.turnstile.render(`#${containerId}`, {
+            sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY || '',
+            theme: 'dark',
+            callback: (token: string) => onVerify(token),
+          });
+        } catch (err) {
+          console.error(`⚠️ CAPTCHA failed to render for ${containerId}`, err);
+        }
+      }
+    };
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, [containerId, onVerify]);
+
+  return <div id={containerId}></div>;
 }
