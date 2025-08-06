@@ -7,17 +7,30 @@ export default function Home() {
   const handleCheckout = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/founder-checkout", {
+
+      // Build absolute URL for API call (works on Vercel)
+      const apiUrl = `${window.location.origin}/api/founder-checkout`;
+
+      const res = await fetch(apiUrl, {
         method: "POST",
       });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        alert(errorData.error || "Checkout failed.");
+        setLoading(false);
+        return;
+      }
+
       const data = await res.json();
       if (data.url) {
-        window.location.href = data.url;
+        window.location.assign(data.url); // Force redirect to Stripe
       } else {
-        alert(data.error || "Something went wrong starting checkout.");
+        alert("Stripe checkout URL missing.");
         setLoading(false);
       }
     } catch (err) {
+      console.error("Checkout error:", err);
       alert("Error connecting to checkout.");
       setLoading(false);
     }
