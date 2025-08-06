@@ -23,14 +23,26 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+<<<<<<< HEAD
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20.19.9",
+=======
+    "@tailwindcss/postcss": "^4.1.11",
+    "@types/node": "^20",
+>>>>>>> main
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.4.1",
+<<<<<<< HEAD
     "tailwindcss": "^4",
     "typescript": "^5",
     "vercel": "^32.0.1"
+=======
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5"
+>>>>>>> main
   }
 }

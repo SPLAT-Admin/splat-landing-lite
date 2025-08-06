@@ -12,11 +12,17 @@ if (!process.env.NEXT_PUBLIC_BASE_URL) {
   throw new Error('NEXT_PUBLIC_BASE_URL is missing');
 }
 
+<<<<<<< HEAD
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2023-10-16' as any });
 
 // Temporary in-memory sale tracking (replace with persistent DB tracking in production)
 let soldCount = 246;
 const SALE_LIMIT = 250;
+=======
+// Starting count close to limit to drive urgency
+let soldCount = 162;
+const SALE_LIMIT = 177;
+>>>>>>> main
 const SALE_END = new Date('2025-08-06T23:59:59-07:00').getTime();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
