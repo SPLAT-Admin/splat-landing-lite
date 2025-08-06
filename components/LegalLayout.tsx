@@ -1,23 +1,15 @@
-<<<<<<< HEAD
-import React from 'react';
-
-interface LegalLayoutProps {
-  children: React.ReactNode;
-  title?: string;
-}
-
-export default function LegalLayout({ children, title }: LegalLayoutProps) {
-  return (
-    <div className="legal-layout">
-      {title && <h1 className="sr-only">{title}</h1>}
-      {children}
-=======
 import Link from "next/link";
 import Head from "next/head";
+import { ReactNode } from "react";
 
-export default function LegalLayout({ title, children }: { title: string; children: React.ReactNode }) {
+interface LegalLayoutProps {
+  title: string;
+  children: ReactNode;
+}
+
+export default function LegalLayout({ title, children }: LegalLayoutProps) {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white flex flex-col">
       <Head>
         <title>{title} | SPL@T</title>
         <meta name="description" content={`${title} for SPL@T`} />
@@ -29,28 +21,42 @@ export default function LegalLayout({ title, children }: { title: string; childr
       </header>
 
       {/* Content */}
-      <main role="main" className="max-w-3xl mx-auto p-6 text-sm md:text-base leading-relaxed">
+      <main
+        role="main"
+        className="flex-1 max-w-3xl mx-auto p-6 text-sm md:text-base leading-relaxed"
+      >
         <div className="bg-gray-900 text-gray-100 p-6 rounded-lg shadow-lg">
           {children}
         </div>
       </main>
 
-      {/* Footer with Legal Links */}
-      <footer className="text-center text-xs py-4 text-gray-400 space-x-4">
-        <Link href="/" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">
+      {/* Footer */}
+      <footer className="text-center text-xs py-4 text-gray-400 space-x-4 border-t border-gray-800">
+        <Link
+          href="/"
+          className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200"
+        >
           Home
         </Link>
-        <Link href="/privacy" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">
+        <Link
+          href="/privacy"
+          className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200"
+        >
           Privacy Policy
         </Link>
-        <Link href="/terms" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">
+        <Link
+          href="/terms"
+          className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200"
+        >
           Terms of Service
         </Link>
-        <Link href="/community" className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200">
+        <Link
+          href="/community"
+          className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200"
+        >
           Community Standards
         </Link>
       </footer>
->>>>>>> main
     </div>
   );
 }
