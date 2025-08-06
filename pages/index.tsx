@@ -1,10 +1,4 @@
 import Head from "next/head";
-<<<<<<< HEAD
-import { useState } from "react";
-
-export default function Home() {
-  const [loading, setLoading] = useState(false);
-=======
 import { useState, useEffect } from "react";
 
 export default function Home() {
@@ -28,22 +22,11 @@ export default function Home() {
     const interval = setInterval(fetchSold, 30000);
     return () => clearInterval(interval);
   }, []);
->>>>>>> main
 
   const handleCheckout = async () => {
     try {
       setLoading(true);
-<<<<<<< HEAD
-
-      // Build absolute URL for API call (works on Vercel)
-      const apiUrl = `${window.location.origin}/api/founder-checkout`;
-
-      const res = await fetch(apiUrl, {
-        method: "POST",
-      });
-=======
       const res = await fetch("/api/founder-checkout", { method: "POST" });
->>>>>>> main
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -54,31 +37,19 @@ export default function Home() {
 
       const data = await res.json();
       if (data.url) {
-<<<<<<< HEAD
-        window.location.assign(data.url); // Force redirect to Stripe
-=======
         window.location.assign(data.url);
->>>>>>> main
       } else {
         alert("Stripe checkout URL missing.");
         setLoading(false);
       }
-<<<<<<< HEAD
-    } catch (err) {
-      console.error("Checkout error:", err);
-=======
     } catch {
->>>>>>> main
       alert("Error connecting to checkout.");
       setLoading(false);
     }
   };
 
-<<<<<<< HEAD
-=======
   const membershipsLeft = SALE_LIMIT - soldCount;
 
->>>>>>> main
   return (
     <>
       <Head>
@@ -98,18 +69,18 @@ export default function Home() {
             🔥 Early Founders Life-Time Membership Sale
           </h3>
           <p className="text-[18px] mb-4">
-            Only $25 — while supplies last. <span className="font-bold">Just {membershipsLeft > 0 ? membershipsLeft : 0} memberships left out of {SALE_LIMIT}.</span>
+            Only $25 — while supplies last.{" "}
+            <span className="font-bold">
+              Just {membershipsLeft > 0 ? membershipsLeft : 0} memberships left
+              out of {SALE_LIMIT}.
+            </span>
           </p>
           <button
             onClick={handleCheckout}
             disabled={loading}
-<<<<<<< HEAD
             className={`${
               loading ? "bg-gray-700" : "bg-black hover:bg-gray-900"
-            } text-white font-bold py-3 px-6 rounded-xl shadow-md transition-all`}
-=======
-            className={`${loading ? "bg-gray-700" : "bg-black hover:bg-gray-900"} text-white font-bold py-3 px-6 rounded-xl shadow-md transition-all text-[16px]`}
->>>>>>> main
+            } text-white font-bold py-3 px-6 rounded-xl shadow-md transition-all text-[16px]`}
           >
             {loading ? "Redirecting..." : "Grab Yours Now"}
           </button>
@@ -121,18 +92,38 @@ export default function Home() {
           What is the SPL@TVerse?
         </h2>
         <p className="mb-6 text-[18px]">
-          SPL@T is the bold, unapologetic app redefining gay cruising.
-          Built for connection, excitement, and zero shame.
+          SPL@T is the bold, unapologetic app redefining gay cruising. Built for
+          connection, excitement, and zero shame.
         </p>
 
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-acid text-left text-[16px]">
-          <li>🗺 <strong>SPL@T Map Live View</strong> – See who's active in real time, anywhere.</li>
-          <li>💬 <strong>SPL@T Live Lobby & Chat</strong> – Instant drop-in conversations, group or 1-on-1.</li>
-          <li>🔢 <strong>SPL@T Codes</strong> – Private invites like SPL@T-000920.</li>
-          <li>🎤 <strong>SPL@T Host & Co-Host</strong> – Run your own private or public sessions.</li>
-          <li>🔥 <strong>SPL@T Hotspots</strong> – Meetups, events, and secret cruising zones.</li>
-          <li>🛡 <strong>Safety + Privacy Tools</strong> – AI moderation, reporting, and user controls.</li>
-          <li>⚡ <strong>Low Cost, High Access</strong> – Lifetime membership available now at $25.</li>
+          <li>
+            🗺 <strong>SPL@T Map Live View</strong> – See who's active in real
+            time, anywhere.
+          </li>
+          <li>
+            💬 <strong>SPL@T Live Lobby & Chat</strong> – Instant drop-in
+            conversations, group or 1-on-1.
+          </li>
+          <li>
+            🔢 <strong>SPL@T Codes</strong> – Private invites like SPL@T-000920.
+          </li>
+          <li>
+            🎤 <strong>SPL@T Host & Co-Host</strong> – Run your own private or
+            public sessions.
+          </li>
+          <li>
+            🔥 <strong>SPL@T Hotspots</strong> – Meetups, events, and secret
+            cruising zones.
+          </li>
+          <li>
+            🛡 <strong>Safety + Privacy Tools</strong> – AI moderation,
+            reporting, and user controls.
+          </li>
+          <li>
+            ⚡ <strong>Low Cost, High Access</strong> – Lifetime membership
+            available now at $25.
+          </li>
         </ul>
       </section>
 
@@ -167,9 +158,17 @@ export default function Home() {
 
       <footer className="bg-jet text-acid text-center py-6 mt-12">
         <p className="text-[12px]">
-          <a href="/terms" className="hover:text-crimson mx-2">Terms of Service</a> | 
-          <a href="/privacy" className="hover:text-crimson mx-2">Privacy Policy</a> | 
-          <a href="/community" className="hover:text-crimson mx-2">Community Standards</a>
+          <a href="/terms" className="hover:text-crimson mx-2">
+            Terms of Service
+          </a>{" "}
+          |{" "}
+          <a href="/privacy" className="hover:text-crimson mx-2">
+            Privacy Policy
+          </a>{" "}
+          |{" "}
+          <a href="/community" className="hover:text-crimson mx-2">
+            Community Standards
+          </a>
         </p>
       </footer>
     </>
