@@ -2,11 +2,11 @@ import Head from 'next/head';
 import { useEffect, useState } from 'react';
 
 export default function FoundersPage() {
-  const SALE_LIMIT = 250;
+  const SALE_LIMIT = 177; // Updated limit
   const SALE_END_TIMESTAMP = new Date('2025-08-06T23:59:59-07:00').getTime();
   const [timeLeft, setTimeLeft] = useState('');
   const [saleLive, setSaleLive] = useState(false);
-  const [soldCount, setSoldCount] = useState<number>(246);
+  const [soldCount, setSoldCount] = useState<number>(162); // Start close to sold out
 
   useEffect(() => {
     const updateCountdown = () => {
@@ -39,7 +39,7 @@ export default function FoundersPage() {
           setSoldCount(data.sold);
         }
       } catch {
-        setSoldCount(246);
+        setSoldCount(162);
       }
     };
     fetchSold();

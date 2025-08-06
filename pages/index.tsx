@@ -7,11 +7,7 @@ export default function Home() {
   const handleCheckout = async () => {
     try {
       setLoading(true);
-
-      // Build absolute URL for API call (works on Vercel)
-      const apiUrl = `${window.location.origin}/api/founder-checkout`;
-
-      const res = await fetch(apiUrl, {
+      const res = await fetch(`${window.location.origin}/api/founder-checkout`, {
         method: "POST",
       });
 
@@ -24,7 +20,7 @@ export default function Home() {
 
       const data = await res.json();
       if (data.url) {
-        window.location.assign(data.url); // Force redirect to Stripe
+        window.location.assign(data.url);
       } else {
         alert("Stripe checkout URL missing.");
         setLoading(false);
@@ -52,7 +48,7 @@ export default function Home() {
         <div className="bg-[#851725] text-white p-6 rounded-2xl shadow-lg text-center max-w-2xl mx-auto animate-pulse">
           <h2 className="text-2xl font-bold mb-3">🔥 Early Founders Life-Time Membership Sale</h2>
           <p className="text-lg mb-4">
-            Only $25 — while supplies last. Only 250 Life-Time Memberships Available. First Come, First Serve.
+            Only $25 — while supplies last. <span className="font-bold text-yellow-300">Just 15 memberships left out of 177.</span>
           </p>
           <button
             onClick={handleCheckout}
@@ -65,7 +61,9 @@ export default function Home() {
           </button>
         </div>
       </section>
-
+    </>
+  );
+}
       {/* SPL@TVerse Overview */}
       <section className="text-center max-w-4xl mx-auto px-6 mt-12">
         <h2 className="text-3xl font-bold text-[#851725] mb-4">What is the SPL@TVerse?</h2>
