@@ -7,8 +7,8 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navLinks = [
-    { href: '/founder', label: 'Founder' },
-    { href: '/ambassador', label: 'Ambassador' },
+    { href: '/founder', label: 'Founders Sale' },
+    { href: '/ambassador', label: 'Ambassador Program' },
     { href: '/merch', label: 'Merch' },
     { href: '/advertise', label: 'Advertise' },
     { href: '/contactus', label: 'Contact' }
@@ -31,7 +31,7 @@ export default function Header() {
         </Link>
 
         {/* Navigation Menu */}
-        <nav className="flex space-x-12 text-xl font-semibold">
+        <nav className="flex space-x-24 text-xl font-semibold">
           <Link href="/founder" className="hover:text-[#851725] transition-colors duration-200">
             Founders Sale
           </Link>
