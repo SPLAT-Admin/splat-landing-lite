@@ -1,4 +1,10 @@
-import LegalLayout from "@/layouts/LegalLayout";
+import LegalLayout from "../components/LegalLayout";
+import { ReactNode } from "react";
+
+interface SectionProps {
+  title: string;
+  children: ReactNode;
+}
 
 export default function PrivacyPolicy() {
   return (
@@ -10,7 +16,7 @@ export default function PrivacyPolicy() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-[#851725] mb-4">1. Our Commitment to Privacy</h2>
             <p>
-              At SPL@T, privacy isn’t just policy—it’s power. We believe your data belongs to you. We do not sell, rent, or share your personal information for profit. This Privacy Policy explains how we collect, use, protect, and respect your data in compliance with applicable privacy laws including GDPR, CCPA, and other relevant regulations.
+              At SPL@T, privacy isn’t just policy—it’s power. We believe your data belongs to you. We do not sell, rent, or share your personal information for profit. This Privacy Policy explains how we collect, use, protect, and respect your data.
             </p>
           </section>
 
@@ -18,9 +24,9 @@ export default function PrivacyPolicy() {
             <h2 className="text-2xl font-semibold text-[#851725] mb-4">2. Information We Collect</h2>
             <ul className="list-disc pl-6">
               <li><strong>Account Info:</strong> Email, password, age, and profile details you provide.</li>
-              <li><strong>Usage Data:</strong> App activity, interactions, device data, crash logs, and IP address.</li>
-              <li><strong>Location:</strong> Approximate or precise location, if enabled, for location-based features.</li>
-              <li><strong>Communications:</strong> Messages, media, and interactions with other users, stored in encrypted form where possible.</li>
+              <li><strong>Usage Data:</strong> App activity, interactions, device data, and IP address.</li>
+              <li><strong>Location:</strong> Approximate or precise location, if enabled.</li>
+              <li><strong>Communications:</strong> Messages, media, and interactions with other users.</li>
             </ul>
           </section>
 
@@ -32,7 +38,6 @@ export default function PrivacyPolicy() {
               <li>To detect, investigate, and prevent fraudulent or abusive behavior.</li>
               <li>To enforce our Terms of Service and Community Standards.</li>
               <li>To communicate updates, account notices, or support responses.</li>
-              <li>To comply with legal obligations and respond to lawful requests from authorities.</li>
             </ul>
           </section>
 
@@ -46,7 +51,7 @@ export default function PrivacyPolicy() {
           <section className="mb-8">
             <h2 className="text-2xl font-semibold text-[#851725] mb-4">5. Cookies & Tracking</h2>
             <p>
-              We use cookies, local storage, and similar technologies to enhance performance and remember preferences. You may control these settings through your device or browser, though disabling cookies may impact functionality.
+              We use cookies and similar technologies to enhance performance and remember preferences. You can control these settings through your device or browser, though disabling cookies may impact functionality.
             </p>
           </section>
 
