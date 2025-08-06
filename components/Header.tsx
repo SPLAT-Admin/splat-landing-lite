@@ -21,7 +21,7 @@ export default function Header() {
         {/* Logo (Big but Balanced) */}
         <Link href="/" className="flex items-center">
           <Image 
-            src="/logo.png" 
+            src="/splat-logo.png" 
             alt="SPL@T Logo" 
             width={300} // Balanced size
             height={100}
