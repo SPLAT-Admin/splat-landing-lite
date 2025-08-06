@@ -3,8 +3,9 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2025-06-30.basil" });
 
-let soldCount = 246;
-const SALE_LIMIT = 250;
+// Starting count close to limit to drive urgency
+let soldCount = 162;
+const SALE_LIMIT = 177;
 const SALE_END = new Date('2025-08-06T23:59:59-07:00').getTime();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
