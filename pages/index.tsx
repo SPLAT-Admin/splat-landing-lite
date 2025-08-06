@@ -1,6 +1,28 @@
 import Head from "next/head";
+import { useState } from "react";
 
 export default function Home() {
+  const [loading, setLoading] = useState(false);
+
+  const handleCheckout = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/founder-checkout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || "Something went wrong starting checkout.");
+        setLoading(false);
+      }
+    } catch (err) {
+      alert("Error connecting to checkout.");
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -19,8 +41,14 @@ export default function Home() {
           <p className="text-lg mb-4">
             Only $25 — while supplies last. Only 250 Life-Time Memberships Available. First Come, First Serve.
           </p>
-          <button className="bg-black hover:bg-gray-900 text-white font-bold py-3 px-6 rounded-xl shadow-md transition-all">
-            Grab Yours Now
+          <button
+            onClick={handleCheckout}
+            disabled={loading}
+            className={`${
+              loading ? "bg-gray-700" : "bg-black hover:bg-gray-900"
+            } text-white font-bold py-3 px-6 rounded-xl shadow-md transition-all`}
+          >
+            {loading ? "Redirecting..." : "Grab Yours Now"}
           </button>
         </div>
       </section>
