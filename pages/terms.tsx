@@ -1,4 +1,4 @@
-import LegalLayout from "../layouts/LegalLayout";
+import LegalLayout from "../components/LegalLayout";
 
 export default function TermsPage() {
   return (

@@ -1,4 +1,4 @@
-import LegalLayout from "../layouts/LegalLayout";
+import LegalLayout from "../components/LegalLayout";
 import { ReactNode } from "react";
 
 interface SectionProps {
