@@ -13,10 +13,13 @@ export default function LegalLayout({ title, children }: LegalLayoutProps) {
       <Head>
         <title>{title} | SPL@T</title>
         <meta name="description" content={`${title} for SPL@T`} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charSet="UTF-8" />
+        <html lang="en" />
       </Head>
 
       {/* Header */}
-      <header className="bg-[color:var(--deep-crimson)] py-6 text-center shadow-md">
+      <header className="bg-deep-crimson py-6 text-center shadow-md">
         <h1 className="text-3xl font-bold">{title}</h1>
       </header>
 
@@ -31,28 +34,28 @@ export default function LegalLayout({ title, children }: LegalLayoutProps) {
       </main>
 
       {/* Footer */}
-      <footer className="text-center text-xs py-4 text-gray-400 space-x-4 border-t border-gray-800">
+      <footer className="text-center text-xs py-4 text-gray-400 border-t border-gray-800 flex flex-wrap justify-center gap-4">
         <Link
           href="/"
-          className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200"
+          className="hover:text-deep-crimson transition-colors duration-200"
         >
           Home
         </Link>
         <Link
           href="/privacy"
-          className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200"
+          className="hover:text-deep-crimson transition-colors duration-200"
         >
           Privacy Policy
         </Link>
         <Link
           href="/terms"
-          className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200"
+          className="hover:text-deep-crimson transition-colors duration-200"
         >
           Terms of Service
         </Link>
         <Link
           href="/community"
-          className="hover:text-[color:var(--deep-crimson)] transition-colors duration-200"
+          className="hover:text-deep-crimson transition-colors duration-200"
         >
           Community Standards
         </Link>

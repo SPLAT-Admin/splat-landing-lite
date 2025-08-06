@@ -1,4 +1,4 @@
-import LegalLayout from "../components/LegalLayout";
+import LegalLayout from "../layouts/LegalLayout";
 import { ReactNode } from "react";
 
 interface SectionProps {
@@ -9,7 +9,7 @@ interface SectionProps {
 export default function Community() {
   return (
     <LegalLayout title="SPL@T Community Standards">
-      <section className="space-y-8">
+      <section className="space-y-8 bg-acid-white text-black px-6 py-12">
         <Standard title="Consent is Non‑Negotiable">
           Clear, enthusiastic, ongoing. Consent must be explicit and can be withdrawn at any time. Engaging without consent may lead to immediate suspension or ban, and may be reported to relevant authorities when applicable.
         </Standard>
@@ -46,7 +46,7 @@ export default function Community() {
           These standards aren’t suggestions—they’re the foundation of a fierce, safe, and radically real digital experience. SPL@T™ enforces them through a blend of community moderation, AI‑driven flagging tools, and direct user reporting. Violations lead to warnings, suspensions, or bans, ensuring a protected and respectful space for all.
         </p>
 
-        <h2 className="text-2xl font-bold text-[#851725] mt-10 mb-4">SPL@T Core Values</h2>
+        <h2 className="text-2xl font-bold text-deep-crimson mt-10 mb-4">SPL@T Core Values</h2>
         <Value title="Affordability First">
           Access should never be gated by money. SPL@T™ keeps pricing low so everyone can connect without exploitation.
         </Value>
@@ -78,7 +78,7 @@ export default function Community() {
 function Standard({ title, children }: SectionProps) {
   return (
     <div className="mb-6">
-      <h3 className="font-bold text-lg text-[#851725] mb-2">{title}</h3>
+      <h3 className="font-bold text-lg text-deep-crimson mb-2">{title}</h3>
       <p className="text-gray-800">{children}</p>
     </div>
   );
@@ -87,7 +87,7 @@ function Standard({ title, children }: SectionProps) {
 function Value({ title, children }: SectionProps) {
   return (
     <div className="mb-4">
-      <h4 className="font-bold text-md text-[#851725] mb-1">{title}</h4>
+      <h4 className="font-bold text-md text-deep-crimson mb-1">{title}</h4>
       <p className="text-gray-800">{children}</p>
     </div>
   );
