@@ -156,21 +156,6 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="bg-jet text-acid text-center py-6 mt-12">
-        <p className="text-[12px]">
-          <a href="/terms" className="hover:text-crimson mx-2">
-            Terms of Service
-          </a>{" "}
-          |{" "}
-          <a href="/privacy" className="hover:text-crimson mx-2">
-            Privacy Policy
-          </a>{" "}
-          |{" "}
-          <a href="/community" className="hover:text-crimson mx-2">
-            Community Standards
-          </a>
-        </p>
-      </footer>
     </>
   );
 }
