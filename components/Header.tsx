@@ -31,12 +31,12 @@ export default function Header() {
         </Link>
 
         {/* Navigation Menu */}
-        <nav className="flex flex-wrap justify-center md:justify-end items-center text-[20px] font-semibold">
+        <nav className="flex flex-wrap justify-center md:justify-end items-center">
           {navLinks.map((link, index) => (
             <div key={link.href} className="flex items-center">
               <Link
                 href={link.href}
-                className="px-4 hover:text-[#851725] transition-colors duration-200"
+                className="px-4 text-[20px] font-semibold hover:text-[#851725] transition-colors duration-200"
               >
                 {link.label}
               </Link>
