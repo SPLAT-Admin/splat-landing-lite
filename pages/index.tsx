@@ -5,7 +5,7 @@ import Header from "../components/Header";
 export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
-      {/* Global Header */}
+      <header />
       <section>
 
       {/* Hero Welcome Banner */}
