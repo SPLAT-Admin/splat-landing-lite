@@ -1,5 +1,10 @@
+import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Menu, X } from 'lucide-react';
+
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/ambassador', label: 'Ambassador Program' },
