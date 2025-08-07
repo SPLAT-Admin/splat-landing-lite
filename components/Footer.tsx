@@ -9,33 +9,28 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative bg-black border-t border-[color:var(--deep-crimson)] pt-8 pb-6">
+    <footer className="relative bg-black border-t border-[color:var(--deep-crimson)] pt-8 pb-6 text-[10px] text-gray-400">
       {/* Gradient at top for luxe blend */}
       <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-b from-[color:var(--deep-crimson)] to-transparent"></div>
 
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-        
-        {/* Brand */}
-        <div className="text-white text-lg font-bold">
-          © {new Date().getFullYear()} SPL@T™
+      <div className="max-w-7xl mx-auto px-6 space-y-2 text-center">
+        <div>
+          © {new Date().getFullYear()} SPLAT, LLC | www.usesplat.com | 844-420-8333
         </div>
-
-        {/* Footer Nav */}
-        <nav className="flex flex-wrap justify-center items-center gap-y-3 text-sm text-gray-300">
-          {links.map((link, index) => (
-            <div key={link.href} className="flex items-center">
-              <Link 
-                href={link.href}
-                className="px-3 hover:text-white hover:shadow-[0_0_5px_var(--deep-crimson)] transition-all"
-              >
-                {link.label}
-              </Link>
-              {index < links.length - 1 && (
-                <span className="hidden md:inline text-[color:var(--deep-crimson)]">|</span>
-              )}
-            </div>
+        <div>
+          SPLAT, LLC | 971 S University Ave, Suite 1088 Provo, Utah 84601
+        </div>
+        <div className="flex justify-center flex-wrap gap-x-8 gap-y-2 pt-2">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="hover:text-white hover:underline transition-colors"
+            >
+              {link.label}
+            </Link>
           ))}
-        </nav>
+        </div>
       </div>
     </footer>
   );

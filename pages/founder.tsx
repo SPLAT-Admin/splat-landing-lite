@@ -1,127 +1,44 @@
-import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
-export default function FoundersPage() {
-  const SALE_LIMIT = 177; // Updated limit
-  const SALE_END_TIMESTAMP = new Date('2025-08-06T23:59:59-07:00').getTime();
-  const [timeLeft, setTimeLeft] = useState('');
-  const [saleLive, setSaleLive] = useState(false);
-  const [soldCount, setSoldCount] = useState<number>(162); // Start close to sold out
-
-  useEffect(() => {
-    const updateCountdown = () => {
-      const now = Date.now();
-      const distance = SALE_END_TIMESTAMP - now;
-      if (distance <= 0) {
-        setTimeLeft('Founder Sale has ended');
-        setSaleLive(false);
-      } else {
-        setSaleLive(true);
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
-      }
-    };
-
-    updateCountdown();
-    const timer = setInterval(updateCountdown, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const fetchSold = async () => {
-      try {
-        const res = await fetch('/api/founder-checkout');
-        const data = await res.json();
-        if (data?.sold) {
-          setSoldCount(data.sold);
-        }
-      } catch {
-        setSoldCount(162);
-      }
-    };
-    fetchSold();
-    const interval = setInterval(fetchSold, 30000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleCheckout = async () => {
-    try {
-      const tier = soldCount < SALE_LIMIT ? 'tier_1' : 'tier_2';
-      const res = await fetch('/api/founder-checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok && data.url) {
-        setSoldCount(prev => prev + 1);
-        if (soldCount + 1 >= SALE_LIMIT) {
-          alert('Tier 1 sold out! Price will now increase to $50 for remaining sales until 8/6.');
-        }
-        window.location.href = data.url;
-      } else {
-        alert(data.error || 'An error occurred');
-      }
-    } catch {
-      alert('Something went wrong while contacting Stripe.');
-    }
-  };
-
-  const tier1Available = saleLive && soldCount < SALE_LIMIT;
-  const tier2Available = saleLive && soldCount >= SALE_LIMIT;
-
+export default function FounderSale() {
   return (
-    <>
-      <Head>
-        <title>Founder Sale | SPL@T</title>
-      </Head>
+    <div className="min-h-screen bg-black text-white flex flex-col">
+      <Header />
 
-      <section className="bg-black min-h-screen flex flex-col justify-center items-center py-16 px-4 text-center text-white">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-[#851725] mb-3 drop-shadow-lg">
-          SPL@T Founder Lifetime Membership
-        </h1>
-        <div className="text-md font-mono font-semibold text-gray-300 mb-1">{timeLeft}</div>
-        <div className="text-sm text-gray-400 mb-8">
-          <span className={soldCount >= SALE_LIMIT ? 'text-yellow-400 font-bold' : 'text-green-400 font-bold'}>
-            {soldCount}
-          </span>
-          <span className="text-gray-300"> / {SALE_LIMIT} sold</span>
-        </div>
-
-        {saleLive ? (
-          <>
-            {tier1Available && (
-              <button
-                onClick={handleCheckout}
-                className="w-64 h-16 rounded-full bg-[#851725] text-white text-xl font-bold shadow-2xl flex items-center justify-center transition-all hover:scale-105 hover:bg-red-700 focus:ring-4 focus:ring-red-400/40 active:scale-95 mb-4"
-              >
-                💦 Purchase Now ($25)
-              </button>
-            )}
-            {tier2Available && (
-              <button
-                onClick={handleCheckout}
-                className="w-64 h-16 rounded-full bg-yellow-400 text-black text-xl font-bold shadow-2xl flex items-center justify-center transition-all hover:scale-105 hover:bg-yellow-300 focus:ring-4 focus:ring-yellow-200/50 active:scale-95 mb-4"
-              >
-                🚀 Purchase Now ($50)
-              </button>
-            )}
-          </>
-        ) : (
-          <button
-            className="w-64 h-16 rounded-full bg-gray-800 text-white text-xl font-bold shadow-lg flex items-center justify-center select-none cursor-not-allowed opacity-80"
-            disabled
-          >
-            <svg width="20" height="20" fill="none" className="animate-spin mr-2"><circle cx="10" cy="10" r="8" stroke="white" strokeWidth="3" /></svg>
-            Sale Closed
-          </button>
-        )}
+      <section className="text-center py-20 px-6 bg-gradient-to-r from-deep-crimson to-black">
+        <h1 className="text-6xl md:text-7xl font-extrabold">Founder Sale: Closed</h1>
+        <p className="mt-6 text-2xl md:text-3xl max-w-2xl mx-auto">
+          Thank you to everyone who claimed their $25 lifetime membership. This exclusive offer is now closed.
+        </p>
       </section>
-    </>
+
+      <section className="max-w-3xl mx-auto px-6 py-12 space-y-8 text-base md:text-lg">
+        <p className="text-[16px] md:text-[18px]">
+          Our Founder Sale gave early supporters lifetime access to SPL@T Premium for a one-time payment. You believed in the vision before the app even dropped — and we love you for that.
+        </p>
+        <p className="text-[16px] md:text-[18px]">
+          As we move closer to public launch, we may reopen the program for a limited time. Want to be the first to know?
+        </p>
+        <form className="flex flex-col md:flex-row items-center gap-4">
+          <input 
+            type="email" 
+            placeholder="Enter your email"
+            className="w-full md:w-auto flex-1 px-4 py-3 rounded-md text-black focus:outline-none text-[16px]"
+          />
+          <button
+            type="submit"
+            className="bg-deep-crimson hover:bg-[#a21b2e] text-white font-bold py-3 px-6 rounded-md transition text-[16px]"
+          >
+            Notify Me
+          </button>
+        </form>
+        <p className="text-sm text-gray-400">
+          No spam, no bullshit. Just a heads up if we reopen the gates.
+        </p>
+      </section>
+
+      <Footer />
+    </div>
   );
 }
