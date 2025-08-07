@@ -15,12 +15,17 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-black bg-opacity-90 text-white shadow-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
-        {/* Logo */}
+        {/* Logo - always visible */}
         <Link href="/" className="flex items-center space-x-2" aria-label="SPL@T home">
+          <img
+            src="/splat-logo.png"
+            alt="SPL@T Logo"
+            className="h-10 w-auto"
+          />
           <span className="text-3xl font-extrabold tracking-tight text-red-600">SPL@T</span>
         </Link>
-        {/* Desktop navigation */}
-        <nav className="hidden items-center space-x-6 md:flex" aria-label="Primary navigation">
+        {/* Desktop navigation - only visible on md and up */}
+        <nav className="hidden md:flex items-center space-x-6" aria-label="Primary navigation">
           {navLinks.map((link) => (
             <Link key={link.href} href={link.href} className="text-sm font-medium transition-colors hover:text-red-400">
               {link.label}
@@ -33,7 +38,7 @@ export default function Header() {
             Join Waitlist
           </Link>
         </nav>
-        {/* Mobile menu button */}
+        {/* Mobile menu button - only visible on small screens */}
         <button
           type="button"
           onClick={() => setMenuOpen(!menuOpen)}
