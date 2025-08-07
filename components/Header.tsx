@@ -16,10 +16,10 @@ export default function Header() {
 
   return (
     <header className="bg-black text-white py-4 shadow-md">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
+      <div className="container mx-auto flex items-center justify-between px-4">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center mb-4 md:mb-0">
+        <Link href="/" className="flex items-center">
           <Image 
             src="/splat-logo.png" 
             alt="SPL@T Logo" 
@@ -31,7 +31,7 @@ export default function Header() {
         </Link>
 
         {/* Navigation Menu */}
-        <nav className="flex flex-wrap justify-center md:justify-end items-center gap-x-4 gap-y-2 text-xl font-semibold">
+        <nav className="flex flex-wrap justify-center md:justify-end items-center gap-x-6 gap-y-2 text-[20px] font-semibold">
           {navLinks.map((link, index) => (
             <div key={link.href} className="flex items-center">
               <Link
