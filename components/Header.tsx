@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 
 export default function Header() {
@@ -37,38 +36,25 @@ export default function Header() {
         {/* Mobile menu button */}
         <button
           type="button"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setMenuOpen(!menuOpen)}
           className="inline-flex items-center justify-center rounded-md p-2 text-gray-300 hover:bg-gray-800 hover:text-white md:hidden"
           aria-controls="mobile-menu"
-          aria-expanded={isOpen}
+          aria-expanded={menuOpen}
+          aria-label={menuOpen ? "Close main menu" : "Open main menu"}
         >
-          <span className="sr-only">Open main menu</span>
-          <svg
-            className="h-6 w-6"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            {isOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
+          {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
       {/* Mobile navigation drawer */}
-      {isOpen && (
-        <nav id="mobile-menu" className="md:hidden">
+      {menuOpen && (
+        <nav id="mobile-menu" className="md:hidden" aria-label="Mobile navigation">
           <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-gray-800 hover:text-red-400"
-                onClick={() => setIsOpen(false)}
+                onClick={() => setMenuOpen(false)}
               >
                 {link.label}
               </Link>
@@ -76,7 +62,7 @@ export default function Header() {
             <Link
               href="/signup"
               className="block rounded-md bg-red-600 px-3 py-2 text-base font-semibold text-white shadow hover:bg-red-700"
-              onClick={() => setIsOpen(false)}
+              onClick={() => setMenuOpen(false)}
             >
               Join Waitlist
             </Link>
