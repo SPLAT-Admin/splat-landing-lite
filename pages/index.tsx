@@ -6,7 +6,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       <header />
-      <section>
 
       {/* Hero Welcome Banner */}
       <section className="text-center py-16 px-4 bg-gradient-to-r from-deep-crimson to-black">
