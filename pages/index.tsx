@@ -1,6 +1,10 @@
 import Head from 'next/head';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Link from 'next/link';
+import Section from '../components/Section';
+import FeatureGrid from '../components/FeatureGrid';
+import Timeline from '../components/Timeline';
 
 /** Home page for SPL@T with improved layout and SEO. */
 export default function Home() {
@@ -42,64 +46,38 @@ export default function Home() {
           <p className="mb-8 max-w-2xl text-lg md:text-xl">
             Your back‑door pass to the SPL@TVerse – a real‑time digital cruising ground for connection without shame.
           </p>
-          <div>
-            <a href="/signup" className="inline-block rounded-md bg-red-600 px-6 py-3 text-base font-semibold text-white shadow hover:bg-red-700">
-              Join the Waitlist
-            </a>
-          </div>
+          <Link href="/signup" className="inline-block rounded-md bg-red-600 px-6 py-3 text-base font-semibold text-white shadow hover:bg-red-700">
+            Join the Waitlist
+          </Link>
         </section>
 
-        {/* Who We Are */}
-        <section id="who-we-are" className="px-4 py-16 md:px-8 lg:px-16">
-          <h2 className="mb-4 text-3xl font-bold tracking-tight">Who We Are</h2>
+        <Section id="who-we-are" className="px-4 py-16 md:px-8 lg:px-16" title="Who We Are">
           <p className="max-w-4xl text-lg">
             SPL@T is a queer‑built, unapologetic hookup and cruising platform designed for connection without shame.
             Built by and for the community, we’re throwing out outdated systems and building something sexy, fast and free.
           </p>
-        </section>
+        </Section>
 
-        {/* What We’re Offering */}
-        <section id="what-we-offer" className="bg-gray-900 px-4 py-16 md:px-8 lg:px-16">
-          <h2 className="mb-4 text-3xl font-bold tracking-tight">What We’re Offering</h2>
+        <Section id="what-we-offer" className="bg-gray-900 px-4 py-16 md:px-8 lg:px-16" title="What We’re Offering">
           <p className="max-w-4xl text-lg">
             We’re creating a real‑time digital cruising ground – featuring the SPL@T Map, Live Lobby, SP@T Codes, Handles and more. Whether you want to meet now or just vibe online, SPL@T gives you options, visibility and control.
           </p>
-        </section>
+        </Section>
 
-        {/* Planned Features */}
-        <section id="planned-features" className="px-4 py-16 md:px-8 lg:px-16">
-          <h2 className="mb-6 text-3xl font-bold tracking-tight">Planned Features</h2>
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature) => (
-              <div key={feature.title} className="rounded-lg border border-gray-700 bg-gray-900 p-6 shadow-lg">
-                <h3 className="mb-2 text-xl font-semibold text-red-500">{feature.title}</h3>
-                <p className="text-base text-gray-300">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        <Section id="planned-features" className="px-4 py-16 md:px-8 lg:px-16" title="Planned Features" titleClassName="mb-6 text-3xl font-bold tracking-tight">
+          <FeatureGrid features={features} />
+        </Section>
 
-        {/* Why Go Premium */}
-        <section id="why-go-premium" className="bg-gray-900 px-4 py-16 md:px-8 lg:px-16">
-          <h2 className="mb-4 text-3xl font-bold tracking-tight">Why Go Premium?</h2>
+        <Section id="why-go-premium" className="bg-gray-900 px-4 py-16 md:px-8 lg:px-16" title="Why Go Premium?">
           <p className="max-w-4xl text-lg">
             Premium unlocks everything. Advanced filters, stealth mode, location teleporter and much more. Missed the founder sale?
             Stay tuned for early access options before public launch.
           </p>
-        </section>
+        </Section>
 
-        {/* Development Timeline */}
-        <section id="development-timeline" className="px-4 py-16 md:px-8 lg:px-16">
-          <h2 className="mb-6 text-3xl font-bold tracking-tight">Development Timeline</h2>
-          <div className="space-y-4">
-            {timeline.map((item) => (
-              <div key={item.date} className="flex items-start space-x-4">
-                <div className="text-sm font-bold text-red-500">{item.date}</div>
-                <div className="text-base text-gray-300">{item.event}</div>
-              </div>
-            ))}
-          </div>
-        </section>
+        <Section id="development-timeline" className="px-4 py-16 md:px-8 lg:px-16" title="Development Timeline" titleClassName="mb-6 text-3xl font-bold tracking-tight">
+          <Timeline items={timeline} />
+        </Section>
       </main>
       <Footer />
     </>
