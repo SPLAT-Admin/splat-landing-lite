@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       {/* Global Header */}
-      <Header />
+      <section>
 
       {/* Hero Welcome Banner */}
       <section className="text-center py-16 px-4 bg-gradient-to-r from-deep-crimson to-black">
@@ -67,8 +67,6 @@ export default function Home() {
           </p>
         </div>
       </section>
-
-      {/* Global Footer */}
       <Footer />
     </div>
   );

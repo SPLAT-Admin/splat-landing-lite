@@ -19,7 +19,7 @@ export default function Header() {
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center mb-4 md:mb-0">
+        <Link href="/" className="flex items-left mb-4 md:mb-0">
           <Image 
             src="/splat-logo.png" 
             alt="SPL@T Logo" 
