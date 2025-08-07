@@ -19,7 +19,7 @@ export default function Header() {
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
 
         {/* Logo */}
-        <Link href="/" className="flex items-left mb-4 md:mb-0">
+        <Link href="/" className="flex items-center mb-4 md:mb-0">
           <Image 
             src="/splat-logo.png" 
             alt="SPL@T Logo" 
@@ -31,15 +31,19 @@ export default function Header() {
         </Link>
 
         {/* Navigation Menu */}
-        <nav className="flex flex-wrap justify-center md:justify-end items-center gap-6 text-lg md:text-xl font-semibold">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="hover:text-[#851725] transition-colors duration-200"
-            >
-              {link.label}
-            </Link>
+        <nav className="flex flex-wrap justify-center md:justify-end items-center gap-x-4 gap-y-2 text-xl font-semibold">
+          {navLinks.map((link, index) => (
+            <div key={link.href} className="flex items-center">
+              <Link
+                href={link.href}
+                className="hover:text-[#851725] transition-colors duration-200"
+              >
+                {link.label}
+              </Link>
+              {index < navLinks.length - 1 && (
+                <span className="mx-3 text-gray-500">|</span>
+              )}
+            </div>
           ))}
         </nav>
       </div>
