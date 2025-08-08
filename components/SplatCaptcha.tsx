@@ -1,115 +1,90 @@
 // components/SplatCaptcha.tsx
-import { useEffect, useRef } from "react";
-import Script from "next/script";
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import Script from 'next/script';
 
-declare global {
-  interface Window {
-    turnstile?: {
-      render: (
-        el: HTMLElement,
-        opts: {
-          sitekey: string;
-          theme?: "light" | "dark" | "auto";
-          action?: string;
-          cData?: string;
-          callback?: (token: string) => void;
-          "expired-callback"?: () => void;
-          "error-callback"?: () => void;
-        }
-      ) => string; // widgetId
-      remove?: (widgetId: string) => void;
-    };
-  }
-}
+type TurnstileTheme = 'light' | 'dark' | 'auto';
 
-type Props = {
+export interface SplatCaptchaProps {
+  siteKey: string;                 // Required Cloudflare Turnstile site key
+  action?: string;                 // Optional action name
+  cData?: string;                  // Optional custom data
+  theme?: TurnstileTheme;          // Theme, defaults to 'dark'
+  className?: string;              // Wrapper class
   onVerify: (token: string) => void;
   onExpire?: () => void;
   onError?: () => void;
-  siteKey?: string; // falls back to NEXT_PUBLIC_TURNSTILE_SITE_KEY
-  theme?: "light" | "dark" | "auto";
-  action?: string;
-  cData?: string;
-  className?: string;
-};
+}
+
+declare global {
+  interface Window {
+    // Keep loose to avoid duplicate-declaration conflicts elsewhere
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    turnstile?: any;
+  }
+}
 
 export default function SplatCaptcha({
+  siteKey,
+  action,
+  cData,
+  theme = 'dark',
+  className,
   onVerify,
   onExpire,
   onError,
-  siteKey,
-  theme = "dark",
-  action,
-  cData,
-  className,
-}: Props) {
-  const hostRef = useRef<HTMLDivElement | null>(null);
-  const widgetIdRef = useRef<string | null>(null);
+}: SplatCaptchaProps) {
+  const id = useId();
+  const widgetRef = useRef<HTMLDivElement | null>(null);
+  const [widgetId, setWidgetId] = useState<string | null>(null);
 
-  const key = siteKey ?? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-  if (!key) {
-    // Fail closed: render nothing if misconfigured (prevents broken UX)
-    if (process.env.NODE_ENV !== "production") {
-      // eslint-disable-next-line no-console
-      console.warn(
-        "SplatCaptcha: missing NEXT_PUBLIC_TURNSTILE_SITE_KEY (or `siteKey` prop)."
-      );
-    }
-  }
+  const render = useCallback(() => {
+    if (!window.turnstile || !widgetRef.current || widgetId) return;
 
+    const id = window.turnstile.render(widgetRef.current, {
+      sitekey: siteKey,
+      theme,
+      action,
+      cData,
+      callback: (token: string) => onVerify(token),
+      'expired-callback': () => onExpire?.(),
+      'error-callback': () => onError?.(),
+    });
+    setWidgetId(id);
+  }, [siteKey, theme, action, cData, onVerify, onExpire, onError, widgetId]);
+
+  // Re-render if props change meaningfully
   useEffect(() => {
-    let removed = false;
+    if (window.turnstile) render();
+  }, [render]);
 
-    function renderIfReady() {
-      if (!hostRef.current || !window.turnstile || widgetIdRef.current || !key) return;
-      widgetIdRef.current = window.turnstile.render(hostRef.current, {
-        sitekey: key,
-        theme,
-        action,
-        cData,
-        callback: (token) => onVerify(token),
-        "expired-callback": () => onExpire?.(),
-        "error-callback": () => onError?.(),
-      });
-    }
-
-    // If script already loaded, render immediately
-    renderIfReady();
-
+  // Cleanup on unmount
+  useEffect(() => {
     return () => {
-      removed = true;
-      if (widgetIdRef.current && window.turnstile?.remove) {
-        window.turnstile.remove(widgetIdRef.current);
+      if (window.turnstile && widgetId) {
+        try {
+          window.turnstile.remove(widgetId);
+        } catch {
+          // ignore
+        }
       }
-      widgetIdRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, theme, action, cData, onVerify, onExpire, onError]);
+  }, [widgetId]);
 
   return (
     <>
+      {/* Load Turnstile once per page */}
       <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
         strategy="afterInteractive"
-        onLoad={() => {
-          // Render once script is ready (if not already rendered)
-          if (hostRef.current && !widgetIdRef.current) {
-            // @ts-ignore-next-line
-            if (window.turnstile) {
-              widgetIdRef.current = window.turnstile.render(hostRef.current, {
-                sitekey: key!,
-                theme,
-                action,
-                cData,
-                callback: (token: string) => onVerify(token),
-                "expired-callback": () => onExpire?.(),
-                "error-callback": () => onError?.(),
-              });
-            }
-          }
-        }}
+        onLoad={render}
       />
-      <div ref={hostRef} className={className} />
+      <div
+        id={`splat-turnstile-${id}`}
+        ref={widgetRef}
+        className={className}
+        // keep an explicit min-height so layout doesn't jump
+        style={{ minHeight: 70 }}
+      />
     </>
   );
 }
