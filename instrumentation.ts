@@ -1,7 +1,6 @@
 // instrumentation.ts
 import * as Sentry from "@sentry/nextjs";
 
-// Runs on server/edge startup. Defer to your existing Sentry configs.
 export async function register() {
   if (process.env.NEXT_RUNTIME === "nodejs") {
     await import("./sentry.server.config");
@@ -10,7 +9,7 @@ export async function register() {
   }
 }
 
-// Catch request errors from nested React Server Components (Next 15)
+// Next 15 request-level hook for RSC errors
 export function onRequestError(err: unknown) {
   Sentry.captureRequestError(err);
 }
