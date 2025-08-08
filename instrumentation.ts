@@ -9,7 +9,11 @@ export async function register() {
   }
 }
 
-// Next 15 request-level hook for RSC errors
-export function onRequestError(err: unknown) {
-  Sentry.captureRequestError(err);
+/** Next 15 request-level hook for RSC/route errors */
+export function onRequestError(
+  err: unknown,
+  request: Request,
+  context: { route?: string }
+) {
+  Sentry.captureRequestError(err, request, context);
 }
