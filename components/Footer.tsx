@@ -1,9 +1,5 @@
 import Link from 'next/link';
 
-/**
- * Global footer for the SPL@T web‑app.
- * Consolidates contact information, legal links and social media handles.
- */
 export default function Footer() {
   return (
     <footer className="bg-black px-4 py-8 text-gray-400 md:px-6">

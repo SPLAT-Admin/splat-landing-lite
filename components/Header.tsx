@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 import { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
@@ -26,7 +22,7 @@ export default function Header() {
             alt="SPL@T Logo"
             className="h-10 w-auto"
           />
-          <span className="text-3xl font-extrabold tracking-tight text-red-600">SPL@T</span>
+          <span className="text-crimson bg-jet px-2 py-1 rounded">SPL@T</span>
         </Link>
         {/* Desktop navigation - only visible on md and up */}
         <nav className="hidden md:flex items-center space-x-6" aria-label="Primary navigation">
@@ -82,11 +78,3 @@ export default function Header() {
   );
 }
 
-// tailwind.config.js
-module.exports = {
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-  ],
-  // ...other config
-}
