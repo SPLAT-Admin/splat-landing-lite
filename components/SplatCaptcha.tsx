@@ -1,36 +1,115 @@
-import { useEffect } from 'react';
+// components/SplatCaptcha.tsx
+import { useEffect, useRef } from "react";
+import Script from "next/script";
 
-type SplatCaptchaProps = {
-  containerId: string;
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (
+        el: HTMLElement,
+        opts: {
+          sitekey: string;
+          theme?: "light" | "dark" | "auto";
+          action?: string;
+          cData?: string;
+          callback?: (token: string) => void;
+          "expired-callback"?: () => void;
+          "error-callback"?: () => void;
+        }
+      ) => string; // widgetId
+      remove?: (widgetId: string) => void;
+    };
+  }
+}
+
+type Props = {
   onVerify: (token: string) => void;
+  onExpire?: () => void;
+  onError?: () => void;
+  siteKey?: string; // falls back to NEXT_PUBLIC_TURNSTILE_SITE_KEY
+  theme?: "light" | "dark" | "auto";
+  action?: string;
+  cData?: string;
+  className?: string;
 };
 
-export default function SplatCaptcha({ containerId, onVerify }: SplatCaptchaProps) {
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
+export default function SplatCaptcha({
+  onVerify,
+  onExpire,
+  onError,
+  siteKey,
+  theme = "dark",
+  action,
+  cData,
+  className,
+}: Props) {
+  const hostRef = useRef<HTMLDivElement | null>(null);
+  const widgetIdRef = useRef<string | null>(null);
 
-    script.onload = () => {
-      if (window.turnstile) {
-        try {
-          window.turnstile.render(`#${containerId}`, {
-            sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY || '',
-            theme: 'dark',
-            callback: (token: string) => onVerify(token),
-          });
-        } catch (err) {
-          console.error(`⚠️ CAPTCHA failed to render for ${containerId}`, err);
-        }
-      }
-    };
+  const key = siteKey ?? process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  if (!key) {
+    // Fail closed: render nothing if misconfigured (prevents broken UX)
+    if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.warn(
+        "SplatCaptcha: missing NEXT_PUBLIC_TURNSTILE_SITE_KEY (or `siteKey` prop)."
+      );
+    }
+  }
+
+  useEffect(() => {
+    let removed = false;
+
+    function renderIfReady() {
+      if (!hostRef.current || !window.turnstile || widgetIdRef.current || !key) return;
+      widgetIdRef.current = window.turnstile.render(hostRef.current, {
+        sitekey: key,
+        theme,
+        action,
+        cData,
+        callback: (token) => onVerify(token),
+        "expired-callback": () => onExpire?.(),
+        "error-callback": () => onError?.(),
+      });
+    }
+
+    // If script already loaded, render immediately
+    renderIfReady();
 
     return () => {
-      document.body.removeChild(script);
+      removed = true;
+      if (widgetIdRef.current && window.turnstile?.remove) {
+        window.turnstile.remove(widgetIdRef.current);
+      }
+      widgetIdRef.current = null;
     };
-  }, [containerId, onVerify]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key, theme, action, cData, onVerify, onExpire, onError]);
 
-  return <div id={containerId}></div>;
+  return (
+    <>
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          // Render once script is ready (if not already rendered)
+          if (hostRef.current && !widgetIdRef.current) {
+            // @ts-ignore-next-line
+            if (window.turnstile) {
+              widgetIdRef.current = window.turnstile.render(hostRef.current, {
+                sitekey: key!,
+                theme,
+                action,
+                cData,
+                callback: (token: string) => onVerify(token),
+                "expired-callback": () => onExpire?.(),
+                "error-callback": () => onError?.(),
+              });
+            }
+          }
+        }}
+      />
+      <div ref={hostRef} className={className} />
+    </>
+  );
 }
