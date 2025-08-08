@@ -15,5 +15,14 @@ export function onRequestError(
   request: Request,
   context: { route?: string }
 ) {
-  Sentry.captureRequestError(err, request, context);
+  // Adapt the Web Request -> Sentry RequestInfo (needs `path`)
+  const url = new URL(request.url);
+  const reqInfo = {
+    method: request.method,
+    url: request.url,
+    path: url.pathname,
+    headers: Object.fromEntries(request.headers),
+  };
+
+  Sentry.captureRequestError(err, reqInfo as any, context);
 }
