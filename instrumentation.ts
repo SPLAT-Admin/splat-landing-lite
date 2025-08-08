@@ -13,10 +13,11 @@ export async function register() {
 export function onRequestError(
   err: unknown,
   request: Request,
-  context: { route?: string }
+  ctx?: { route?: string }
 ) {
-  // Adapt the Web Request -> Sentry RequestInfo (needs `path`)
   const url = new URL(request.url);
+
+  // Adapt Web Request -> Sentry RequestInfo
   const reqInfo = {
     method: request.method,
     url: request.url,
@@ -24,5 +25,12 @@ export function onRequestError(
     headers: Object.fromEntries(request.headers),
   };
 
-  Sentry.captureRequestError(err, reqInfo as any, context);
+  // Minimal ErrorContext Sentry expects
+  const errorContext = {
+    routerKind: "app",                 // using the App Router
+    routePath: ctx?.route || url.pathname,
+    routeType: "route",                // or "navigation" depending on the error
+  } as any;
+
+  Sentry.captureRequestError(err as any, reqInfo as any, errorContext);
 }
