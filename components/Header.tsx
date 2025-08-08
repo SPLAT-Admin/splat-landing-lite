@@ -2,11 +2,11 @@ import Link from 'next/link';
 
 export default function Header() {
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/ambassador', label: 'Ambassador Program' },
-    { href: '/merch', label: 'Merch (Coming Soon)' },
-    { href: '/advertise', label: 'Advertise' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/', label: 'Home     |     ' },
+      { href: '/ambassador', label: 'Ambassador Program     |     ' },
+    { href: '/merch', label: 'Merch (Coming Soon)     |      '},
+    { href: '/advertise', label: 'Advertise     |     ' },
+    { href: '/contact', label: 'Contact     |     ' },
   ];
 
   return (
@@ -19,7 +19,6 @@ export default function Header() {
             alt="SPL@T Logo"
             className="h-10 w-auto"
           />
-          <span className="text-crimson bg-jet px-2 py-1 rounded">SPL@T</span>
         </Link>
         {/* Navigation - always visible */}
         <nav className="flex flex-row flex-wrap items-center space-x-12 space-y-12" aria-label="Primary navigation">
