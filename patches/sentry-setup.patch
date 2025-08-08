@@ -1,0 +1,197 @@
+# (same patch as before)
+*** Begin Patch
+*** Add File: sentry.client.config.ts
++import * as Sentry from "@sentry/nextjs";
++import { Replay } from "@sentry/nextjs/replay";
++
++const environment = process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.NODE_ENV || "development";
++
++Sentry.init({
++  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
++  environment,
++  tracesSampleRate: environment === "production" ? 0.2 : 1.0,
++  replaysOnErrorSampleRate: 1.0,
++  replaysSessionSampleRate: environment === "production" ? 0.1 : 1.0,
++  integrations: [new Replay()],
++  tunnel: "/api/sentry-tunnel",
++  debug: environment !== "production" && environment !== "preview",
++});
++
++Sentry.setTag("commit", process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA || "local");
+*** End Patch
+*** Begin Patch
+*** Add File: sentry.server.config.ts
++import * as Sentry from "@sentry/nextjs";
++
++const environment = process.env.VERCEL_ENV || process.env.NODE_ENV || "development";
++
++Sentry.init({
++  dsn: process.env.SENTRY_DSN,
++  environment,
++  tracesSampleRate: environment === "production" ? 0.2 : 1.0,
++  debug: environment !== "production" && environment !== "preview",
++});
++
++Sentry.setTag("region", process.env.VERCEL_REGION || "local");
+*** End Patch
+*** Begin Patch
+*** Add File: sentry.edge.config.ts
++import * as Sentry from "@sentry/nextjs";
++
++const environment = process.env.VERCEL_ENV || process.env.NODE_ENV || "development";
++
++Sentry.init({
++  dsn: process.env.SENTRY_DSN,
++  environment,
++  tracesSampleRate: environment === "production" ? 0.2 : 1.0,
++});
+*** End Patch
+*** Begin Patch
+*** Add File: instrumentation.ts
++export async function register() {
++  if (process.env.NEXT_RUNTIME === "edge") {
++    await import("./sentry.edge.config");
++  } else {
++    await import("./sentry.server.config");
++    await import("./sentry.client.config");
++  }
++}
+*** End Patch
+*** Begin Patch
+*** Add File: app/api/sentry-tunnel/route.ts
++import { NextRequest } from "next/server";
++
++export const runtime = "nodejs"; // ensure Node runtime
++
++export async function POST(req: NextRequest) {
++  const envelope = await req.text();
++  const [headerLine] = envelope.split("\n");
++  const header = JSON.parse(headerLine);
++  const dsn: string = header?.dsn || "";
++  const projectId = dsn.split("/").pop();
++
++  if (!projectId) {
++    return new Response("Bad Sentry envelope", { status: 400 });
++  }
++
++  const sentryIngestBase = "https://o447951.ingest.sentry.io/api/"; // replace if your ingest host differs
++  const sentryUrl = `${sentryIngestBase}${projectId}/envelope/`;
++
++  const resp = await fetch(sentryUrl, {
++    method: "POST",
++    body: envelope,
++    headers: { "Content-Type": "application/x-sentry-envelope" },
++  });
++
++  return new Response(null, { status: resp.status });
++}
+*** End Patch
+*** Begin Patch
+*** Add File: app/_components/ErrorBoundary.tsx
++"use client";
++import { ErrorBoundary as SentryErrorBoundary } from "@sentry/nextjs";
++import { ReactNode } from "react";
++
++export default function ErrorBoundary({ children }: { children: ReactNode }) {
++  return (
++    <SentryErrorBoundary
++      fallback={({ error, componentStack, resetError }) => (
++        <div className="p-6 bg-neutral-900 text-white rounded-2xl space-y-3">
++          <h2 className="text-lg font-semibold">Something splatted.</h2>
++          <p className="text-sm/6 opacity-80">We’ve logged it—try again.</p>
++          <pre className="text-xs bg-black/40 p-3 rounded-xl overflow-auto max-h-40">
++            {String(error)}{"\n"}{componentStack}
++          </pre>
++          <button
++            onClick={resetError}
++            className="mt-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500"
++          >
++            Retry
++          </button>
++        </div>
++      )}
++      showDialog={false}
++    >
++      {children}
++    </SentryErrorBoundary>
++  );
++}
+*** End Patch
+*** Begin Patch
+*** Update File: app/layout.tsx
+@@
+-import type { Metadata } from "next";
+-import "./globals.css";
++import type { Metadata } from "next";
++import "./globals.css";
++import ErrorBoundary from "./_components/ErrorBoundary";
+@@
+ export default function RootLayout({ children }: { children: React.ReactNode }) {
+   return (
+     <html lang="en">
+-      <body>
+-        {children}
+-      </body>
++      <body>
++        <ErrorBoundary>{children}</ErrorBoundary>
++      </body>
+     </html>
+   );
+ }
+*** End Patch
+*** Begin Patch
+*** Add File: app/(dev)/_tests/sentry-probe/page.tsx
++"use client";
++import * as Sentry from "@sentry/nextjs";
++export default function Page() {
++  return (
++    <div className="p-6 space-y-3">
++      <button
++        className="px-4 py-2 rounded-xl bg-red-600 text-white"
++        onClick={() => Sentry.captureException(new Error("SPL@T test client error"))}
++      >
++        Trigger client error
++      </button>
++    </div>
++  );
++}
+*** End Patch
+*** Begin Patch
+*** Update File: next.config.mjs
+@@
+-import defaultExport from "next/config";
++import { withSentryConfig } from "@sentry/nextjs";
+ 
+-const nextConfig = {
+-  reactStrictMode: true,
+-};
+-
+-export default nextConfig;
++const nextConfig = { reactStrictMode: true };
++
++export default withSentryConfig(nextConfig, {
++  org: process.env.SENTRY_ORG,
++  project: process.env.SENTRY_PROJECT,
++  authToken: process.env.SENTRY_AUTH_TOKEN,
++  widenClientFileUpload: true,
++  transpileClientSDK: true,
++  sourceMapsUploadOptions: {
++    org: process.env.SENTRY_ORG,
++    project: process.env.SENTRY_PROJECT,
++  },
++  silent: true,
++});
+*** End Patch
+*** Begin Patch
+*** Update File: package.json
+@@
+   "scripts": {
+-    "dev": "next dev",
+-    "build": "next build",
++    "dev": "next dev",
++    "build": "next build",
++    "postbuild": "next-sentry-upload-sourcemaps || echo 'sourcemap upload skipped'",
+     "start": "next start",
+     "lint": "next lint"
+   }
+*** End Patch

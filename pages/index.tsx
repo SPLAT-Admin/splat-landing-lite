@@ -1,12 +1,7 @@
-import Head from 'next/head';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import Link from 'next/link';
 import Section from '../components/Section';
 import FeatureGrid from '../components/FeatureGrid';
 import Timeline from '../components/Timeline';
 
-/** Home page for SPL@T with improved layout and SEO. */
 export default function Home() {
   const features = [
     { title: 'SP@T Live Map',    description: 'See users live, cruising in real time, by location.' },
@@ -25,7 +20,6 @@ export default function Home() {
 
   return (
     <>
-      <Head>
         <title>SPL@T – The Queer Cruising Platform</title>
         <meta name="description" content="SPL@T is a real‑time cruising platform built by and for the queer community. Join our waitlist to experience live maps, lobbies, handles and more." />
         <link rel="canonical" href="https://usesplat.com/" />
@@ -36,7 +30,6 @@ export default function Home() {
         <meta property="og:image" content="/images/hero-placeholder.jpg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <Header />
       <main className="bg-black text-white">
         {/* Hero */}
         <section className="relative flex min-h-[60vh] flex-col items-center justify-center overflow-hidden px-4 py-20 text-center">
@@ -64,22 +57,4 @@ export default function Home() {
           </p>
         </Section>
 
-        <Section id="planned-features" className="px-4 py-16 md:px-8 lg:px-16" title="Planned Features" titleClassName="mb-6 text-3xl font-bold tracking-tight">
-          <FeatureGrid features={features} />
-        </Section>
-
-        <Section id="why-go-premium" className="bg-gray-900 px-4 py-16 md:px-8 lg:px-16" title="Why Go Premium?">
-          <p className="max-w-4xl text-lg">
-            Premium unlocks everything. Advanced filters, stealth mode, location teleporter and much more. Missed the founder sale?
-            Stay tuned for early access options before public launch.
-          </p>
-        </Section>
-
-        <Section id="development-timeline" className="px-4 py-16 md:px-8 lg:px-16" title="Development Timeline" titleClassName="mb-6 text-3xl font-bold tracking-tight">
-          <Timeline items={timeline} />
-        </Section>
-      </main>
-      <Footer />
-    </>
-  );
-}
+        <Section id="planned-
