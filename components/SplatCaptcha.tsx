@@ -5,7 +5,17 @@ import Script from 'next/script';
 type TurnstileTheme = 'light' | 'dark' | 'auto';
 
 export interface SplatCaptchaProps {
-  siteKey: string;                 // Required Cloudflare Turnstile site key
+  /**
+   * Optional Cloudflare Turnstile site key. If omitted, the component will
+   * fall back to `NEXT_PUBLIC_CLOUDFLARE_SITE_KEY` so pages don't need to pass
+   * it explicitly.
+   */
+  siteKey?: string;
+  /**
+   * Custom id to apply to the container. Useful when multiple widgets are on
+   * a single page and a stable id is needed.
+   */
+  containerId?: string;
   action?: string;                 // Optional action name
   cData?: string;                  // Optional custom data
   theme?: TurnstileTheme;          // Theme, defaults to 'dark'
@@ -24,7 +34,8 @@ declare global {
 }
 
 export default function SplatCaptcha({
-  siteKey,
+  siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY ?? '',
+  containerId,
   action,
   cData,
   theme = 'dark',
@@ -33,7 +44,9 @@ export default function SplatCaptcha({
   onExpire,
   onError,
 }: SplatCaptchaProps) {
-  const id = useId();
+  // Generate a stable id for the widget. Allow callers to override if a
+  // predictable id is required.
+  const autoId = useId();
   const widgetRef = useRef<HTMLDivElement | null>(null);
   const [widgetId, setWidgetId] = useState<string | null>(null);
 
@@ -79,7 +92,7 @@ export default function SplatCaptcha({
         onLoad={render}
       />
       <div
-        id={`splat-turnstile-${id}`}
+        id={containerId ?? `splat-turnstile-${autoId}`}
         ref={widgetRef}
         className={className}
         // keep an explicit min-height so layout doesn't jump
