@@ -5,11 +5,18 @@ import Script from 'next/script';
 type TurnstileTheme = 'light' | 'dark' | 'auto';
 
 export interface SplatCaptchaProps {
-  siteKey: string;                 // Required Cloudflare Turnstile site key
-  action?: string;                 // Optional action name
-  cData?: string;                  // Optional custom data
-  theme?: TurnstileTheme;          // Theme, defaults to 'dark'
-  className?: string;              // Wrapper class
+  /**
+   * Cloudflare Turnstile site key.  If not provided, falls back to the
+   * `NEXT_PUBLIC_CLOUDFLARE_SITE_KEY` environment variable so most call sites
+   * don't need to pass it explicitly.
+   */
+  siteKey?: string;
+  action?: string;
+  cData?: string;
+  theme?: TurnstileTheme;
+  className?: string;
+  /** Optional id applied to the containing div. */
+  containerId?: string;
   onVerify: (token: string) => void;
   onExpire?: () => void;
   onError?: () => void;
@@ -24,16 +31,17 @@ declare global {
 }
 
 export default function SplatCaptcha({
-  siteKey,
+  siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY || '',
   action,
   cData,
   theme = 'dark',
   className,
+  containerId,
   onVerify,
   onExpire,
   onError,
 }: SplatCaptchaProps) {
-  const id = useId();
+  const autoId = useId();
   const widgetRef = useRef<HTMLDivElement | null>(null);
   const [widgetId, setWidgetId] = useState<string | null>(null);
 
@@ -79,7 +87,7 @@ export default function SplatCaptcha({
         onLoad={render}
       />
       <div
-        id={`splat-turnstile-${id}`}
+        id={containerId || `splat-turnstile-${autoId}`}
         ref={widgetRef}
         className={className}
         // keep an explicit min-height so layout doesn't jump
