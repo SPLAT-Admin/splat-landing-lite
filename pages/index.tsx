@@ -29,17 +29,6 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <link rel="canonical" href={url} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content="Join SPL@T – a fast, unapologetic cruising platform offering live maps, private handles and stealth mode." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={url} />
-        <meta property="og:image" content={ogImage} />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </Head>
 
       <main className="bg-black text-white">
         {/* Hero */}
