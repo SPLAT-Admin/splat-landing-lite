@@ -1,11 +1,21 @@
 // components/SplatCaptcha.tsx
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef } from 'react';
 import Script from 'next/script';
 
 type TurnstileTheme = 'light' | 'dark' | 'auto';
 
 export interface SplatCaptchaProps {
-  siteKey: string;                 // Required Cloudflare Turnstile site key
+  /**
+   * Optional Cloudflare Turnstile site key. If omitted, the component will
+   * fall back to `NEXT_PUBLIC_CLOUDFLARE_SITE_KEY` so pages don't need to pass
+   * it explicitly.
+   */
+  siteKey?: string;
+  /**
+   * Custom id to apply to the container. Useful when multiple widgets are on
+   * a single page and a stable id is needed.
+   */
+  containerId?: string;
   action?: string;                 // Optional action name
   cData?: string;                  // Optional custom data
   theme?: TurnstileTheme;          // Theme, defaults to 'dark'
@@ -18,13 +28,13 @@ export interface SplatCaptchaProps {
 declare global {
   interface Window {
     // Keep loose to avoid duplicate-declaration conflicts elsewhere
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     turnstile?: any;
   }
 }
 
 export default function SplatCaptcha({
-  siteKey,
+  siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY ?? '',
+  containerId,
   action,
   cData,
   theme = 'dark',
@@ -33,24 +43,25 @@ export default function SplatCaptcha({
   onExpire,
   onError,
 }: SplatCaptchaProps) {
-  const id = useId();
+  // Generate a stable id for the widget. Allow callers to override if a
+  // predictable id is required.
+  const autoId = useId().replace(/:/g, '');
   const widgetRef = useRef<HTMLDivElement | null>(null);
-  const [widgetId, setWidgetId] = useState<string | null>(null);
+  const widgetIdRef = useRef<string | null>(null);
 
   const render = useCallback(() => {
-    if (!window.turnstile || !widgetRef.current || widgetId) return;
+    if (!window.turnstile || !widgetRef.current || widgetIdRef.current) return;
 
-    const id = window.turnstile.render(widgetRef.current, {
+    widgetIdRef.current = window.turnstile.render(widgetRef.current, {
       sitekey: siteKey,
       theme,
       action,
       cData,
-      callback: (token: string) => onVerify(token),
+      callback: onVerify,
       'expired-callback': () => onExpire?.(),
       'error-callback': () => onError?.(),
     });
-    setWidgetId(id);
-  }, [siteKey, theme, action, cData, onVerify, onExpire, onError, widgetId]);
+  }, [siteKey, theme, action, cData, onVerify, onExpire, onError]);
 
   // Re-render if props change meaningfully
   useEffect(() => {
@@ -60,15 +71,15 @@ export default function SplatCaptcha({
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (window.turnstile && widgetId) {
+      if (window.turnstile && widgetIdRef.current) {
         try {
-          window.turnstile.remove(widgetId);
+          window.turnstile.remove(widgetIdRef.current);
         } catch {
           // ignore
         }
       }
     };
-  }, [widgetId]);
+  }, []);
 
   return (
     <>
@@ -79,7 +90,7 @@ export default function SplatCaptcha({
         onLoad={render}
       />
       <div
-        id={`splat-turnstile-${id}`}
+        id={containerId ?? `splat-turnstile-${autoId}`}
         ref={widgetRef}
         className={className}
         // keep an explicit min-height so layout doesn't jump
