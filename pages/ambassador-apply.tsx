@@ -82,7 +82,15 @@ export default function AmbassadorApply() {
               <input type="number" name="number_of_followers" required placeholder="Number of Followers" onChange={handleChange} className="p-3 rounded bg-black text-white placeholder-gray-400" />
               <textarea name="qualifications_why" required placeholder="Why do you want to be an Ambassador?" onChange={handleChange} className="p-3 rounded bg-black text-white placeholder-gray-400" rows={4} />
               <input type="text" name="referral" placeholder="Referral (if any)" onChange={handleChange} className="p-3 rounded bg-black text-white placeholder-gray-400" />
-              <SplatCaptcha containerId="cf-turnstile-ambassador" onVerify={(token) => setFormData((prev: AmbassadorForm) => ({ ...prev, captchaToken: token }))} />
+              <SplatCaptcha
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                onVerify={(token) =>
+                  setFormData((prev: AmbassadorForm) => ({
+                    ...prev,
+                    captchaToken: token,
+                  }))
+                }
+              />
               <button type="submit" className="mt-4 bg-[#851725] hover:bg-red-800 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition">Submit Application</button>
               {error && <p className="text-red-500 mt-2">{error}</p>}
             </form>
