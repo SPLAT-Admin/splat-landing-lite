@@ -7,7 +7,7 @@ export default function Header() {
     { href: "/ambassador", label: "Ambassador Program" },
     { href: "/merch", label: "Merch (Coming Soon)" },
     { href: "/advertise", label: "Advertise" },
-    { href: "/contact", label: "Contact" },
+    { href: "/contactus", label: "Contact" },
     { href: "/signup", label: "Join Waitlist" },
   ];
 
