@@ -20,12 +20,20 @@ export default function ThankYouPage() {
           We’ll reach out soon if needed. In the meantime, stay bold. Stay nasty. Stay SPL@T.
         </p>
 
-        <Link
-          href="/"
-          className="inline-block bg-white text-black px-6 py-3 rounded-full font-bold hover:bg-yellow-300 transition"
-        >
-          Return to Homepage
-        </Link>
+        <div className="flex flex-col sm:flex-row gap-4">
+          <Link
+            href="/"
+            className="inline-block bg-white text-black px-6 py-3 rounded-full font-bold hover:bg-yellow-300 transition"
+          >
+            Return to Homepage
+          </Link>
+          <Link
+            href="/merch"
+            className="inline-block bg-white text-black px-6 py-3 rounded-full font-bold hover:bg-yellow-300 transition"
+          >
+            Visit Merch Store
+          </Link>
+        </div>
       </section>
     </>
   );

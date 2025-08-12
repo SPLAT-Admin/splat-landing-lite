@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import SplatCaptcha from '../components/SplatCaptcha';
 import { AmbassadorForm } from '../types';
 
 export default function AmbassadorApply() {
+  const router = useRouter();
   const [formData, setFormData] = useState<AmbassadorForm>({
     first_name: '',
     last_name: '',
@@ -19,7 +21,6 @@ export default function AmbassadorApply() {
     captchaToken: ''
   });
 
-  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -42,17 +43,18 @@ export default function AmbassadorApply() {
         body: JSON.stringify(formData)
       });
 
-      if (!response.ok) {
-        const errJson = await response.json().catch(() => null);
-        setError(errJson?.error || `Submission failed (${response.status})`);
-        return;
-      }
+        if (!response.ok) {
+          const errJson = await response.json().catch(() => null);
+          setError(errJson?.error || `Submission failed (${response.status})`);
+          return;
+        }
 
-      setSubmitted(true);
-    } catch (err) {
-      setError(`Something went wrong: ${err}`);
-    }
-  };
+        // Redirect to thank-you page on success
+        router.push('/thank-you');
+      } catch (err) {
+        setError(`Something went wrong: ${err}`);
+      }
+    };
 
   return (
     <>
@@ -62,7 +64,6 @@ export default function AmbassadorApply() {
       <section className="bg-gradient-to-b from-[#851725] via-black to-black text-white min-h-screen py-20 px-4 flex justify-center items-center">
         <div className="max-w-2xl w-full">
           <h1 className="text-4xl md:text-5xl font-bold text-center mb-6 text-[#851725] drop-shadow-lg">Be a SPL@T Ambassador</h1>
-          {!submitted ? (
             <form onSubmit={handleSubmit} className="grid gap-4 bg-gray-900 p-6 rounded-lg shadow-lg">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <input type="text" name="first_name" required placeholder="First Name" onChange={handleChange} className="p-3 rounded bg-black text-white placeholder-gray-400" />
@@ -86,12 +87,6 @@ export default function AmbassadorApply() {
               <button type="submit" className="mt-4 bg-[#851725] hover:bg-red-800 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition">Submit Application</button>
               {error && <p className="text-red-500 mt-2">{error}</p>}
             </form>
-          ) : (
-            <div className="bg-gray-900 p-6 rounded-lg shadow-md text-center">
-              <h2 className="text-2xl font-bold mb-4">Thank you for applying!</h2>
-              <p>We’ll review your application and get back to you soon. 💦</p>
-            </div>
-          )}
         </div>
       </section>
     </>
