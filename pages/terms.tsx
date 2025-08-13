@@ -1,84 +1,53 @@
-import LegalLayout from "../components/LegalLayout";
+// pages/terms.tsx
+import Head from "next/head";
 
 export default function TermsPage() {
   return (
-    <LegalLayout title="Terms of Service">
-      <div className="bg-acid-white text-black px-6 py-12">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-sm italic mb-6">Effective Date: August 4, 2025</p>
+    <>
+      <Head>
+        <title>Terms of Service — SPL@T</title>
+        <meta name="description" content="SPL@T Terms of Service" />
+      </Head>
 
-          <Section title="1. Agreement to Terms">
-            By accessing or using the SPL@T app, website, or any part of the SPL@Tverse™, you agree to these Terms of Service, our Privacy Policy, and all other policies referenced herein. If you do not agree, you must discontinue use of SPL@T immediately. This agreement constitutes a legally binding contract.
-          </Section>
+      <main className="mx-auto max-w-3xl px-6 py-16 text-gray-200">
+        <h1 className="text-3xl font-bold text-red-400">Terms of Service</h1>
+        <p className="mt-4">
+          Welcome to SPL@T. By using the Service, you agree to these Terms of Service
+          (the &quot;Terms&quot;). If you do not agree to the Terms, you may not use the Service.
+        </p>
 
-          <Section title="2. Eligibility">
-            You must be at least 18 years old to create an account and use SPL@T. By using SPL@T, you represent that you have the legal capacity to enter into this agreement under the laws of your jurisdiction. Accounts created by minors are subject to immediate termination.
-          </Section>
+        <h2 className="mt-10 text-2xl font-semibold text-white">1. Eligibility</h2>
+        <p className="mt-2">
+          You must be at least 18 years old (or the age of majority in your jurisdiction) to use the Service.
+        </p>
 
-          <Section title="3. License to Use">
-            SPL@T grants you a limited, non-exclusive, non-transferable license to use the app and related services for personal, non-commercial purposes, subject to these Terms. All rights not expressly granted remain with SPL@T. Unauthorized scraping, reverse engineering, or modification of the app is prohibited.
-          </Section>
+        <h2 className="mt-8 text-2xl font-semibold text-white">2. Your Account</h2>
+        <p className="mt-2">
+          You are responsible for maintaining the confidentiality of your account credentials and for all activities
+          that occur under your account.
+        </p>
 
-          <Section title="4. Membership & Pricing">
-            <ul className="list-disc pl-6 mt-2">
-              <li>Monthly Membership: $9.99/month</li>
-              <li>Annual Membership: $59.88/year ($4.99/month equivalent)</li>
-              <li>Founder Lifetime Membership: $25 one-time payment (limited offer, non-refundable, non-transferable)</li>
-            </ul>
-            <p className="mt-2">
-              SPL@T reserves the right to modify pricing for new customers at any time. Existing Lifetime Memberships remain honored for the life of the product. Additional local taxes and processing fees may apply.
-            </p>
-          </Section>
+        <h2 className="mt-8 text-2xl font-semibold text-white">3. Acceptable Use</h2>
+        <p className="mt-2">
+          You agree not to use the Service for any unlawful purpose or in violation of our
+          <a href="/community-standards" className="ml-1 underline hover:text-red-400">Community Standards</a>.
+        </p>
 
-          <Section title="5. Payment, Renewal & Refunds">
-            All paid memberships renew automatically unless canceled. Cancellation must be completed through your account settings before renewal to avoid charges. All purchases, including Founder Lifetime Memberships, are non-refundable to the fullest extent permitted by law. Refund requests for extenuating circumstances will be reviewed at SPL@T’s sole discretion.
-          </Section>
+        <h2 className="mt-8 text-2xl font-semibold text-white">4. Intellectual Property</h2>
+        <p className="mt-2">
+          The SPL@T name, logos, and related marks are our property. You may not use them without prior written consent.
+        </p>
 
-          <Section title="6. User Conduct">
-            You agree to comply with SPL@T’s Community Standards. Prohibited actions include harassment, hate speech, impersonation, sharing non-consensual content, spamming, hacking, or engaging in illegal activities. SPL@T reserves the right to cooperate with law enforcement as necessary.
-          </Section>
+        <h2 className="mt-8 text-2xl font-semibold text-white">5. Disclaimers</h2>
+        <p className="mt-2">
+          The Service is provided &quot;as is&quot; and &quot;as available&quot; without warranties of any kind.
+        </p>
 
-          <Section title="7. Intellectual Property">
-            All SPL@T content, branding, and technology are owned by SPLAT, LLC and protected under applicable intellectual property laws. You may not copy, distribute, or create derivative works without express permission. SPL@T, SPL@Tverse™, and all related marks are trademarks of SPLAT, LLC.
-          </Section>
-
-          <Section title="8. Disclaimers & Limitation of Liability">
-            SPL@T is provided "as is" without warranties of any kind. SPLAT, LLC is not liable for damages arising from the use or inability to use the service, to the maximum extent permitted by law. This includes, but is not limited to, incidental, consequential, or punitive damages.
-          </Section>
-
-          <Section title="9. Termination">
-            SPL@T reserves the right to suspend or terminate accounts that violate these Terms or Community Standards. Terminations for cause are not eligible for refunds. Repeat or severe violations may result in permanent bans.
-          </Section>
-
-          <Section title="10. Governing Law & Arbitration">
-            These Terms are governed by the laws of Utah, USA. All disputes will be resolved exclusively through binding arbitration under the rules of the American Arbitration Association in Utah. Class action and jury trial rights are waived. Users agree to submit to the jurisdiction of Utah courts for enforcement of arbitration awards.
-          </Section>
-
-          <Section title="11. Contact Information">
-            SPLAT, LLC  
-            <br />
-            971 S University Ave, Suite 1088  
-            <br />
-            Provo, Utah  
-            <br />
-            Phone: 844-420-8333  
-            <br />
-            Email: 
-            <a href="mailto:support@usesplat.com" className="underline text-deep-crimson ml-1" rel="noopener noreferrer">
-              support@usesplat.com
-            </a>
-          </Section>
-        </div>
-      </div>
-    </LegalLayout>
-  );
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section className="mb-8">
-      <h2 className="text-2xl font-semibold text-deep-crimson mb-4">{title}</h2>
-      <div className="text-gray-900 text-[15px] leading-relaxed">{children}</div>
-    </section>
+        <h2 className="mt-8 text-2xl font-semibold text-white">6. Contact</h2>
+        <p className="mt-2">
+          Questions about these Terms? Email us at <a className="underline" href="mailto:ops@fundsplat.com">ops@fundsplat.com</a>.
+        </p>
+      </main>
+    </>
   );
 }

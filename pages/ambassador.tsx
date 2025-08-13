@@ -1,21 +1,25 @@
-import Head from 'next/head';
-import Link from 'next/link';
+// pages/ambassador.tsx
+import Head from "next/head";
+import Link from "next/link";
 
 export default function AmbassadorPage() {
   return (
     <>
       <Head>
         <title>Become a SPL@T Ambassador</title>
+        <meta name="description" content="Join the SPL@T Ambassador Program for perks, early access, and a voice in the hookupverse." />
       </Head>
       <section className="bg-gradient-to-b from-[#851725] via-black to-black text-white min-h-screen py-20 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[#851725] drop-shadow-lg">
             Join the SPL@T Ambassador Program
           </h1>
+
           <p className="text-lg text-gray-300 mb-4 leading-relaxed">
-            Are you bold, sexy, connected, and ready to splash the world with the SPL@T movement? Whether you're an influencer,
+            Are you bold, sexy, connected, and ready to splash the world with the SPL@T movement? Whether you&apos;re an influencer,
             community leader, nightlife royalty, or just fiercely social—SPL@T wants you.
           </p>
+
           <p className="mb-6 text-sm text-gray-400 max-w-2xl mx-auto">
             Ambassadors get early access, exclusive perks, promo codes, invites to SPL@T LIVE events, and a voice in the evolution
             of the hookupverse.
@@ -32,10 +36,11 @@ export default function AmbassadorPage() {
           </div>
 
           <div className="mt-12">
-            <Link href="/ambassador-apply">
-              <button className="bg-[#851725] hover:bg-red-800 text-white font-bold px-8 py-4 rounded-full text-lg transition shadow-md hover:shadow-lg">
-                Apply Now
-              </button>
+            <Link
+              href="/ambassador-apply"
+              className="inline-block bg-[#851725] hover:bg-red-800 text-white font-bold px-8 py-4 rounded-full text-lg transition shadow-md hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/60"
+            >
+              Apply Now
             </Link>
           </div>
         </div>
