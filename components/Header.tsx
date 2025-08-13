@@ -1,4 +1,3 @@
-// components/Header.tsx (Exact match to live site with correct links, spacing, logo)
 import Link from "next/link";
 import Image from "next/image";
 
@@ -8,7 +7,7 @@ export default function Header() {
     { href: "/ambassador", label: "Ambassador Program" },
     { href: "/merch", label: "Merch (Coming Soon)" },
     { href: "/advertise", label: "Advertise" },
-    { href: "/contact", label: "Contact" },
+    { href: "/contactus", label: "Contact" },
     { href: "/signup", label: "Join Waitlist" },
   ];
 
@@ -17,16 +16,15 @@ export default function Header() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-4 md:px-6">
         {/* Logo */}
         <Link href="/" aria-label="SPL@T home" className="flex items-center">
-  <Image
-    src="/splat-logo.png"
-    alt="SPL@T Logo"
-    width={160}
-    height={40}
-    priority
-    className="h-10 w-auto object-contain"
-  />
-</Link>
-
+          <Image
+            src="/splat-logo.png"
+            alt="SPL@T Logo"
+            width={220}   // was 160
+            height={60}   // was 40
+            priority
+            className="h-12 w-auto md:h-14 object-contain"
+          />
+        </Link>
 
         {/* Navigation */}
         <nav className="flex flex-wrap items-center justify-center gap-[0.5in] text-[18px] font-medium whitespace-pre">

@@ -1,4 +1,3 @@
-// pages/api/signup.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
@@ -8,7 +7,9 @@ const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!; // service role key
 const RESEND_API_KEY = process.env.RESEND_API_KEY!;
 const CLOUDFLARE_SECRET_KEY = process.env.CLOUDFLARE_SECRET_KEY!;
-const FROM_EMAIL = "SPL@T <noreply@usesplat.com>";
+
+// Branding & from
+const FROM_EMAIL = "SPL@T <noreply@usesplat.com>"; // hardcoded per your request
 const BRAND_NAME = process.env.BRAND_NAME || "SPL@T";
 
 // --- Clients ---
@@ -55,7 +56,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed" });
 
   try {
-    const { email, firstName, lastName, marketingConsent, turnstileToken } = req.body || {};
+    const {
+      email,
+      firstName,
+      lastName,
+      marketingConsent,
+      turnstileToken,
+      referralCode,
+      signupSource,
+    } = req.body || {};
 
     // Extract IP early (works behind common proxies)
     const ip =
@@ -69,6 +78,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(429).json({ error: "Too many attempts. Please wait and try again." });
     }
 
+    // Basic field validation
     if (!email || !isValidEmail(email)) {
       return res.status(400).json({ error: "Invalid email" });
     }
@@ -77,34 +87,54 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: "Captcha token missing" });
     }
 
+    // Validate referral code (6–8 uppercase letters/numbers) if present
+    const ref = typeof referralCode === "string" && referralCode.trim() !== ""
+      ? referralCode.trim().toUpperCase()
+      : null;
+    if (ref && !/^[A-Z0-9]{6,8}$/.test(ref)) {
+      return res.status(400).json({ error: "Invalid referral code" });
+    }
+
+    // Map signupSource to allowed values
+    const allowedSources = new Set(["website", "referral", "social_media", "ads", "other"]);
+    const srcRaw = typeof signupSource === "string" ? signupSource.toLowerCase() : "website";
+    const src = (allowedSources.has(srcRaw) ? srcRaw : "other") as
+      | "website"
+      | "referral"
+      | "social_media"
+      | "ads"
+      | "other";
+
+    // Verify Turnstile
     const captchaOK = await verifyTurnstile(turnstileToken, ip);
     if (!captchaOK) {
       return res.status(400).json({ error: "Captcha verification failed" });
     }
 
     // Insert into Supabase (service role bypasses RLS)
-    const { error: dbError } = await supabase
-      .from("email_signups")
-      .insert([
-        {
-          email: String(email).trim().toLowerCase(),
-          first_name: (firstName ?? null) as string | null,
-          last_name: (lastName ?? null) as string | null,
-          marketing_consent: !!marketingConsent,
-          signup_source: "website",
-        },
-      ]);
+    const { error: dbError } = await supabase.from("email_signups").insert([
+      {
+        email: String(email).trim().toLowerCase(),
+        first_name: (firstName ?? null) as string | null,
+        last_name: (lastName ?? null) as string | null,
+        marketing_consent: !!marketingConsent,
+        signup_source: src,
+        referral_code: ref,
+      },
+    ]);
 
     if (dbError) {
       if ((dbError as any)?.code === "23505" || /duplicate|unique/i.test(dbError.message)) {
+        // Email already in the list → soft conflict; let UI treat as success
         return res.status(409).json({ error: "Email already subscribed" });
       }
+      console.error("DB error /api/signup:", dbError);
       return res.status(500).json({ error: "Database error" });
     }
 
-    // Send confirmation (non-blocking)
-    resend.emails
-      .send({
+    // Send confirmation (non-fatal on failure)
+    try {
+      await resend.emails.send({
         from: FROM_EMAIL,
         to: email,
         subject: `You're on the list — ${BRAND_NAME}`,
@@ -115,8 +145,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             <p style="margin:0;color:#555;font-size:12px">If this wasn’t you, ignore this email.</p>
           </div>
         `.trim(),
-      })
-      .catch((e) => console.error("Resend send error", e));
+      });
+    } catch (e) {
+      console.warn("Resend send error (non-fatal)", e);
+    }
 
     return res.status(200).json({ ok: true });
   } catch (e) {
