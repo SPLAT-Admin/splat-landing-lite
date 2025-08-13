@@ -17,17 +17,16 @@ export default function Header() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-4 md:px-6">
         {/* Logo */}
         <Link href="/" aria-label="SPL@T home" className="flex items-center">
-          <div className="relative h-10 w-40">
-            <Image
-              src="/splat-logo.png"
-              alt="SPL@T Logo"
-              fill
-              priority
-              sizes="160px"
-              className="object-contain"
-            />
-          </div>
-        </Link>
+  <Image
+    src="/splat-logo.png"
+    alt="SPL@T Logo"
+    width={160}
+    height={40}
+    priority
+    className="h-10 w-auto object-contain"
+  />
+</Link>
+
 
         {/* Navigation */}
         <nav className="flex flex-wrap items-center justify-center gap-[0.5in] text-[18px] font-medium whitespace-pre">
