@@ -9,6 +9,7 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!; // service role 
 const RESEND_API_KEY = process.env.RESEND_API_KEY!;
 const CLOUDFLARE_SECRET_KEY = process.env.CLOUDFLARE_SECRET_KEY!;
 const FROM_EMAIL = "SPL@T <noreply@usesplat.com>";
+const BRAND_NAME = process.env.BRAND_NAME || "SPL@T";
 
 // --- Clients ---
 const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
