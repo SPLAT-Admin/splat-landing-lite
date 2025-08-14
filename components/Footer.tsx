@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="whitespace-pre">
           971 S University Avenue Suite 1088 Provo, Utah 84601
         </div>
-        <div className="flex flex-wrap justify-center gap-4 pt-1">
+        <div className="flex flex-wrap justify-center gap-[0.5in] pt-1">
           <Link href="/sitemap" aria-label="Site Map" className="font-bold hover:underline">Site Map</Link>
           <Link href="/privacy" aria-label="Privacy Policy" className="font-bold hover:underline">Privacy Policy</Link>
           <Link href="/terms" aria-label="Terms of Service" className="font-bold hover:underline">Terms of Service</Link>
