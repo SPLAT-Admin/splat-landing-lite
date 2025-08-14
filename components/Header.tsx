@@ -8,7 +8,6 @@ export default function Header() {
     { href: "/merch", label: "Merch (Coming Soon)" },
     { href: "/advertise", label: "Advertise" },
     { href: "/contactus", label: "Contact" },
-    { href: "/signup", label: "Join Waitlist" },
   ];
 
   return (
@@ -19,10 +18,10 @@ export default function Header() {
           <Image
             src="/splat-logo.png"
             alt="SPL@T Logo"
-            width={320}   // was 160
-            height={80}   // was 40
+            width={320}
+            height={80}
             priority
-            className="h-12 w-auto md:h-14 object-contain"
+            className="w-auto max-h-20 sm:max-h-24 object-contain"
           />
         </Link>
 
