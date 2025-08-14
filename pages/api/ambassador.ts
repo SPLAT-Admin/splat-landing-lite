@@ -63,6 +63,7 @@ export default splatApiHandler(async (req: NextApiRequest, res: NextApiResponse)
     } catch (e) {
       console.warn("⚠️ Resend error (non-fatal):", e);
     }
+console.log("ambassador payload", Object.keys(body));
 
     return sendSuccess(res, "Application submitted successfully");
   } catch (e) {

@@ -19,15 +19,15 @@ export default function Header() {
           <Image
             src="/splat-logo.png"
             alt="SPL@T Logo"
-            width={220}   // was 160
-            height={60}   // was 40
+            width={320}   // was 160
+            height={80}   // was 40
             priority
             className="h-12 w-auto md:h-14 object-contain"
           />
         </Link>
 
         {/* Navigation */}
-        <nav className="flex flex-wrap items-center justify-center gap-[0.5in] text-[18px] font-medium whitespace-pre">
+        <nav className="flex flex-wrap items-center justify-center gap-[0.5in] text-[20px] font-large whitespace-pre">
           {navLinks.map((link) => (
             <Link
               key={link.href}

@@ -24,16 +24,15 @@ export default function Home() {
   const title = "SPL@T – The Queer Cruising Platform";
   const description =
     "SPL@T is a real‑time cruising platform built by and for the queer community. Join our waitlist to experience live maps, lobbies, handles and more.";
-  const url = "https://usesplat.com/";
+  const url = "https://www.usesplat.com/";
   const ogImage = "/images/hero-placeholder.jpg";
 
   return (
     <>
-
       <main className="bg-black text-white">
         {/* Hero */}
-        <section className="relative flex min-h-[60vh] flex-col items-center justify-center overflow-hidden px-4 py-20 text-center">
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
+        <section className="relative flex min-h-[60vh] flex-col items-center justify-center overflow-hidden px-2 py-5 text-center">
+          <h1 className="mb-4 text-8xl font-extrabold tracking-tight sm:text-10xl md:text-12xl">
             Welcome to SPL@T!
           </h1>
           <p className="mb-8 max-w-2xl text-lg md:text-xl">
