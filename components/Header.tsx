@@ -28,8 +28,8 @@ export default function Header() {
           />
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex flex-wrap items-center justify-center gap-[0.5in] text-[20px] font-large whitespace-pre">
+        {/* Desktop Navigation (show from lg and up) */}
+        <nav className="hidden lg:flex flex-wrap items-center justify-center gap-[0.5in] text-[20px] font-large whitespace-pre">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -41,16 +41,15 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Mobile Hamburger */}
+        {/* Mobile/Tablet Hamburger (only below lg) */}
         <button
           type="button"
           aria-label="Open menu"
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="md:hidden inline-flex items-center justify-center rounded-xl p-2 text-white/90 hover:text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/60"
+          className="lg:hidden inline-flex items-center justify-center rounded-xl p-2 text-white/90 hover:text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/60"
         >
           <span className="sr-only">Toggle navigation</span>
-          {/* Icon */}
           <svg
             className={`h-7 w-7 transition-transform ${open ? "rotate-90" : ""}`}
             viewBox="0 0 24 24"
@@ -75,9 +74,9 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile Menu Panel */}
+      {/* Mobile/Tablet Menu Panel (only below lg) */}
       <div
-        className={`md:hidden overflow-hidden bg-black/95 border-t border-gray-800 transition-[max-height,opacity] duration-300 ${
+        className={`lg:hidden overflow-hidden bg-black/95 border-t border-gray-800 transition-[max-height,opacity] duration-300 ${
           open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
