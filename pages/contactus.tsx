@@ -25,7 +25,7 @@ export default function ContactUsPage() {
 
     if (!form.captchaToken) {
       setStatus('error');
-      setError('Please complete CAPTCHA');
+      setError('Please complete the CAPTCHA');
       return;
     }
 
@@ -51,21 +51,63 @@ export default function ContactUsPage() {
         <title>Contact Us | SPL@T</title>
       </Head>
 
-      <section className="bg-gradient-to-b from-[#851725] via-black to-black text-white min-h-screen py-20 px-4 flex justify-center items-center">
-        <div className="max-w-lg w-full bg-gray-900 rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-center text-[#851725] mb-4">Contact Us</h1>
-          <p className="text-center text-gray-300 mb-8">
+      <section className="bg-black text-white min-h-screen py-20 px-4 flex justify-center items-center">
+        <div className="max-w-lg w-full bg-black border border-gray-800 rounded-xl shadow-lg p-8">
+          <h1 className="text-4xl font-bold text-center mb-6 text-crimson drop-shadow-lg">Contact Us</h1>
+          <p className="text-center text-gray-300 mb-8 text-[14pt]">
             Got questions, collab ideas, or just want to say hi? Drop us a line below.
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input name="name" value={form.name} onChange={handleChange} placeholder="Your Name" required className="w-full px-4 py-3 bg-black border border-gray-700 rounded text-white focus:outline-none focus:border-[#851725]" />
-            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email Address" required className="w-full px-4 py-3 bg-black border border-gray-700 rounded text-white focus:outline-none focus:border-[#851725]" />
-            <textarea name="message" value={form.message} onChange={handleChange} placeholder="Your Message" required className="w-full px-4 py-3 bg-black border border-gray-700 rounded text-white h-32 focus:outline-none focus:border-[#851725]" />
+          <form onSubmit={handleSubmit} className="space-y-6 text-[14pt]">
+            <div className="flex flex-col">
+              <label htmlFor="name" className="mb-1 font-semibold">Your Name</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                value={form.name}
+                onChange={handleChange}
+                required
+                className="px-4 py-3 rounded bg-black border border-gray-700 text-white placeholder-gray-400"
+              />
+            </div>
 
-            <SplatCaptcha containerId="cf-turnstile-contact" onVerify={(token) => setForm((prev: ContactForm) => ({ ...prev, captchaToken: token }))} />
+            <div className="flex flex-col">
+              <label htmlFor="email" className="mb-1 font-semibold">Email Address</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={form.email}
+                onChange={handleChange}
+                required
+                className="px-4 py-3 rounded bg-black border border-gray-700 text-white placeholder-gray-400"
+              />
+            </div>
 
-            <button type="submit" className="bg-[#851725] hover:bg-red-800 text-white px-6 py-3 rounded-full w-full font-bold transition shadow-md hover:shadow-lg" disabled={status === 'loading'}>
+            <div className="flex flex-col">
+              <label htmlFor="message" className="mb-1 font-semibold">Your Message</label>
+              <textarea
+                id="message"
+                name="message"
+                value={form.message}
+                onChange={handleChange}
+                required
+                rows={5}
+                className="px-4 py-3 rounded bg-black border border-gray-700 text-white placeholder-gray-400"
+              />
+            </div>
+
+            <SplatCaptcha
+              containerId="cf-turnstile-contact"
+              onVerify={(token) => setForm((prev: ContactForm) => ({ ...prev, captchaToken: token }))}
+            />
+
+            <button
+              type="submit"
+              disabled={status === 'loading'}
+              className="w-full bg-crimson hover:bg-red-800 text-white font-bold py-3 px-6 rounded-full transition shadow-md hover:shadow-lg"
+            >
               {status === 'loading' ? 'Sending...' : 'Send Message'}
             </button>
 

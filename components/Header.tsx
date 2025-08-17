@@ -16,38 +16,38 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-black/90 text-white shadow-md backdrop-blur supports-[backdrop-filter]:backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 md:px-6 md:py-4">
-        {/* Logo (bigger, responsive) */}
-        <Link href="/" aria-label="SPL@T home" className="flex items-center">
+        {/* Logo */}
+        <Link href="/" aria-label="SPL@T home" className="flex items-center logo-container">
           <Image
             src="/splat-logo.png"
             alt="SPL@T Logo"
-            width={640}  // intrinsic width (2x of 320)
-            height={160} // intrinsic height (2x of 80)
+            width={640}
+            height={160}
             priority
             className="w-auto max-h-28 sm:max-h-32 md:max-h-36 lg:max-h-40 object-contain"
           />
         </Link>
 
-        {/* Desktop Navigation (show from lg and up) */}
-        <nav className="hidden lg:flex flex-wrap items-center justify-center gap-[0.5in] text-[20px] font-large whitespace-pre">
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex flex-wrap items-center justify-center gap-[0.5in] text-[20px] font-semibold whitespace-pre">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="transition-colors hover:text-red-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50"
+              className="transition-colors hover:text-crimson-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-deep-crimson/50"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        {/* Mobile/Tablet Hamburger (only below lg) */}
+        {/* Hamburger for Mobile */}
         <button
           type="button"
           aria-label="Open menu"
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="lg:hidden inline-flex items-center justify-center rounded-xl p-2 text-white/90 hover:text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/60"
+          className="lg:hidden inline-flex items-center justify-center rounded-xl p-2 text-white/90 hover:text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-deep-crimson/60"
         >
           <span className="sr-only">Toggle navigation</span>
           <svg
@@ -74,7 +74,7 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile/Tablet Menu Panel (only below lg) */}
+      {/* Mobile Menu */}
       <div
         className={`lg:hidden overflow-hidden bg-black/95 border-t border-gray-800 transition-[max-height,opacity] duration-300 ${
           open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
@@ -86,7 +86,7 @@ export default function Header() {
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="rounded-lg px-2 py-2 text-left transition-colors hover:text-red-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50"
+              className="rounded-lg px-2 py-2 text-left transition-colors hover:text-crimson-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-deep-crimson/50"
             >
               {link.label}
             </Link>

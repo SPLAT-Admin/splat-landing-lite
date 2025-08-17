@@ -6,41 +6,61 @@ export default function AmbassadorPage() {
   return (
     <>
       <Head>
-        <title>Become a SPL@T Ambassador</title>
-        <meta name="description" content="Join the SPL@T Ambassador Program for perks, early access, and a voice in the hookupverse." />
+        <title>Ambassador HQ — SPL@TVerse Insider</title>
+        <meta name="description" content="Everything SPL@T: App features, culture, perks, programs—your insider pass." />
       </Head>
-      <section className="bg-gradient-to-b from-[#851725] via-black to-black text-white min-h-screen py-20 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[#851725] drop-shadow-lg">
-            Join the SPL@T Ambassador Program
-          </h1>
 
-          <p className="text-lg text-gray-300 mb-4 leading-relaxed">
-            Are you bold, sexy, connected, and ready to splash the world with the SPL@T movement? Whether you&apos;re an influencer,
-            community leader, nightlife royalty, or just fiercely social—SPL@T wants you.
-          </p>
-
-          <p className="mb-6 text-sm text-gray-400 max-w-2xl mx-auto">
-            Ambassadors get early access, exclusive perks, promo codes, invites to SPL@T LIVE events, and a voice in the evolution
-            of the hookupverse.
-          </p>
-
-          <div className="bg-gray-900 rounded-xl p-6 mt-10 text-left text-sm shadow-lg">
-            <h2 className="text-lg font-bold text-white mb-2">SPL@T Ambassador Expectations</h2>
-            <ul className="list-disc list-inside text-gray-300 space-y-1">
-              <li>Must be 21+ years old</li>
-              <li>Follow and promote SPL@T across your social platforms</li>
-              <li>Respect the SPL@T Community Standards (no hate, no shame, no drama)</li>
-              <li>Bring energy, visibility, and queer joy to the world of SPL@T</li>
-            </ul>
+      <section className="bg-background text-foreground py-16 px-6">
+        <div className="max-w-4xl mx-auto space-y-12">
+          {/* Hero */}
+          <div className="text-center">
+            <h1 className="text-5xl font-extrabold mb-4">
+              SPL@T Ambassador HQ
+            </h1>
+            <p className="text-lg text-gray-300 leading-relaxed">
+              Your go-to guide for everything SPL@T – from app architecture to perks, terminology, and mission.
+            </p>
           </div>
 
-          <div className="mt-12">
-            <Link
-              href="/ambassador-apply"
-              className="inline-block bg-[#851725] hover:bg-red-800 text-white font-bold px-8 py-4 rounded-full text-lg transition shadow-md hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/60"
-            >
-              Apply Now
+          {/* SPL@TVerse Modules */}
+          <section>
+            <h2 className="text-3xl font-bold mb-3">SPL@TVerse Features</h2>
+            <ul className="list-disc list-inside space-y-2 text-lg text-gray-200">
+              <li><strong>SP@T Map Live‑View:</strong> Real-time geolocation of community members.</li>
+              <li><strong>SPL@T Live Lobby:</strong> Public chat spaces, virtual meet & greet before engagement.</li>
+              <li><strong>SPL@T Codes & Handles:</strong> Private access codes and user aliases for anonymity.</li>
+              <li><strong>HotSpots & Events:</strong> Tap into trending locations and upcoming community collabs.</li>
+              <li><strong>Premium Tools:</strong> Teleport unlock, Stealth Mode, priority placement, private rooms.</li>
+            </ul>
+          </section>
+
+          {/* Ambassador Perks */}
+          <section>
+            <h2 className="text-3xl font-bold mb-3">Ambassador Perks</h2>
+            <ul className="list-disc list-inside space-y-2 text-lg text-gray-200">
+              <li>Priority beta access & feature testing.</li>
+              <li>Promo code generation and exclusive merch bundles.</li>
+              <li>Invites to SPL@T LIVE events and social collab opportunities.</li>
+              <li>Recognition roll: social shout-outs, in-app badges.</li>
+              <li>Ambassador-only community feedback circles.</li>
+            </ul>
+          </section>
+
+          {/* Program Expectations and Standards */}
+          <section>
+            <h2 className="text-3xl font-bold mb-3">Program & Culture</h2>
+            <ul className="list-disc list-inside space-y-2 text-lg text-gray-200">
+              <li>Age 21+ only.</li>
+              <li>Inclusive, drama-free promotion of SPL@T values.</li>
+              <li>Prioritize queer safety, visibility, and consent-first culture.</li>
+              <li>Create authentic, fun energy in all collaborations.</li>
+            </ul>
+          </section>
+
+          {/* Ready to Apply Call to Action */}
+          <div className="text-center">
+            <Link href="/ambassador-apply" className="inline-block bg-crimson-primary hover:bg-crimson-hover text-white font-bold px-8 py-4 rounded-full text-lg shadow-md focus-visible:ring-2 focus-visible:ring-deep-crimson/60 transition">
+              Apply to Be an Ambassador
             </Link>
           </div>
         </div>

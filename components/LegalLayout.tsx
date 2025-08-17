@@ -9,53 +9,54 @@ interface LegalLayoutProps {
 
 export default function LegalLayout({ title, children }: LegalLayoutProps) {
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
+    <div className="min-h-screen flex flex-col bg-black text-white">
       <Head>
         <title>{title} | SPL@T</title>
         <meta name="description" content={`${title} for SPL@T`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta charSet="UTF-8" />
-        <html lang="en" />
       </Head>
 
       {/* Header */}
-      <header className="bg-deep-crimson py-6 text-center shadow-md">
-        <h1 className="text-3xl font-bold">{title}</h1>
+      <header className="bg-crimson-primary py-6 text-center shadow-md">
+        <h1 className="text-3xl font-extrabold tracking-tight text-white">
+          {title}
+        </h1>
       </header>
 
-      {/* Content */}
+      {/* Main Legal Body */}
       <main
         role="main"
-        className="flex-1 max-w-3xl mx-auto p-6 text-sm md:text-base leading-relaxed"
+        className="flex-1 max-w-3xl mx-auto px-4 py-10 text-sm md:text-base leading-relaxed"
       >
-        <div className="bg-gray-900 text-gray-100 p-6 rounded-lg shadow-lg">
+        <div className="bg-gray-900 text-gray-100 p-6 rounded-lg shadow-lg border border-gray-800">
           {children}
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="text-center text-xs py-4 text-gray-400 border-t border-gray-800 flex flex-wrap justify-center gap-4">
+      <footer className="text-center text-xs py-6 text-gray-400 border-t border-gray-800 flex flex-wrap justify-center gap-6">
         <Link
           href="/"
-          className="hover:text-deep-crimson transition-colors duration-200"
+          className="hover:text-crimson-hover transition-colors duration-200 font-medium"
         >
           Home
         </Link>
         <Link
           href="/privacy"
-          className="hover:text-deep-crimson transition-colors duration-200"
+          className="hover:text-crimson-hover transition-colors duration-200 font-medium"
         >
           Privacy Policy
         </Link>
         <Link
           href="/terms"
-          className="hover:text-deep-crimson transition-colors duration-200"
+          className="hover:text-crimson-hover transition-colors duration-200 font-medium"
         >
           Terms of Service
         </Link>
         <Link
           href="/community"
-          className="hover:text-deep-crimson transition-colors duration-200"
+          className="hover:text-crimson-hover transition-colors duration-200 font-medium"
         >
           Community Standards
         </Link>

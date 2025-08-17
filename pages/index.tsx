@@ -1,3 +1,5 @@
+// pages/index.tsx
+
 import Head from "next/head";
 import Link from "next/link";
 import Section from "../components/Section";
@@ -25,6 +27,14 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>WELCOME TO SPL@T!</title>
+        <meta
+          name="description"
+          content="Your back-door pass to the SPL@TVerse — a real-time digital community for connection without shame."
+        />
+      </Head>
+
       <main className="bg-black text-white">
         {/* Hero */}
         <section className="relative flex min-h-[80vh] flex-col items-center justify-start px-4 pt-10 text-center">
@@ -32,21 +42,18 @@ export default function Home() {
             WELCOME TO SPL@T!
           </h1>
 
-          {/* Subheadline — updated to remove “cruising” language */}
           <p className="mt-3 max-w-4xl text-[26pt] text-gray-300">
             Your back‑door pass to the SPL@TVerse — a real‑time digital community for connection without shame.
           </p>
 
-          {/* CTA — centered, bigger, pulsing */}
           <Link
             href="/signup"
             aria-label="Join the SPL@T waitlist"
-            className="mt-8 inline-block rounded-full bg-red-600 px-14 py-6 text-[18pt] font-extrabold text-white shadow-[0_0_25px_rgba(239,68,68,0.35)] ring-2 ring-red-500/60 hover:bg-red-700 focus:outline-none focus-visible:ring-4 animate-pulse"
+            className="mt-8 inline-block rounded-full bg-crimson-primary px-14 py-6 text-[18pt] font-extrabold text-white shadow-[0_0_25px_rgba(216,13,39,0.35)] ring-2 ring-deep-crimson/60 hover:bg-crimson-hover focus:outline-none focus-visible:ring-4 animate-pulse"
           >
             Join The Waitlist
           </Link>
 
-          {/* Bulletin */}
           <div className="mt-12 max-w-4xl rounded-xl bg-gray-800/80 px-6 py-6 text-[18pt] leading-snug shadow-md">
             <p className="font-semibold text-acid-white">
               The SPL@T app — coming soon to iOS and Android — is in development and nearing completion. Beta testing is on the horizon, and it’s gonna be 🔥. Join our waitlist for the latest updates.

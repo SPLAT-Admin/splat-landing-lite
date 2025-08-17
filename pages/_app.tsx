@@ -17,12 +17,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
-        {/* No Turnstile here — not global */}
       </Head>
 
       <div className="flex min-h-screen flex-col bg-black text-white">
         <Header />
-        <main className="flex-grow">
+        <main className="flex-grow main-content">
           <Component {...pageProps} />
         </main>
         <Footer />
@@ -32,4 +31,3 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export default withSplatBoundary(MyApp);
-

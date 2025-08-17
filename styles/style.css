@@ -18,8 +18,9 @@
 }
 
 .logo {
-  max-height: 120px;
+  max-height: 160px; /* Boosted from 120px */
   height: auto;
+  width: auto;
 }
 
 /* === NAVIGATION === */
@@ -35,9 +36,26 @@
   opacity: 0.8;
 }
 
+/* === HAMBURGER MENU === */
+.hamburger-menu {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .hamburger-menu {
+    display: none; /* Hide on desktop */
+  }
+}
+
 /* === WRAPPER === */
 .main-wrapper {
   padding-top: 80px; /* Prevent content from hiding behind sticky nav */
+}
+
+/* === MAIN CONTENT LEFT PADDING === */
+.main-content {
+  padding-left: 96px; /* ~1 inch for ad gutter */
+  padding-right: 20px; /* Optional: keep some breathing room on right too */
 }
 
 /* === BODY === */

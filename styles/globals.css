@@ -2,15 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-/* SPL@T Custom Variables */
+/* === SPL@T Custom Properties === */
 :root {
-  --background: #0A0A0A; /* Jet Black */
-  --foreground: #FFFFFF; /* Acid White */
-  --deep-crimson: #851725;
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: "Courier New", Courier, monospace;
+  --background: #0A0A0A;       /* Jet Black */
+  --foreground: #FFFFFF;       /* Acid White */
+  --deep-crimson: #851725;     /* Deep Crimson */
+  --crimson-primary: #D80D27;  /* CTA / Hero Crimson */
+  --crimson-hover: #a00b1f;    /* Button Hover */
+  --font-sans: 'Oswald', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'Courier New', Courier, monospace;
 }
 
+/* === Dark Mode Support === */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0A0A0A;
@@ -18,6 +21,7 @@
   }
 }
 
+/* === GLOBAL ELEMENT STYLES === */
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -26,6 +30,7 @@ body {
   padding: 0;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  text-align: center;
 }
 
 a {
@@ -38,14 +43,6 @@ a:hover {
   color: var(--deep-crimson);
 }
 
-header {
-  background-color: var(--background);
-}
-
-nav a {
-  font-weight: 600;
-}
-
 button {
   font-weight: 600;
   transition: background-color 0.3s ease;
@@ -56,10 +53,21 @@ img {
   height: auto;
   display: block;
 }
+
+/* === FOCUS STATES === */
 input:focus,
 textarea:focus,
 select:focus,
 button:focus {
   outline: 2px solid var(--deep-crimson);
   outline-offset: 2px;
+}
+
+/* === HEADER === */
+header {
+  background-color: var(--background);
+}
+
+nav a {
+  font-weight: 600;
 }
