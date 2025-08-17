@@ -6,13 +6,13 @@ import Timeline from "../components/Timeline";
 
 export default function Home() {
   const features = [
-    { title: "SP@T Map Live‑View", description: "See users live… cruising in real time, by location." },
-    { title: "SPL@T Live Lobby", description: "Hang out, chat, and preview nearby action." },
-    { title: "SPL@T Codes", description: "Share one‑time hook‑up codes that disappear after use." },
+    { title: "SP@T Map Live‑View", description: "See members live in real time by location." },
+    { title: "SPL@T Live Lobby", description: "Hang out, chat, and preview nearby energy." },
+    { title: "SPL@T Codes", description: "Share a one‑time room or entrance code that disappears after use." },
     { title: "SPL@T Handles", description: "Public username to connect fast & stay anonymous." },
-    { title: "SPL@T Chat", description: "Real-time chat with nearby or new connections." },
-    { title: "SPL@T Events", description: "Community-led events, meetups and collabs." },
-    { title: "SP@T Map HotSpots", description: "Spot the hottest cruising zones in real time." },
+    { title: "SPL@T Chat", description: "Real‑time chat with nearby or new connections." },
+    { title: "SPL@T Events", description: "Community‑led events, meetups, and collabs." },
+    { title: "SP@T Map HotSpots", description: "See the hottest trending areas on the map—where the most community action is happening." },
     { title: "Premium", description: "Priority placement, more photos, Stealth Mode, Teleport Unlock, host private rooms & more." },
   ];
 
@@ -32,8 +32,9 @@ export default function Home() {
             WELCOME TO SPL@T!
           </h1>
 
+          {/* Subheadline — updated to remove “cruising” language */}
           <p className="mt-3 max-w-4xl text-[26pt] text-gray-300">
-            Your back‑door pass to the SPL@TVerse — a real‑time digital cruising ground for connection without shame.
+            Your back‑door pass to the SPL@TVerse — a real‑time digital community for connection without shame.
           </p>
 
           {/* CTA — centered, bigger, pulsing */}
@@ -58,7 +59,7 @@ export default function Home() {
 
         <Section id="who-we-are" className="px-4 py-16" title="Who We Are">
           <p className="max-w-4xl text-[16pt]">
-            SPL@T is a queer‑built, unapologetic, bold and sexy real‑time community-based event & meetup platform designed to create authentic connections without shame. Built by and for the LGBTQ+ community, we're throwing out outdated systems—and building something secure, authentic, private, bold, sexy, and a little sassy.
+            SPL@T is a queer‑built, unapologetic, bold and sexy real‑time community‑based event & meetup platform designed to create authentic connections without shame. Built by and for the LGBTQ+ community, we're throwing out outdated systems—and building something secure, authentic, private, bold, sexy, and a little sassy.
           </p>
         </Section>
 
