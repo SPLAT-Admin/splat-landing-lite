@@ -1,5 +1,3 @@
-// pages/index.tsx
-
 import Head from "next/head";
 import Link from "next/link";
 import Section from "../components/Section";
@@ -37,21 +35,21 @@ export default function Home() {
 
       <main className="bg-black text-white">
         {/* Hero */}
-        <section className="relative flex min-h-[80vh] flex-col items-center justify-start px-4 pt-10 text-center">
-          <h1 className="text-[72pt] font-extrabold tracking-tight">
+        <section className="relative flex min-h-screen flex-col items-center justify-start px-4 pt-24 text-center">
+          <h1 className="text-4xl font-extrabold tracking-tight text-[#851825]">
             WELCOME TO SPL@T!
           </h1>
 
-          <p className="mt-3 max-w-4xl text-[26pt] text-gray-300">
+          <p className="mt-3 max-w-4xl text-[20pt] text-gray-300">
             Your back‑door pass to the SPL@TVerse — a real‑time digital community for connection without shame.
           </p>
 
           <Link
             href="/signup"
             aria-label="Join the SPL@T waitlist"
-            className="mt-8 inline-block rounded-full bg-crimson-primary px-14 py-6 text-[18pt] font-extrabold text-white shadow-[0_0_25px_rgba(216,13,39,0.35)] ring-2 ring-deep-crimson/60 hover:bg-crimson-hover focus:outline-none focus-visible:ring-4 animate-pulse"
+            className="mt-8 inline-block rounded-full bg-[#851825] px-10 py-4 text-lg font-extrabold text-white shadow-[0_0_25px_rgba(216,13,39,0.35)] ring-2 ring-[#851825]/60 hover:bg-[#6f1320] focus:outline-none focus-visible:ring-4 animate-pulse"
           >
-            Join The Waitlist
+            JOIN THE WAITLIST
           </Link>
 
           <div className="mt-12 max-w-4xl rounded-xl bg-gray-800/80 px-6 py-6 text-[18pt] leading-snug shadow-md">
@@ -64,23 +62,23 @@ export default function Home() {
           </div>
         </section>
 
-        <Section id="who-we-are" className="px-4 py-16" title="Who We Are">
+        <Section id="who-we-are" className="px-4 py-16" title="Who We Are" titleClass="text-[#851825] font-bold">
           <p className="max-w-4xl text-[16pt]">
             SPL@T is a queer‑built, unapologetic, bold and sexy real‑time community‑based event & meetup platform designed to create authentic connections without shame. Built by and for the LGBTQ+ community, we're throwing out outdated systems—and building something secure, authentic, private, bold, sexy, and a little sassy.
           </p>
         </Section>
 
-        <Section id="what-we-offer" className="bg-gray-900 px-4 py-16" title="What We’re Offering">
+        <Section id="what-we-offer" className="bg-gray-900 px-4 py-16" title="What We’re Offering" titleClass="text-[#851825] font-bold">
           <p className="max-w-4xl text-[16pt]">
             We’re creating a real‑time digital biosphere—the SPL@TVerse—featuring the SPL@T app, including <span className="font-semibold">SP@T Map Live‑View</span>, SPL@T Chat, SPL@T Live Lobby, SPL@T Codes, SPL@T Handles, exclusive merch shop, SPL@T Events & Collabs, <span className="font-semibold">SP@T Map HotSpots</span>, and more. Whether you want to meet now or just vibe online, SPL@T gives you options, visibility, and control.
           </p>
         </Section>
 
-        <Section id="features" className="px-4 py-16" title="Features">
+        <Section id="features" className="px-4 py-16" title="Features" titleClass="text-[#851825] font-bold">
           <FeatureGrid features={features} />
         </Section>
 
-        <Section id="roadmap" className="bg-gray-900 px-4 py-16" title="Roadmap">
+        <Section id="roadmap" className="bg-gray-900 px-4 py-16" title="Roadmap" titleClass="text-[#851825] font-bold">
           <Timeline items={timeline} />
         </Section>
       </main>
