@@ -17,9 +17,9 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-black/90 text-white shadow-md backdrop-blur-md">
-      <div className="mx-auto max-w-screen-2xl px-6 lg:px-10 py-4 flex items-center gap-8">
+      <div className="mx-auto max-w-screen-2xl flex items-center justify-between px-6 lg:px-10 py-4">
         {/* Logo */}
-        <Link href="/" aria-label="SPL@T home" className="flex items-center flex-shrink-0">
+        <Link href="/" aria-label="SPL@T home" className="flex items-center">
           <Image
             src="/splat-logo.png"
             alt="SPL@T Logo"
@@ -31,14 +31,14 @@ export default function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex flex-1 justify-end items-center gap-12">
+        <div className="hidden md:flex gap-12 items-center">
           {navLinks.map((link) => {
             const active = router.pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-[20pt] font-bold px-1 transition-colors ${
+                className={`text-[20pt] font-bold transition-colors ${
                   active ? "text-crimson-primary" : "text-[#851825] hover:text-white"
                 }`}
               >
@@ -46,17 +46,16 @@ export default function Header() {
               </Link>
             );
           })}
-        </nav>
+        </div>
 
-        {/* Mobile Hamburger Toggle — now properly hidden above 768px */}
-        <div className="md:hidden ml-auto">
+        {/* Mobile Hamburger */}
+        <div className="md:hidden">
           <button
             onClick={() => setOpen(!open)}
             aria-label="Menu"
-            aria-expanded={open}
-            className="p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-crimson-primary rounded-md"
+            className="p-2 rounded-md focus:outline-none"
           >
-            <svg className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               {open ? (
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -69,7 +68,7 @@ export default function Header() {
 
       {/* Mobile Navigation */}
       {open && (
-        <nav className="md:hidden px-4 pb-4 space-y-3 text-lg font-semibold bg-black/95 border-t border-white/10">
+        <div className="md:hidden px-4 pb-4 bg-black/95 border-t border-white/10 space-y-3">
           {navLinks.map((link) => {
             const active = router.pathname === link.href;
             return (
@@ -77,15 +76,15 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className={`block w-full py-3 px-3 rounded hover:bg-white/10 ${
-                  active ? "text-crimson-primary" : ""
+                className={`block w-full py-3 px-3 rounded text-lg font-semibold hover:bg-white/10 ${
+                  active ? "text-crimson-primary" : "text-white"
                 }`}
               >
                 {link.label}
               </Link>
             );
           })}
-        </nav>
+        </div>
       )}
     </header>
   );
