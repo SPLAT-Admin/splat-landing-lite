@@ -17,9 +17,9 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-black/90 text-white shadow-md backdrop-blur-md">
-      <div className="mx-auto max-w-screen-2xl px-6 lg:px-10 py-4 flex items-center justify-between">
+      <div className="mx-auto max-w-screen-2xl flex items-center justify-between px-6 lg:px-10 py-4">
         {/* Logo */}
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center flex-shrink-0">
           <Image
             src="/splat-logo.png"
             alt="SPL@T Logo"
@@ -30,8 +30,8 @@ export default function Header() {
           />
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-12 items-center">
+        {/* NAVIGATION */}
+        <div className="hidden md:flex flex-1 justify-end items-center gap-12">
           {navLinks.map((link) => {
             const active = router.pathname === link.href;
             return (
@@ -46,17 +46,17 @@ export default function Header() {
               </Link>
             );
           })}
-        </nav>
+        </div>
 
-        {/* Mobile Hamburger Button */}
+        {/* Hamburger (Mobile Only) */}
         <div className="md:hidden">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Menu"
+            aria-label="Toggle menu"
             className="p-2"
           >
             <svg
-              className="h-7 w-7 text-white"
+              className="w-7 h-7 text-white"
               fill="none"
               stroke="currentColor"
               strokeWidth={2}
@@ -72,9 +72,9 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* MOBILE MENU */}
       {menuOpen && (
-        <div className="md:hidden px-6 pb-4 bg-black/95 border-t border-white/10">
+        <nav className="md:hidden px-6 pb-4 bg-black/95 border-t border-white/10 space-y-2">
           {navLinks.map((link) => {
             const active = router.pathname === link.href;
             return (
@@ -90,7 +90,7 @@ export default function Header() {
               </Link>
             );
           })}
-        </div>
+        </nav>
       )}
     </header>
   );
