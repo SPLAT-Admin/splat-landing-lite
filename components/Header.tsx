@@ -4,8 +4,8 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 export default function Header() {
-  const [isMobile, setIsMobile] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
 
   const navLinks = [
@@ -17,7 +17,7 @@ export default function Header() {
   ];
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -25,8 +25,9 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-black/90 text-white shadow-md backdrop-blur-md">
-      <div className="mx-auto flex max-w-screen-2xl items-center justify-between px-6 py-4 lg:px-10">
-        <Link href="/" aria-label="SPL@T home" className="flex-shrink-0">
+      <div className="mx-auto max-w-screen-2xl px-6 lg:px-10 py-4 flex items-center gap-8">
+        {/* Logo (top-left) */}
+        <Link href="/" aria-label="SPL@T home" className="flex items-center flex-shrink-0">
           <Image
             src="/splat-logo.png"
             alt="SPL@T Logo"
@@ -37,16 +38,20 @@ export default function Header() {
           />
         </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop Navigation */}
         {!isMobile && (
-          <nav className="flex gap-10">
+          <nav
+            role="navigation"
+            aria-label="Primary"
+            className="hidden md:flex flex-1 justify-end items-center gap-12"
+          >
             {navLinks.map((link) => {
               const active = router.pathname === link.href;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-xl font-bold transition-colors ${
+                  className={`text-[20pt] font-bold px-1 transition-colors ${
                     active ? "text-crimson-primary" : "text-[#851825] hover:text-white"
                   }`}
                 >
@@ -57,14 +62,16 @@ export default function Header() {
           </nav>
         )}
 
-        {/* Mobile 🍔 */}
+        {/* 🍔 Mobile Hamburger Toggle */}
         {isMobile && (
           <button
             onClick={() => setOpen(!open)}
-            aria-label="Menu"
-            className="rounded-md p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-crimson-primary"
+            aria-label="Hamburger menu"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            className="ml-auto p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-crimson-primary rounded-md"
           >
-            <svg className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               {open ? (
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -75,9 +82,12 @@ export default function Header() {
         )}
       </div>
 
-      {/* Mobile Nav */}
+      {/* Mobile Navigation */}
       {isMobile && open && (
-        <nav className="flex flex-col gap-2 border-t border-white/10 bg-black/95 px-4 py-4 text-lg font-semibold transition-all duration-300">
+        <nav
+          id="mobile-menu"
+          className="px-4 pb-4 space-y-3 text-lg font-semibold bg-black/95 border-t border-white/10 transition-all duration-300 ease-in-out"
+        >
           {navLinks.map((link) => {
             const active = router.pathname === link.href;
             return (
@@ -85,7 +95,7 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className={`rounded px-3 py-3 hover:bg-white/10 ${
+                className={`block w-full py-3 px-3 rounded hover:bg-white/10 ${
                   active ? "text-crimson-primary" : ""
                 }`}
               >
