@@ -1,3 +1,4 @@
+// components/Header.tsx
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,85 +15,70 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-black/90 text-white shadow-md backdrop-blur supports-[backdrop-filter]:backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 md:px-6 md:py-4">
+    <header className="sticky top-0 z-50 w-full bg-black/90 text-white shadow-md backdrop-blur-md">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" aria-label="SPL@T home" className="flex items-center logo-container">
+        <Link href="/" aria-label="SPL@T home" className="flex items-center">
           <Image
             src="/splat-logo.png"
             alt="SPL@T Logo"
-            width={640}
-            height={160}
+            width={160}
+            height={60}
             priority
-            className="w-auto max-h-28 sm:max-h-32 md:max-h-36 lg:max-h-40 object-contain"
+            className="h-10 w-auto"
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex flex-wrap items-center justify-center gap-[0.5in] text-[20px] font-semibold whitespace-pre">
+        <nav className="hidden lg:flex space-x-8 text-lg font-semibold">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="transition-colors hover:text-crimson-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-deep-crimson/50"
+              className="hover:text-crimson-primary transition-colors"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        {/* Hamburger for Mobile */}
+        {/* Mobile Toggle Button */}
         <button
-          type="button"
-          aria-label="Open menu"
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-          className="lg:hidden inline-flex items-center justify-center rounded-xl p-2 text-white/90 hover:text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-deep-crimson/60"
+          onClick={() => setOpen(!open)}
+          aria-label="Toggle menu"
+          className="lg:hidden p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-crimson-primary rounded-md"
         >
-          <span className="sr-only">Toggle navigation</span>
           <svg
-            className={`h-7 w-7 transition-transform ${open ? "rotate-90" : ""}`}
-            viewBox="0 0 24 24"
+            className="w-6 h-6"
             fill="none"
             stroke="currentColor"
-            strokeWidth={1.75}
-            strokeLinecap="round"
-            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
           >
             {open ? (
-              <>
-                <path d="M6 6l12 12M18 6L6 18" />
-              </>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             ) : (
-              <>
-                <path d="M3 6h18" />
-                <path d="M3 12h18" />
-                <path d="M3 18h18" />
-              </>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             )}
           </svg>
         </button>
       </div>
 
-      {/* Mobile Menu */}
-      <div
-        className={`lg:hidden overflow-hidden bg-black/95 border-t border-gray-800 transition-[max-height,opacity] duration-300 ${
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <nav className="flex flex-col items-stretch px-6 py-4 gap-4 text-[18px]">
+      {/* Mobile Navigation */}
+      {open && (
+        <nav className="lg:hidden px-4 pb-4 space-y-3 text-lg font-medium bg-black/95 border-t border-white/10">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="rounded-lg px-2 py-2 text-left transition-colors hover:text-crimson-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-deep-crimson/50"
+              className="block w-full py-2 px-2 rounded hover:bg-white/10"
             >
               {link.label}
             </Link>
           ))}
         </nav>
-      </div>
+      )}
     </header>
   );
 }
