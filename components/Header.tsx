@@ -48,7 +48,7 @@ export default function Header() {
           })}
         </nav>
 
-        {/* Mobile Hamburger Toggle */}
+        {/* Mobile Hamburger Toggle — now properly hidden above 768px */}
         <div className="md:hidden ml-auto">
           <button
             onClick={() => setOpen(!open)}
