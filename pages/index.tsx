@@ -36,18 +36,18 @@ export default function Home() {
       <main className="bg-black text-white">
         {/* Hero */}
         <section className="relative flex min-h-screen flex-col items-center justify-start px-4 pt-24 text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight text-[#851825]">
+          <h1 className="text-[44pt] font-extrabold tracking-tight text-[#851825]">
             WELCOME TO SPL@T!
           </h1>
 
-          <p className="mt-3 max-w-4xl text-[20pt] text-gray-300">
+          <p className="mt-3 max-w-4xl text-[22pt] text-gray-300">
             Your back‑door pass to the SPL@TVerse — a real‑time digital community for connection without shame.
           </p>
 
           <Link
             href="/signup"
             aria-label="Join the SPL@T waitlist"
-            className="mt-8 inline-block rounded-full bg-[#851825] px-10 py-4 text-lg font-extrabold text-white shadow-[0_0_25px_rgba(216,13,39,0.35)] ring-2 ring-[#851825]/60 hover:bg-[#6f1320] focus:outline-none focus-visible:ring-4 animate-pulse"
+            className="mt-10 inline-block rounded-full bg-[#851825] px-16 py-6 text-[30pt] font-extrabold text-white tracking-wide uppercase shadow-[0_0_25px_rgba(216,13,39,0.35)] ring-2 ring-[#851825]/60 hover:bg-[#6f1320] focus:outline-none focus-visible:ring-4 animate-pulse"
           >
             JOIN THE WAITLIST
           </Link>
@@ -62,7 +62,7 @@ export default function Home() {
           </div>
         </section>
 
-        <Section id="who-we-are" className="px-4 py-16" title="Who We Are" titleClassName="text-[#851825] font-bold">
+        <Section id="who-we-are" className="px-4 py-12" title="Who We Are" titleClassName="text-[#851825] font-bold">
           <p className="max-w-4xl text-[16pt]">
             SPL@T is a queer‑built, unapologetic, bold and sexy real‑time community‑based event & meetup platform designed to create authentic connections without shame. Built by and for the LGBTQ+ community, we're throwing out outdated systems—and building something secure, authentic, private, bold, sexy, and a little sassy.
           </p>

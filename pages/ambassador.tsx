@@ -1,4 +1,3 @@
-// pages/ambassador.tsx
 import Head from "next/head";
 import Link from "next/link";
 
@@ -14,7 +13,7 @@ export default function AmbassadorPage() {
         <div className="max-w-4xl mx-auto space-y-12">
           {/* Hero */}
           <div className="text-center">
-            <h1 className="text-5xl font-extrabold mb-4">
+            <h1 className="text-5xl font-extrabold mb-4 text-[#851825]">
               SPL@T Ambassador HQ
             </h1>
             <p className="text-lg text-gray-300 leading-relaxed">
@@ -22,9 +21,17 @@ export default function AmbassadorPage() {
             </p>
           </div>
 
+          {/* Overview */}
+          <section>
+            <h2 className="text-3xl font-bold mb-3 text-[#851825]">What Is SPL@T?</h2>
+            <p className="text-lg text-gray-200">
+              SPL@T is a queer-built, unapologetic, high-energy real-time platform for hookups, meetups, events, and social cruising. Designed for visibility without shame, it’s your digital third place to vibe, connect, or get wild. With live geolocation, chat, and public-private rooms, SPL@T empowers community connection wherever you are.
+            </p>
+          </section>
+
           {/* SPL@TVerse Modules */}
           <section>
-            <h2 className="text-3xl font-bold mb-3">SPL@TVerse Features</h2>
+            <h2 className="text-3xl font-bold mb-3 text-[#851825]">SPL@TVerse Features</h2>
             <ul className="list-disc list-inside space-y-2 text-lg text-gray-200">
               <li><strong>SP@T Map Live‑View:</strong> Real-time geolocation of community members.</li>
               <li><strong>SPL@T Live Lobby:</strong> Public chat spaces, virtual meet & greet before engagement.</li>
@@ -36,7 +43,7 @@ export default function AmbassadorPage() {
 
           {/* Ambassador Perks */}
           <section>
-            <h2 className="text-3xl font-bold mb-3">Ambassador Perks</h2>
+            <h2 className="text-3xl font-bold mb-3 text-[#851825]">Ambassador Perks</h2>
             <ul className="list-disc list-inside space-y-2 text-lg text-gray-200">
               <li>Priority beta access & feature testing.</li>
               <li>Promo code generation and exclusive merch bundles.</li>
@@ -46,21 +53,37 @@ export default function AmbassadorPage() {
             </ul>
           </section>
 
-          {/* Program Expectations and Standards */}
+          {/* Expectations, Benefits, and Bonuses */}
           <section>
-            <h2 className="text-3xl font-bold mb-3">Program & Culture</h2>
+            <h2 className="text-3xl font-bold mb-3 text-[#851825]">Ambassador Expectations & Bonuses</h2>
             <ul className="list-disc list-inside space-y-2 text-lg text-gray-200">
-              <li>Age 21+ only.</li>
-              <li>Inclusive, drama-free promotion of SPL@T values.</li>
-              <li>Prioritize queer safety, visibility, and consent-first culture.</li>
-              <li>Create authentic, fun energy in all collaborations.</li>
+              <li>Create content and social media buzz at least 2x/month using your SPL@T handle and assets.</li>
+              <li>Refer 10+ users/month with your custom ambassador code.</li>
+              <li>Represent SPL@T at local queer events, clubs, or scenes when possible.</li>
+              <li>Be sexy, be bold, be loud – while promoting a shame-free vibe.</li>
+              <li><strong>Referral Bonus:</strong> Get rewarded for every verified user sign-up. The more you SPL@T, the more you earn!</li>
+              <li>Top-performing ambassadors unlock merch, event invites, and spotlight features.</li>
             </ul>
           </section>
 
-          {/* Ready to Apply Call to Action */}
+          {/* Program Requirements */}
+          <section>
+            <h2 className="text-3xl font-bold mb-3 text-[#851825]">Program Requirements</h2>
+            <ul className="list-disc list-inside space-y-2 text-lg text-gray-200">
+              <li>Must be 21+ and located in the U.S.</li>
+              <li>Must identify within or be allied with the LGBTQ+ community.</li>
+              <li>Willing to be visible and accountable on social media.</li>
+              <li>Follow SPL@T’s code of conduct and branding standards.</li>
+            </ul>
+          </section>
+
+          {/* Call to Action */}
           <div className="text-center">
-            <Link href="/ambassador-apply" className="inline-block bg-crimson-primary hover:bg-crimson-hover text-white font-bold px-8 py-4 rounded-full text-lg shadow-md focus-visible:ring-2 focus-visible:ring-deep-crimson/60 transition">
-              Apply to Be an Ambassador
+            <Link
+              href="/ambassador-apply"
+              className="inline-block mt-8 rounded-full bg-[#851825] px-10 py-5 text-[20pt] font-extrabold text-white shadow-[0_0_25px_rgba(216,13,39,0.35)] ring-2 ring-[#851825]/60 hover:bg-[#6f1320] focus:outline-none focus-visible:ring-4 animate-pulse"
+            >
+              APPLY NOW TO JOIN SPL@T AMBASSADOR PROGRAM
             </Link>
           </div>
         </div>
