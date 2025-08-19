@@ -26,7 +26,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-black/90 text-white shadow-md backdrop-blur-md">
       <div className="mx-auto max-w-screen-2xl px-6 lg:px-10 py-4 flex items-center gap-8">
-        {/* Logo (top-left) */}
+        {/* Logo */}
         <Link href="/" aria-label="SPL@T home" className="flex items-center flex-shrink-0">
           <Image
             src="/splat-logo.png"
@@ -39,30 +39,28 @@ export default function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        {!isMobile && (
-          <nav
-            role="navigation"
-            aria-label="Primary"
-            className="hidden md:flex flex-1 justify-end items-center gap-12"
-          >
-            {navLinks.map((link) => {
-              const active = router.pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`text-[20pt] font-bold px-1 transition-colors ${
-                    active ? "text-crimson-primary" : "text-[#851825] hover:text-white"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
-          </nav>
-        )}
+        <nav
+          role="navigation"
+          aria-label="Primary"
+          className="hidden md:flex flex-1 justify-end items-center gap-12"
+        >
+          {navLinks.map((link) => {
+            const active = router.pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`text-[20pt] font-bold px-1 transition-colors ${
+                  active ? "text-crimson-primary" : "text-[#851825] hover:text-white"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </nav>
 
-        {/* 🍔 Mobile Hamburger Toggle */}
+        {/* Mobile Hamburger Toggle */}
         {isMobile && (
           <button
             onClick={() => setOpen(!open)}
