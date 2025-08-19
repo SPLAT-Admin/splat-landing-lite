@@ -35,7 +35,8 @@ export default function Home() {
 
       <main className="bg-black text-white">
         {/* Hero */}
-        <section className="relative flex min-h-screen flex-col items-center justify-start px-4 pt-24 text-center">
+        <section className="relative flex flex-col items-center justify-start px-4 pt-24 pb-8 text-center">
+
           <h1 className="text-[44pt] font-extrabold tracking-tight text-[#851825]">
             WELCOME TO SPL@T!
           </h1>
@@ -52,7 +53,7 @@ export default function Home() {
             JOIN THE WAITLIST
           </Link>
 
-          <div className="mt-12 max-w-4xl rounded-xl bg-gray-800/80 px-6 py-6 text-[18pt] leading-snug shadow-md">
+          <div className="mt-8 max-w-4xl rounded-xl ...
             <p className="font-semibold text-acid-white">
               The SPL@T app — coming soon to iOS and Android — is in development and nearing completion. Beta testing is on the horizon, and it’s gonna be 🔥. Join our waitlist for the latest updates.
             </p>

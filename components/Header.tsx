@@ -17,9 +17,7 @@ export default function Header() {
   ];
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -27,33 +25,40 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-black/90 text-white shadow-md backdrop-blur-md">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-4 flex items-center justify-between">
-        {/* Logo */}
+      <div className="mx-auto max-w-screen-2xl px-6 lg:px-10 py-4 flex items-center gap-8">
+        {/* Logo (larger, top-left) */}
         <Link href="/" aria-label="SPL@T home" className="flex items-center flex-shrink-0">
           <Image
             src="/splat-logo.png"
             alt="SPL@T Logo"
-            width={200}
-            height={80}
+            width={260}
+            height={100}
             priority
-            className="h-14 lg:h-16 w-auto"
+            className="h-20 md:h-24 w-auto"
           />
         </Link>
 
         {/* Desktop Navigation (>=768px) */}
         {!isMobile && (
-          <nav className="flex flex-1 justify-evenly items-center text-[20pt] font-bold tracking-wide">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-6 hover:text-crimson-primary transition-colors ${
-                  router.pathname === link.href ? "text-crimson-primary" : ""
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+          <nav
+            role="navigation"
+            aria-label="Primary"
+            className="hidden md:flex flex-1 justify-end items-center gap-12"
+          >
+            {navLinks.map((link) => {
+              const active = router.pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-[20pt] font-bold px-1 transition-colors ${
+                    active ? "text-crimson-primary" : "text-[#851825] hover:text-white"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
         )}
 
@@ -64,15 +69,9 @@ export default function Header() {
             aria-label="Hamburger menu"
             aria-expanded={open}
             aria-controls="mobile-menu"
-            className="p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-crimson-primary rounded-md"
+            className="ml-auto p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-crimson-primary rounded-md"
           >
-            <svg
-              className="w-7 h-7"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               {open ? (
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -89,18 +88,21 @@ export default function Header() {
           id="mobile-menu"
           className="px-4 pb-4 space-y-3 text-lg font-semibold bg-black/95 border-t border-white/10 transition-all duration-300 ease-in-out"
         >
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setOpen(false)}
-              className={`block w-full py-3 px-3 rounded hover:bg-white/10 ${
-                router.pathname === link.href ? "text-crimson-primary" : ""
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const active = router.pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className={`block w-full py-3 px-3 rounded hover:bg-white/10 ${
+                  active ? "text-crimson-primary" : ""
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
       )}
     </header>
