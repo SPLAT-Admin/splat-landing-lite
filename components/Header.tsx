@@ -27,27 +27,29 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-black/90 text-white shadow-md backdrop-blur-md">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" aria-label="SPL@T home" className="flex items-center flex-shrink-0">
           <Image
             src="/splat-logo.png"
             alt="SPL@T Logo"
-            width={160}
-            height={60}
+            width={200}
+            height={80}
             priority
-            className="h-10 w-auto"
+            className="h-14 lg:h-16 w-auto"
           />
         </Link>
 
-        {/* Desktop Navigation (768px and up) */}
+        {/* Desktop Navigation (>=768px) */}
         {!isMobile && (
-          <nav className="flex flex-1 justify-end space-x-8 text-base font-semibold">
+          <nav className="flex flex-1 justify-evenly items-center text-[20pt] font-bold tracking-wide">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`hover:text-crimson-primary transition-colors ${router.pathname === link.href ? 'text-crimson-primary' : ''}`}
+                className={`px-6 hover:text-crimson-primary transition-colors ${
+                  router.pathname === link.href ? "text-crimson-primary" : ""
+                }`}
               >
                 {link.label}
               </Link>
@@ -55,7 +57,7 @@ export default function Header() {
           </nav>
         )}
 
-        {/* 🍔 Mobile Hamburger Stack Toggle */}
+        {/* 🍔 Mobile Hamburger Toggle (<768px) */}
         {isMobile && (
           <button
             onClick={() => setOpen(!open)}
@@ -65,7 +67,7 @@ export default function Header() {
             className="p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-crimson-primary rounded-md"
           >
             <svg
-              className="w-6 h-6"
+              className="w-7 h-7"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -85,14 +87,16 @@ export default function Header() {
       {isMobile && open && (
         <nav
           id="mobile-menu"
-          className="px-4 pb-4 space-y-3 text-base font-medium bg-black/95 border-t border-white/10 transition-all duration-300 ease-in-out"
+          className="px-4 pb-4 space-y-3 text-lg font-semibold bg-black/95 border-t border-white/10 transition-all duration-300 ease-in-out"
         >
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className={`block w-full py-2 px-2 rounded hover:bg-white/10 text-sm ${router.pathname === link.href ? 'text-crimson-primary' : ''}`}
+              className={`block w-full py-3 px-3 rounded hover:bg-white/10 ${
+                router.pathname === link.href ? "text-crimson-primary" : ""
+              }`}
             >
               {link.label}
             </Link>
