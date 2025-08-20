@@ -42,7 +42,7 @@ export default function Home() {
           <Link
             href="/signup"
             aria-label="Join the SPL@T waitlist"
-            className="mt-10 inline-block rounded-full bg-[#851825] px-16 py-6 text-[30pt] font-extrabold uppercase tracking-wide text-white shadow-[0_0_25px_rgba(216,13,39,0.35)] ring-2 ring-[#851825]/60 hover:bg-[#6f1320] focus:outline-none focus-visible:ring-4 animate-pulse"
+            className="mt-10 inline-block rounded-full bg-[#851825] px-16 py-6 text-[20pt] font-extrabold uppercase tracking-wide text-white shadow-[0_0_25px_rgba(216,13,39,0.35)] ring-2 ring-[#851825]/60 hover:bg-[#6f1320] focus:outline-none focus-visible:ring-4 animate-pulse"
           >
             JOIN THE WAITLIST
           </Link>
@@ -58,13 +58,13 @@ export default function Home() {
         </section>
 
         <Section id="who-we-are" className="px-4 pt-8 pb-12" title="Who We Are" titleClassName="text-[#851825] font-bold">
-          <p className="max-w-4xl text-[16pt]">
+          <p className="max-w-4xl text-[20pt]
             SPL@T is a queer-built, unapologetic, bold and sexy real-time community-based event & meetup platform designed to create authentic connections without shame. Built by and for the LGBTQ+ community, we're throwing out outdated systems—and building something secure, authentic, private, bold, sexy, and a little sassy.
           </p>
         </Section>
 
         <Section id="what-we-offer" className="bg-gray-900 px-4 py-12" title="What We're Offering" titleClassName="text-[#851825] font-bold">
-          <p className="max-w-4xl text-[16pt]">
+          <p className="max-w-4xl text-[20pt]">
             We’re creating a real-time digital biosphere—the SPL@TVerse—featuring the SPL@T app, including <span className="font-semibold">SP@T Map Live-View</span>, SPL@T Chat, SPL@T Live Lobby, SPL@T Codes, SPL@T Handles, exclusive merch shop, SPL@T Events & Collabs, <span className="font-semibold">SP@T Map HotSpots</span>, and more. Whether you want to meet now or just vibe online, SPL@T gives you options, visibility, and control.
           </p>
         </Section>
