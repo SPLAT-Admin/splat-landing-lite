@@ -17,24 +17,24 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-black/90 text-white shadow-md backdrop-blur-md">
-      <div className="mx-auto w-full max-w-[2400px] px-6 lg:px-10 py-5 flex items-center gap-8">
-        {/* Logo (bigger, confident) */}
+      <div className="mx-auto w-full max-w-[2400px] px-6 lg:px-12 py-5 flex items-center gap-8">
+        {/* Logo (slightly bigger so it pops) */}
         <Link href="/" aria-label="SPL@T home" className="flex items-center flex-shrink-0">
           <Image
             src="/splat-logo.png"
             alt="SPL@T Logo"
-            width={300}
-            height={120}
+            width={340}
+            height={140}
             priority
-            className="h-24 md:h-28 w-auto"
+            className="h-28 md:h-32 w-auto"
           />
         </Link>
 
-        {/* Desktop Navigation (room to breathe) */}
+        {/* Desktop Navigation (more breathing room, same labels/order) */}
         <nav
           role="navigation"
           aria-label="Primary"
-          className="hidden md:flex flex-1 justify-end items-center gap-24 lg:gap-20"
+          className="hidden md:flex flex-1 justify-end items-center gap-10 lg:gap-12 xl:gap-16 2xl:gap-20"
         >
           {navLinks.map((link) => {
             const active = router.pathname === link.href;
