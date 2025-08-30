@@ -68,5 +68,5 @@ export default splatApiHandler(async (req: NextApiRequest, res: NextApiResponse)
   }
 
   // 5) Return Success + Redirect Instruction
-  return sendSuccess(res, "Application submitted. Redirecting now...", { redirectTo: "/thank-you" });
+  return sendSuccess(res, "Application submitted. Redirecting now...", undefined, "/thank-you");
 });
