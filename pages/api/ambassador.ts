@@ -36,9 +36,11 @@ export default splatApiHandler(async (req: NextApiRequest, res: NextApiResponse)
   const captchaOK = await verifyCaptcha(body.captchaToken, req.headers["x-forwarded-for"] as string);
   if (!captchaOK) return sendError(res, 403, "CAPTCHA verification failed");
 
-  // 3) Database Insert
+  // 3) Database Insert (omit captchaToken and ensure correct types)
+  const { captchaToken, number_of_followers, ...rest } = body;
   const insertPayload = {
-    ...body,
+    ...rest,
+    number_of_followers: number_of_followers ? Number(number_of_followers) : null,
     status: "pending",
     email: body.email.trim().toLowerCase(),
   };
