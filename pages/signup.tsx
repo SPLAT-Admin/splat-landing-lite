@@ -51,12 +51,16 @@ export default function SignupPage() {
           marketingConsent,
           turnstileToken,
           referralCode: referralCode ? referralCode.toUpperCase() : null,
+          signupSource: "website",
         }),
       });
 
-      if (res.ok || res.status === 409) return router.push("/thank-you");
-
       const data = await res.json().catch(() => ({}));
+      if (res.ok || res.status === 409) {
+        const dest = data?.redirectTo || "/thank-you";
+        return router.push(dest);
+      }
+
       const message: string = data?.error || "Something went wrong.";
       if (/captcha|token|turnstile/i.test(message)) {
         setError("Captcha check failed — try again.");

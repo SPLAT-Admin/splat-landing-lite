@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import SplatCaptcha from '../components/SplatCaptcha';
 import { AmbassadorForm } from '../types';
 
 export default function AmbassadorApply() {
+  const router = useRouter();
   const [formData, setFormData] = useState<AmbassadorForm>({
     first_name: '',
     last_name: '',
@@ -19,7 +21,6 @@ export default function AmbassadorApply() {
     captchaToken: ''
   });
 
-  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -42,13 +43,14 @@ export default function AmbassadorApply() {
         body: JSON.stringify(formData)
       });
 
-      if (!response.ok) {
-        const errJson = await response.json().catch(() => null);
-        setError(errJson?.error || `Submission failed (${response.status})`);
+      const resJson = await response.json().catch(() => null);
+      if (!response.ok || !resJson?.success) {
+        setError(resJson?.error || `Submission failed (${response.status})`);
         return;
       }
 
-      setSubmitted(true);
+      const redirect = resJson?.redirectTo || resJson?.data?.redirectTo || '/thank-you';
+      await router.push(redirect);
     } catch (err) {
       setError(`Something went wrong: ${err}`);
     }
@@ -62,8 +64,7 @@ export default function AmbassadorApply() {
       <section className="bg-background text-foreground min-h-screen py-20 px-4 flex justify-center items-center">
         <div className="max-w-2xl w-full">
           <h1 className="text-5xl font-bold text-center mb-8 text-crimson drop-shadow-lg">Be a SPL@T Ambassador</h1>
-          {!submitted ? (
-            <form onSubmit={handleSubmit} className="bg-black p-8 rounded-xl shadow-lg space-y-6">
+          <form onSubmit={handleSubmit} className="bg-black p-8 rounded-xl shadow-lg space-y-6">
               {[
                 { id: 'first_name', label: 'First Name', type: 'text', required: true },
                 { id: 'last_name', label: 'Last Name', type: 'text', required: true },
@@ -137,12 +138,6 @@ export default function AmbassadorApply() {
               {/* Error Message */}
               {error && <p className="text-red-500 mt-2">{error}</p>}
             </form>
-          ) : (
-            <div className="bg-gray-900 p-6 rounded-lg shadow-md text-center">
-              <h2 className="text-2xl font-bold mb-4">Thank you for applying!</h2>
-              <p>We’ll review your application and get back to you soon. 💦</p>
-            </div>
-          )}
         </div>
       </section>
     </>
