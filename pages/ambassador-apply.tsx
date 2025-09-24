@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import SplatCaptcha from '../components/SplatCaptcha';
 import { AmbassadorForm } from '../types';
@@ -21,6 +22,8 @@ export default function AmbassadorApply() {
 
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,28 +32,51 @@ export default function AmbassadorApply() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    if (loading) return;
+
+    setLoading(true);
 
     if (!formData.captchaToken) {
       setError('Please complete the CAPTCHA.');
+      setLoading(false);
       return;
     }
 
     try {
+      const payload: AmbassadorForm = {
+        ...formData,
+        number_of_followers: Number(
+          typeof formData.number_of_followers === 'string'
+            ? formData.number_of_followers.replace(/,/g, '').trim()
+            : formData.number_of_followers
+        ),
+      };
+
       const response = await fetch('/api/ambassador', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
 
       if (!response.ok) {
         const errJson = await response.json().catch(() => null);
         setError(errJson?.error || `Submission failed (${response.status})`);
+        setFormData((prev) => ({ ...prev, captchaToken: '' }));
+        setLoading(false);
         return;
       }
-
+      const json = await response.json().catch(() => ({ success: true }));
+      const redirect = json?.redirectTo || json?.data?.redirectTo;
+      if (redirect) {
+        await router.push(redirect);
+        return;
+      }
       setSubmitted(true);
     } catch (err) {
       setError(`Something went wrong: ${err}`);
+      setFormData((prev) => ({ ...prev, captchaToken: '' }));
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -124,14 +150,17 @@ export default function AmbassadorApply() {
               <SplatCaptcha
                 containerId="cf-turnstile-ambassador"
                 onVerify={(token) => setFormData((prev: AmbassadorForm) => ({ ...prev, captchaToken: token }))}
+                onExpire={() => setFormData((prev) => ({ ...prev, captchaToken: '' }))}
+                onError={() => setFormData((prev) => ({ ...prev, captchaToken: '' }))}
               />
 
               {/* Submit Button */}
               <button
                 type="submit"
-                className="mt-4 bg-crimson hover:bg-red-800 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition"
+                disabled={loading}
+                className="mt-4 bg-crimson hover:bg-red-800 text-white font-bold py-3 px-6 rounded-full shadow-md hover:shadow-lg transition disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Submit Application
+                {loading ? 'Submitting…' : 'Submit Application'}
               </button>
 
               {/* Error Message */}

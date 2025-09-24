@@ -1,7 +1,6 @@
 export default function SiteMapPage() {
   const links = [
     { href: '/', label: 'Home' },
-    { href: '/founder', label: 'Founder' },
     { href: '/ambassador', label: 'Ambassador' },
     { href: '/ambassador-apply', label: 'Ambassador Apply' },
     { href: '/merch', label: 'Merch' },

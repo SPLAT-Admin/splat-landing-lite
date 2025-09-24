@@ -1,19 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const mode =
-    process.env.STRIPE_SECRET_KEY?.startsWith('sk_live_')
-      ? 'LIVE'
-      : process.env.STRIPE_SECRET_KEY?.startsWith('sk_test_')
-      ? 'TEST'
-      : 'UNKNOWN';
-
   return res.status(200).json({
-    mode,
-    stripeConfigured: Boolean(process.env.STRIPE_SECRET_KEY),
-    stripeTier1Configured: Boolean(process.env.STRIPE_PRICE_TIER1),
-    stripeTier2Configured: Boolean(process.env.STRIPE_PRICE_TIER2),
     baseUrlConfigured: Boolean(process.env.NEXT_PUBLIC_BASE_URL),
     cloudflareConfigured: Boolean(process.env.CLOUDFLARE_SECRET_KEY),
+    resendConfigured: Boolean(process.env.RESEND_API_KEY),
+    supabaseConfigured:
+      Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL) &&
+      Boolean(process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY),
   });
 }

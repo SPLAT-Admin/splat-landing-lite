@@ -6,6 +6,7 @@ import {
   sendSuccess,
   verifyCaptcha,
   validateForm,
+  supabaseService,
 } from '@/lib';
 import { sendEmail } from '@/lib/sendEmail';
 import type { ContactForm } from '@/types';
@@ -29,6 +30,19 @@ export default splatApiHandler(async (req: NextApiRequest, res: NextApiResponse)
   const captchaOK = await verifyCaptcha(body.captchaToken, req.headers['x-forwarded-for'] as string);
   if (!captchaOK) return sendError(res, 403, 'CAPTCHA verification failed');
 
+  const insertPayload = {
+    name: body.name.trim(),
+    email: body.email.trim().toLowerCase(),
+    message: body.message.trim(),
+  };
+
+  const contactTable = process.env.SUPABASE_CONTACT_TABLE || 'contacts';
+  const { error: contactError } = await supabaseService.from(contactTable).insert([insertPayload]);
+  if (contactError) {
+    console.error('Contact Supabase insert failure:', contactError);
+    return sendError(res, 500, 'Failed to record your message');
+  }
+
   // 3) Send message to support
   try {
     await sendEmail({
@@ -47,5 +61,5 @@ export default splatApiHandler(async (req: NextApiRequest, res: NextApiResponse)
   }
 
   // 4) Success (with redirect hint)
-  return sendSuccess(res, 'Message sent successfully', { redirectTo: '/thank-you' });
+  return sendSuccess(res, 'Message sent successfully', undefined, '/thank-you');
 });

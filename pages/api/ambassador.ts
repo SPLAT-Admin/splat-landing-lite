@@ -11,6 +11,8 @@ import { sendEmail } from "@/lib/sendEmail";
 import type { AmbassadorForm } from "@/types";
 import { supabaseService } from "@/lib/supabaseClient";
 
+const AMBASSADOR_TABLE = process.env.SUPABASE_AMBASSADOR_TABLE || "ambassador";
+
 export default splatApiHandler(async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") return sendError(res, 405, "Method Not Allowed");
 
@@ -36,15 +38,31 @@ export default splatApiHandler(async (req: NextApiRequest, res: NextApiResponse)
   const captchaOK = await verifyCaptcha(body.captchaToken, req.headers["x-forwarded-for"] as string);
   if (!captchaOK) return sendError(res, 403, "CAPTCHA verification failed");
 
-  // 3) Database Insert
+  const followerRaw = typeof body.number_of_followers === "string"
+    ? body.number_of_followers.replace(/,/g, "").trim()
+    : body.number_of_followers;
+  const followerCount = Number(followerRaw);
+  if (!Number.isFinite(followerCount) || followerCount < 0) {
+    return sendError(res, 400, "Follower count must be a positive number");
+  }
+
   const insertPayload = {
-    ...body,
-    status: "pending",
+    first_name: body.first_name.trim(),
+    last_name: body.last_name.trim(),
+    preferred_name: body.preferred_name?.trim() || null,
+    dob: body.dob,
     email: body.email.trim().toLowerCase(),
+    city: body.city.trim(),
+    state: body.state,
+    social_media_handles: body.social_media_handles.trim(),
+    number_of_followers: followerCount,
+    qualifications_why: body.qualifications_why.trim(),
+    referral: body.referral?.trim() || null,
+    status: "pending",
   };
 
   const { error: supaError } = await supabaseService
-    .from("ambassador")
+    .from(AMBASSADOR_TABLE)
     .insert([insertPayload]);
   if (supaError) {
     console.error("Supabase insert error:", supaError);
@@ -68,5 +86,5 @@ export default splatApiHandler(async (req: NextApiRequest, res: NextApiResponse)
   }
 
   // 5) Return Success + Redirect Instruction
-  return sendSuccess(res, "Application submitted. Redirecting now...", { redirectTo: "/thank-you" });
+  return sendSuccess(res, "Application submitted. Redirecting now...", undefined, "/thank-you");
 });

@@ -1,18 +1,12 @@
 // pages/api/signup.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createClient } from "@supabase/supabase-js";
-import { Resend } from "resend";
+import { supabaseService } from "@/lib/supabaseClient";
+import { sendEmail } from "@/lib/sendEmail";
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!;
-const RESEND_API_KEY = process.env.RESEND_API_KEY!;
 const CLOUDFLARE_SECRET_KEY = process.env.CLOUDFLARE_SECRET_KEY!;
 
 const FROM_EMAIL = "SPL@T <noreply@usesplat.com>";
 const BRAND_NAME = process.env.BRAND_NAME || "SPL@T";
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
-const resend = new Resend(RESEND_API_KEY);
 
 const isValidEmail = (v: string) => /.+@.+\..+/.test(v.trim()) && v.trim().length <= 320;
 
@@ -89,30 +83,76 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ ok: false, error: "Invalid referral code." });
     }
 
-    const allowedSources = new Set(["website", "referral", "social_media", "ads", "other"]);
-    const src = allowedSources.has(signupSource) ? signupSource : "website";
-
-    const { error: dbError } = await supabase.from("email_signups").insert([
-      {
-        email: email.trim().toLowerCase(),
-        first_name: firstName || null,
-        last_name: lastName || null,
-        marketing_consent: !!marketingConsent,
-        signup_source: src,
-        referral_code: ref,
-      },
+    const allowedSources = new Set([
+      "website",
+      "referral",
+      "social_media",
+      "ads",
+      "other",
+      "footer_form",
     ]);
+    const normalizedSource = typeof signupSource === "string"
+      ? signupSource.trim().toLowerCase()
+      : "website";
+    const src = allowedSources.has(normalizedSource) ? normalizedSource : "website";
+
+    const sanitizedEmail = email.trim().toLowerCase();
+    const sanitizedFirst = typeof firstName === "string" ? firstName.trim() : "";
+    const sanitizedLast = typeof lastName === "string" ? lastName.trim() : "";
+
+    let existingMetadata: Record<string, any> | undefined;
+    const { data: existingRow, error: existingError } = await supabaseService
+      .from("email_signups")
+      .select("metadata")
+      .eq("email", sanitizedEmail)
+      .maybeSingle();
+
+    if (existingError) {
+      console.error("Signup metadata fetch error:", existingError);
+      return res.status(500).json({ ok: false, error: "Database error." });
+    }
+
+    if (existingRow?.metadata && typeof existingRow.metadata === "object") {
+      existingMetadata = { ...existingRow.metadata };
+    }
+
+    const metadata: Record<string, any> = existingMetadata ? { ...existingMetadata } : {};
+    const metadataUpdatedAt = new Date().toISOString();
+
+    if (sanitizedFirst) metadata.first_name = sanitizedFirst;
+    else delete metadata.first_name;
+    if (sanitizedLast) metadata.last_name = sanitizedLast;
+    else delete metadata.last_name;
+    metadata.marketing_consent = !!marketingConsent;
+    if (ref) metadata.referral_code = ref;
+    else delete metadata.referral_code;
+    metadata.last_signup_at = metadataUpdatedAt;
+    metadata.last_signup_source = src;
+    if (!metadata.first_signup_at) metadata.first_signup_at = metadataUpdatedAt;
+    const history = Array.isArray(metadata.signup_source_history)
+      ? metadata.signup_source_history.filter(Boolean)
+      : [];
+    if (!history.includes(src)) history.push(src);
+    metadata.signup_source_history = history;
+
+    const { error: dbError } = await supabaseService
+      .from("email_signups")
+      .upsert([
+        {
+          email: sanitizedEmail,
+          signup_source: src,
+          metadata,
+          updated_at: metadataUpdatedAt,
+        },
+      ], { onConflict: "email" });
 
     if (dbError) {
-      if ((dbError as any)?.code === "23505" || /duplicate|unique/i.test(dbError.message)) {
-        return res.status(409).json({ ok: true, message: "Already subscribed", redirectTo: "/thank-you" });
-      }
       console.error("Signup DB error:", dbError);
       return res.status(500).json({ ok: false, error: "Database error." });
     }
 
     try {
-      await resend.emails.send({
+      await sendEmail({
         from: FROM_EMAIL,
         to: email,
         subject: `You're on the list — ${BRAND_NAME}`,

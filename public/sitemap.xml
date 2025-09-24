@@ -4,7 +4,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const baseUrl = 'https://www.usesplat.com';
   const pages = [
     '/',
-    '/founder',
     '/ambassador',
     '/ambassador-apply',
     '/merch',

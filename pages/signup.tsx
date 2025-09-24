@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import SplatCaptcha from "@/components/SplatCaptcha";
+import PasswordField from "@/components/PasswordField";
+import { supabase } from "@/lib/supabaseClient";
 
 const isValidEmail = (value: string) => /.+@.+\..+/.test(value.trim()) && value.trim().length <= 320;
 
@@ -13,6 +15,9 @@ export default function SignupPage() {
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [referralCode, setReferralCode] = useState("");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [password, setPassword] = useState("");
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>("");
@@ -29,18 +34,44 @@ export default function SignupPage() {
     }
   }, [router.isReady, router.query.ref, router.query.referral]);
 
+  useEffect(() => {
+    if (passwordValid) {
+      setPasswordError(null);
+    }
+  }, [passwordValid]);
+
   const canSubmit = useMemo(
-    () => !loading && isValidEmail(email) && !!turnstileToken,
-    [loading, email, turnstileToken]
+    () => !loading && isValidEmail(email) && !!turnstileToken && passwordValid,
+    [loading, email, turnstileToken, passwordValid]
   );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!canSubmit) return;
+    if (!canSubmit) {
+      if (!passwordValid) {
+        setPasswordError("Password must be strong and meet all requirements.");
+      }
+      return;
+    }
     setLoading(true);
     setError("");
 
     try {
+      const { error: signUpError } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
+        options: {
+          data: {
+            first_name: firstName.trim() || null,
+            last_name: lastName.trim() || null,
+          },
+        },
+      });
+
+      if (signUpError && !/registered/i.test(signUpError.message)) {
+        throw new Error(signUpError.message || "Failed to create account.");
+      }
+
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,9 +85,12 @@ export default function SignupPage() {
         }),
       });
 
-      if (res.ok || res.status === 409) return router.push("/thank-you");
-
       const data = await res.json().catch(() => ({}));
+
+      if (res.ok || res.status === 409) {
+        const redirect = data?.redirectTo || data?.data?.redirectTo || "/thank-you";
+        return router.push(redirect);
+      }
       const message: string = data?.error || "Something went wrong.";
       if (/captcha|token|turnstile/i.test(message)) {
         setError("Captcha check failed — try again.");
@@ -68,8 +102,9 @@ export default function SignupPage() {
       } else {
         setError(message);
       }
-    } catch (err) {
-      setError("Network issue — try again in a moment.");
+    } catch (err: any) {
+      const message = typeof err?.message === "string" ? err.message : "Network issue — try again in a moment.";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -127,6 +162,20 @@ export default function SignupPage() {
           </div>
         </div>
 
+        <div className="mb-6">
+          <PasswordField
+            value={password}
+            onChange={setPassword}
+            enforceStrength
+            onValidityChange={setPasswordValid}
+            label="Create Password"
+            placeholder="Craft something fierce"
+          />
+          {passwordError && (
+            <p className="mt-2 text-sm text-red-400">{passwordError}</p>
+          )}
+        </div>
+
         <div className="mb-4">
           <label htmlFor="referral" className="font-semibold mb-1 block">Referral Code (optional)</label>
           <input
@@ -153,7 +202,11 @@ export default function SignupPage() {
         </label>
 
         <div className="mt-4">
-          <SplatCaptcha onVerify={setTurnstileToken} />
+          <SplatCaptcha
+            onVerify={setTurnstileToken}
+            onExpire={() => setTurnstileToken(null)}
+            onError={() => setTurnstileToken(null)}
+          />
           <p className="text-xs text-gray-500 mt-2">Protected by Turnstile. We hate bots.</p>
         </div>
 

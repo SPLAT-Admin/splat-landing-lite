@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import SplatCaptcha from '../components/SplatCaptcha';
 import { ContactForm } from '../types';
@@ -13,6 +14,7 @@ export default function ContactUsPage() {
 
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [error, setError] = useState('');
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -36,12 +38,26 @@ export default function ContactUsPage() {
         body: JSON.stringify(form)
       });
 
-      if (!res.ok) throw new Error('Submission failed');
+      const json = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        const message = json?.error || 'Submission failed';
+        setForm((prev) => ({ ...prev, captchaToken: '' }));
+        throw new Error(message);
+      }
+
+      const redirect = json?.redirectTo || json?.data?.redirectTo;
       setStatus('success');
       setForm({ name: '', email: '', message: '', captchaToken: '' });
+
+      if (redirect) {
+        await router.push(redirect);
+        return;
+      }
     } catch (err: any) {
       setStatus('error');
-      setError(err.message);
+      setError(err.message || 'Submission failed');
+      setForm((prev) => ({ ...prev, captchaToken: '' }));
     }
   };
 
@@ -101,6 +117,8 @@ export default function ContactUsPage() {
             <SplatCaptcha
               containerId="cf-turnstile-contact"
               onVerify={(token) => setForm((prev: ContactForm) => ({ ...prev, captchaToken: token }))}
+              onExpire={() => setForm((prev) => ({ ...prev, captchaToken: '' }))}
+              onError={() => setForm((prev) => ({ ...prev, captchaToken: '' }))}
             />
 
             <button
