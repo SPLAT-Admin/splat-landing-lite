@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import type { ReactNode } from "react";
 
 interface SectionProps {
@@ -73,9 +74,13 @@ export default function TermsPage() {
                 This is a high-vibe space--keep it that way. You agree not to:
               </p>
               <ul className="mt-4 list-disc space-y-2 pl-6 text-[16pt] leading-relaxed text-white/90">
-                <li>Violate our
-                  <a className="ml-1 font-semibold text-[#851825] underline" href="/community">Community Standards</a>
-                  or any other policy we publish.</li>
+                <li>
+                  Violate our{" "}
+                  <Link href="/community" className="ml-1 font-semibold text-[#851825] underline">
+                    Community Standards
+                  </Link>{" "}
+                  or any other policy we publish.
+                </li>
                 <li>Engage in harassment, hate, stalking, threats, exploitation, or non-consensual behavior.</li>
                 <li>Impersonate any person or entity, or submit false data for verification, referrals, or promotions.</li>
                 <li>Scrape, spider, reverse engineer, or otherwise abuse our APIs, code, or infrastructure.</li>
