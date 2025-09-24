@@ -23,10 +23,10 @@ export default function Header() {
           <Image
             src="/splat-logo.png"
             alt="SPL@T Logo"
-            width={340}
-            height={140}
+            width={380}
+            height={160}
             priority
-            className="h-28 md:h-32 w-auto"
+            className="h-32 md:h-36 lg:h-40 w-auto"
           />
         </Link>
 
@@ -34,7 +34,7 @@ export default function Header() {
         <nav
           role="navigation"
           aria-label="Primary"
-          className="hidden md:flex flex-1 justify-end items-center gap-10 lg:gap-12 xl:gap-16 2xl:gap-20"
+          className="hidden md:flex flex-1 justify-end items-center gap-5 lg:gap-6"
         >
           {navLinks.map((link) => {
             const active = router.pathname === link.href;

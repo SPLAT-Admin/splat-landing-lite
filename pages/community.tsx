@@ -1,5 +1,5 @@
-import LegalLayout from "../components/LegalLayout";
-import { ReactNode } from "react";
+import Head from "next/head";
+import type { ReactNode } from "react";
 
 interface SectionProps {
   title: string;
@@ -8,77 +8,109 @@ interface SectionProps {
 
 export default function Community() {
   return (
-    <LegalLayout title="SPL@T Community Standards">
-      <section className="space-y-8 bg-acid-white text-black px-6 py-12">
-        <Standard title="Consent is Non‑Negotiable">
-          Clear, enthusiastic, ongoing. Consent must be explicit and can be withdrawn at any time. Engaging without consent may lead to immediate suspension or ban, and may be reported to relevant authorities when applicable.
-        </Standard>
+    <>
+      <Head>
+        <title>Community Standards | SPL@T</title>
+        <meta name="description" content="The SPL@T Community Standards keep our spaces bold, safe, and unapologetically queer." />
+      </Head>
 
-        <Standard title="Respect is Required">
-          No hate speech, bullying, or discrimination—ever. This includes, but is not limited to, racism, transphobia, homophobia, fatphobia, ableism, ageism, or xenophobia. SPL@T maintains a zero‑tolerance stance on harassment.
-        </Standard>
+      <section className="bg-black text-white px-6 py-16">
+        <div className="mx-auto max-w-4xl space-y-8">
+          <header className="text-center">
+            <h1 className="text-[44pt] font-extrabold tracking-tight text-[#851825] drop-shadow-lg">
+              SPL@T Community Standards
+            </h1>
+          </header>
 
-        <Standard title="Be Real">
-          No catfishing, no bots, no fake profiles. Misrepresentation, identity theft, or impersonation of another user or entity will result in immediate removal and possible permanent ban.
-        </Standard>
+          <div className="rounded-3xl border border-gray-800 bg-acid-white px-6 py-12 text-black md:px-10 md:py-14">
+            <section className="space-y-8">
+              <Standard title="Consent is Non-Negotiable">
+                Clear, enthusiastic, ongoing. Consent must be explicit and can be withdrawn at any time. Engaging without
+                consent may lead to immediate suspension or ban, and may be reported to relevant authorities when
+                applicable.
+              </Standard>
 
-        <Standard title="Be Sexy, Not Shady">
-          Flirt hard, but stay honest. Deceptive or manipulative behavior, including scams or solicitation in violation of local laws, is prohibited.
-        </Standard>
+              <Standard title="Respect is Required">
+                No hate speech, bullying, or discrimination--ever. This includes, but is not limited to, racism, transphobia,
+                homophobia, fatphobia, ableism, ageism, or xenophobia. SPL@T maintains a zero-tolerance stance on
+                harassment.
+              </Standard>
 
-        <Standard title="No Shame, All Pride">
-          Every body, identity, and kink deserves dignity. Expression of identity is welcome as long as it complies with our content guidelines and legal requirements.
-        </Standard>
+              <Standard title="Be Real">
+                No catfishing, no bots, no fake profiles. Misrepresentation, identity theft, or impersonation of another
+                user or entity will result in immediate removal and possible permanent ban.
+              </Standard>
 
-        <Standard title="Safety First">
-          Report abuse—don’t ignore it. SPL@T acts quickly to investigate reports, and reserves the right to suspend or ban accounts that pose a threat to user safety.
-        </Standard>
+              <Standard title="Be Sexy, Not Shady">
+                Flirt hard, but stay honest. Deceptive or manipulative behavior, including scams or solicitation in
+                violation of local laws, is prohibited.
+              </Standard>
 
-        <Standard title="Privacy is Power">
-          Don’t out others, don’t leak receipts, don’t violate trust. Unauthorized sharing of private communications, images, or personal information is a serious violation that may result in permanent removal.
-        </Standard>
+              <Standard title="No Shame, All Pride">
+                Every body, identity, and kink deserves dignity. Expression of identity is welcome as long as it complies
+                with our content guidelines and legal requirements.
+              </Standard>
 
-        <Standard title="You’re the Vibe">
-          You help shape the community—lead with authenticity. Behavior that disrupts the safety, inclusivity, or intended use of the SPL@Tverse™ will be addressed through moderation actions.
-        </Standard>
+              <Standard title="Safety First">
+                Report abuse--don't ignore it. SPL@T acts quickly to investigate reports, and reserves the right to suspend
+                or ban accounts that pose a threat to user safety.
+              </Standard>
 
-        <p className="italic text-gray-400">
-          These standards aren’t suggestions—they’re the foundation of a fierce, safe, and radically real digital experience. SPL@T™ enforces them through a blend of community moderation, AI‑driven flagging tools, and direct user reporting. Violations lead to warnings, suspensions, or bans, ensuring a protected and respectful space for all.
-        </p>
+              <Standard title="Privacy is Power">
+                Don't out others, don't leak receipts, don't violate trust. Unauthorized sharing of private communications,
+                images, or personal information is a serious violation that may result in permanent removal.
+              </Standard>
 
-        <h2 className="text-2xl font-bold text-deep-crimson mt-10 mb-4">SPL@T Core Values</h2>
-        <Value title="Affordability First">
-          Access should never be gated by money. SPL@T™ keeps pricing low so everyone can connect without exploitation.
-        </Value>
+              <Standard title="You're the Vibe">
+                You help shape the community--lead with authenticity. Behavior that disrupts the safety, inclusivity, or
+                intended use of the SPL@Tverse™ will be addressed through moderation actions.
+              </Standard>
 
-        <Value title="Privacy is Power">
-          We don’t sell your data. We don’t leak your secrets. Full stop. User trust is sacred.
-        </Value>
+              <p className="italic text-gray-400">
+                These standards aren't suggestions--they're the foundation of a fierce, safe, and radically real digital
+                experience. SPL@T™ enforces them through a blend of community moderation, AI-driven flagging tools, and
+                direct user reporting. Violations lead to warnings, suspensions, or bans, ensuring a protected and
+                respectful space for all.
+              </p>
 
-        <Value title="Authentic Connections">
-          We are anti-bot, anti-fake, pro-real. Every user interaction is designed to be genuine, verified, and meaningful.
-        </Value>
+              <h2 className="text-2xl font-bold text-deep-crimson mt-10 mb-4">SPL@T Core Values</h2>
+              <Value title="Affordability First">
+                Access should never be gated by money. SPL@T™ keeps pricing low so everyone can connect without
+                exploitation.
+              </Value>
 
-        <Value title="Radical Sex‑Positivity">
-          No shame, no censorship. We honor kink, identity, and expression in all forms.
-        </Value>
+              <Value title="Privacy is Power">
+                We don't sell your data. We don't leak your secrets. Full stop. User trust is sacred.
+              </Value>
 
-        <Value title="Security by Design">
-          Verification systems and safety tools are built in from day one—not as an afterthought.
-        </Value>
+              <Value title="Authentic Connections">
+                We are anti-bot, anti-fake, pro-real. Every user interaction is designed to be genuine, verified, and
+                meaningful.
+              </Value>
 
-        <Value title="Community Over Commodity">
-          You’re not a product. You’re part of something bigger. We build with and for the SPL@Tverse™.
-        </Value>
+              <Value title="Radical Sex-Positivity">
+                No shame, no censorship. We honor kink, identity, and expression in all forms.
+              </Value>
+
+              <Value title="Security by Design">
+                Verification systems and safety tools are built in from day one--not as an afterthought.
+              </Value>
+
+              <Value title="Community Over Commodity">
+                You're not a product. You're part of something bigger. We build with and for the SPL@Tverse™.
+              </Value>
+            </section>
+          </div>
+        </div>
       </section>
-    </LegalLayout>
+    </>
   );
 }
 
 function Standard({ title, children }: SectionProps) {
   return (
     <div className="mb-6">
-      <h3 className="font-bold text-lg text-deep-crimson mb-2">{title}</h3>
+      <h3 className="mb-2 text-lg font-bold text-deep-crimson">{title}</h3>
       <p className="text-gray-800">{children}</p>
     </div>
   );
@@ -87,7 +119,7 @@ function Standard({ title, children }: SectionProps) {
 function Value({ title, children }: SectionProps) {
   return (
     <div className="mb-4">
-      <h4 className="font-bold text-md text-deep-crimson mb-1">{title}</h4>
+      <h4 className="mb-1 text-md font-bold text-deep-crimson">{title}</h4>
       <p className="text-gray-800">{children}</p>
     </div>
   );
