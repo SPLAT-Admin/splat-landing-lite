@@ -1,15 +1,10 @@
 // pages/api/contact.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import {
-  splatApiHandler,
-  sendError,
-  sendSuccess,
-  verifyCaptcha,
-  validateForm,
-  supabaseService,
-} from '@/lib';
+import { splatApiHandler, sendError, sendSuccess, verifyCaptcha, validateForm, getSupabaseServiceClient } from '@/lib';
 import { sendEmail } from '@/lib/sendEmail';
 import type { ContactForm } from '@/types';
+
+const supabaseService = getSupabaseServiceClient();
 
 export default splatApiHandler(async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return sendError(res, 405, 'Method Not Allowed');

@@ -1,7 +1,9 @@
 // pages/api/signup.ts
 import type { NextApiRequest, NextApiResponse } from "next";
-import { supabaseService } from "@/lib/supabaseClient";
+import { getSupabaseServiceClient } from "@/lib/supabaseClient";
 import { sendEmail } from "@/lib/sendEmail";
+
+const supabaseService = getSupabaseServiceClient();
 
 const CLOUDFLARE_SECRET_KEY = process.env.CLOUDFLARE_SECRET_KEY!;
 

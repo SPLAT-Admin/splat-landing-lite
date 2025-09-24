@@ -17,16 +17,16 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-black/90 text-white shadow-md backdrop-blur-md">
-      <div className="mx-auto w-full max-w-[2400px] px-6 lg:px-12 py-5 flex items-center gap-8">
+      <div className="mx-auto w-full max-w-[2400px] px-6 lg:px-12 py-5 flex items-center gap-8 lg:gap-12">
         {/* Logo (slightly bigger so it pops) */}
         <Link href="/" aria-label="SPL@T home" className="flex items-center flex-shrink-0">
           <Image
             src="/splat-logo.png"
             alt="SPL@T Logo"
-            width={380}
-            height={160}
+            width={420}
+            height={200}
             priority
-            className="h-32 md:h-36 lg:h-40 w-auto"
+            className="h-32 md:h-40 lg:h-48 xl:h-56 w-auto transition-transform duration-500 ease-out hover:scale-[1.02]"
           />
         </Link>
 
@@ -34,7 +34,7 @@ export default function Header() {
         <nav
           role="navigation"
           aria-label="Primary"
-          className="hidden md:flex flex-1 justify-end items-center gap-5 lg:gap-6"
+          className="hidden md:flex flex-1 justify-end items-center gap-6 lg:gap-10 xl:gap-14"
         >
           {navLinks.map((link) => {
             const active = router.pathname === link.href;

@@ -6,10 +6,12 @@ import {
   sendSuccess,
   verifyCaptcha,
   validateForm,
+  getSupabaseServiceClient,
 } from "@/lib";
 import { sendEmail } from "@/lib/sendEmail";
 import type { AmbassadorForm } from "@/types";
-import { supabaseService } from "@/lib/supabaseClient";
+
+const supabaseService = getSupabaseServiceClient();
 
 const AMBASSADOR_TABLE = process.env.SUPABASE_AMBASSADOR_TABLE || "ambassador";
 

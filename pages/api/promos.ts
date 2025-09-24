@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { supabaseService } from "@/lib/supabaseClient";
+import { getSupabaseServiceClient } from "@/lib/supabaseClient";
+
+const supabaseService = getSupabaseServiceClient();
 
 type PromoPayload = {
   id?: string;
