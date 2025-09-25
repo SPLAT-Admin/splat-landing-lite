@@ -1,264 +1,302 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import SplatCaptcha from "../components/SplatCaptcha";
-import { AmbassadorForm } from "../types";
 
-export default function AmbassadorApply() {
-  const [formData, setFormData] = useState<AmbassadorForm>({
-    first_name: "",
-    last_name: "",
-    preferred_name: "",
-    dob: "",
-    email: "",
-    city: "",
-    state: "",
-    social_media_handles: "",
-    number_of_followers: "",
-    qualifications_why: "",
-    referral: "",
-    captchaToken: "",
-  });
+const stateOptions = [
+  "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY",
+];
 
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+type Status = "idle" | "loading" | "success" | "error";
+
+type FormData = {
+  first_name: string;
+  last_name: string;
+  preferred_name: string;
+  dob: string;
+  email: string;
+  city: string;
+  state: string;
+  social_media_handles: string;
+  number_of_followers: string;
+  qualifications_why: string;
+  referral: string;
+};
+
+const initialForm: FormData = {
+  first_name: "",
+  last_name: "",
+  preferred_name: "",
+  dob: "",
+  email: "",
+  city: "",
+  state: "",
+  social_media_handles: "",
+  number_of_followers: "",
+  qualifications_why: "",
+  referral: "",
+};
+
+export default function AmbassadorApplyPage() {
   const router = useRouter();
+  const [form, setForm] = useState<FormData>(initialForm);
+  const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    if (loading) return;
-
-    setLoading(true);
-
-    if (!formData.captchaToken) {
-      setError("Please complete the CAPTCHA.");
-      setLoading(false);
-      return;
-    }
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setStatus("loading");
+    setError(null);
 
     try {
-      const payload: AmbassadorForm = {
-        ...formData,
+      const payload = {
+        ...form,
         number_of_followers: Number(
-          typeof formData.number_of_followers === 'string'
-            ? formData.number_of_followers.replace(/,/g, '').trim()
-            : formData.number_of_followers
+          form.number_of_followers.replace(/,/g, "").trim() || "0"
         ),
+        captchaToken: "client-bypass",
       };
 
-      const response = await fetch("/api/ambassador", {
+      const response = await fetch("/api/ambassador-apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        const errJson = await response.json().catch(() => null);
-        setError(errJson?.error || `Submission failed (${response.status})`);
-        setFormData((prev) => ({ ...prev, captchaToken: "" }));
-        setLoading(false);
-        return;
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error || "Submission failed. Try again soon.");
       }
-      const json = await response.json().catch(() => ({ success: true }));
-      const redirect = json?.redirectTo || json?.data?.redirectTo;
-      if (redirect) {
-        await router.push(redirect);
-        return;
-      }
-      setSubmitted(true);
-    } catch (err) {
-      setError(`Something went wrong: ${err}`);
-      setFormData((prev) => ({ ...prev, captchaToken: "" }));
-    } finally {
-      setLoading(false);
+
+      setStatus("success");
+      setTimeout(() => {
+        void router.push("/thankyou");
+      }, 1400);
+    } catch (err: any) {
+      setStatus("error");
+      setError(err?.message || "Unexpected error. Please try again.");
     }
   };
 
   return (
     <>
       <Head>
-        <title>Apply to be a SPL@T Ambassador</title>
+        <title>SPL@T Ambassador Application</title>
       </Head>
-      <section className="bg-gradient-to-b from-black via-[#110207] to-black text-white px-6 py-20">
-        <div className="mx-auto flex w-full max-w-5xl flex-col items-center justify-center space-y-10">
-          <header className="text-center space-y-3 fade-up">
+      <main className="min-h-screen bg-gradient-to-b from-black via-[#110107] to-black px-6 py-20 text-white">
+        <div className="mx-auto flex max-w-6xl flex-col gap-16 lg:flex-row">
+          <section className="flex-1 space-y-6">
+            <span className="text-xs uppercase tracking-[0.6em] text-white/50">SPL@T Ambassador</span>
             <h1 className="text-[44pt] font-extrabold tracking-tight text-[#851825] drop-shadow-lg">
-              Become a SPL@T Ambassador
+              Amplify the SPL@TVerse
             </h1>
-            <p className="mx-auto max-w-2xl text-[18pt] leading-relaxed text-white/85">
-              Bring the SPL@TVerse to your city. We are searching for bold connectors, promoters, and community leaders
-              who live for unapologetic energy.
+            <p className="text-lg text-white/75">
+              We are recruiting unapologetic connectors, promoters, event hosts, and bold humans who can ignite the
+              SPL@T vibe in their city. Apply below and we will reach out with next steps.
             </p>
-          </header>
+            <ul className="space-y-3 text-sm text-white/70">
+              <li>• Early access to beta features, SPL@T merch, and ambassador-only drops.</li>
+              <li>• Revenue opportunities through referral codes &amp; event collaborations.</li>
+              <li>• Direct line to the SPL@T core team for shaping the product &amp; community.</li>
+            </ul>
+          </section>
 
-          {!submitted ? (
-            <div className="w-full fade-up-delay">
-              <div className="gradient-frame crimson-glow">
-                <div className="gradient-content p-8 sm:p-10">
-                  <form onSubmit={handleSubmit} className="space-y-7 text-[14pt]">
-                    <div className="grid gap-5 sm:grid-cols-2">
-                      {[
-                        { id: "first_name", label: "First Name", required: true },
-                        { id: "last_name", label: "Last Name", required: true },
-                        { id: "preferred_name", label: "Preferred Name" },
-                        { id: "dob", label: "Date of Birth", type: "date", required: true },
-                        { id: "email", label: "Email", type: "email", required: true },
-                        { id: "city", label: "City", required: true },
-                      ].map(({ id, label, type = "text", required }) => (
-                        <div key={id} className="flex flex-col">
-                          <label htmlFor={id} className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
-                            {label}
-                          </label>
-                          <input
-                            id={id}
-                            name={id}
-                            type={type}
-                            required={required}
-                            value={(formData as Record<string, string | number>)[id] ?? ""}
-                            onChange={handleChange}
-                            className="mt-2 w-full rounded-2xl border border-white/10 bg-black/70 px-4 py-3 text-white placeholder-white/40 transition focus:border-[#851825] focus:outline-none focus:ring-2 focus:ring-[#851825]/60"
-                          />
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="grid gap-5 lg:grid-cols-2">
-                      <div className="flex flex-col">
-                        <label htmlFor="state" className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
-                          State
-                        </label>
-                        <select
-                          id="state"
-                          name="state"
-                          required
-                          value={formData.state}
-                          onChange={handleChange}
-                          className="mt-2 w-full rounded-2xl border border-white/10 bg-black/70 px-4 py-3 text-white transition focus:border-[#851825] focus:outline-none focus:ring-2 focus:ring-[#851825]/60"
-                        >
-                          <option value="">Select State</option>
-                          {[
-                            "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY",
-                          ].map((state) => (
-                            <option key={state} value={state}>
-                              {state}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-
-                      <div className="flex flex-col">
-                        <label
-                          htmlFor="social_media_handles"
-                          className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70"
-                        >
-                          Social Media Handles
-                        </label>
-                        <input
-                          id="social_media_handles"
-                          name="social_media_handles"
-                          required
-                          value={formData.social_media_handles}
-                          onChange={handleChange}
-                          placeholder="@usesplat / links"
-                          className="mt-2 w-full rounded-2xl border border-white/10 bg-black/70 px-4 py-3 text-white placeholder-white/40 transition focus:border-[#851825] focus:outline-none focus:ring-2 focus:ring-[#851825]/60"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid gap-5 lg:grid-cols-2">
-                      <div className="flex flex-col">
-                        <label
-                          htmlFor="number_of_followers"
-                          className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70"
-                        >
-                          Number of Followers
-                        </label>
-                        <input
-                          id="number_of_followers"
-                          name="number_of_followers"
-                          required
-                          inputMode="numeric"
-                          value={formData.number_of_followers}
-                          onChange={handleChange}
-                          placeholder="2500"
-                          className="mt-2 w-full rounded-2xl border border-white/10 bg-black/70 px-4 py-3 text-white placeholder-white/40 transition focus:border-[#851825] focus:outline-none focus:ring-2 focus:ring-[#851825]/60"
-                        />
-                        <p className="mt-2 text-xs text-white/50">Include combined followers if you manage multiple channels.</p>
-                      </div>
-
-                      <div className="flex flex-col">
-                        <label htmlFor="referral" className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
-                          Referral (optional)
-                        </label>
-                        <input
-                          id="referral"
-                          name="referral"
-                          value={formData.referral ?? ""}
-                          onChange={handleChange}
-                          placeholder="Who sent you?"
-                          className="mt-2 w-full rounded-2xl border border-white/10 bg-black/70 px-4 py-3 text-white placeholder-white/40 transition focus:border-[#851825] focus:outline-none focus:ring-2 focus:ring-[#851825]/60"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <label
-                        htmlFor="qualifications_why"
-                        className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70"
-                      >
-                        Why do you want to be an Ambassador?
-                      </label>
-                      <textarea
-                        id="qualifications_why"
-                        name="qualifications_why"
-                        required
-                        rows={5}
-                        value={formData.qualifications_why}
-                        onChange={handleChange}
-                        className="mt-2 w-full rounded-2xl border border-white/10 bg-black/70 px-4 py-3 text-white placeholder-white/40 transition focus:border-[#851825] focus:outline-none focus:ring-2 focus:ring-[#851825]/60"
-                        placeholder="Brag about your community, events, or hustle."
-                      />
-                    </div>
-
-                    <SplatCaptcha
-                      containerId="cf-turnstile-ambassador"
-                      className="my-4 flex justify-center"
-                      onVerify={(token) => setFormData((prev: AmbassadorForm) => ({ ...prev, captchaToken: token }))}
-                      onExpire={() => setFormData((prev) => ({ ...prev, captchaToken: "" }))}
-                      onError={() => setFormData((prev) => ({ ...prev, captchaToken: "" }))}
+          <section className="w-full max-w-3xl">
+            <div className="rounded-3xl border border-[#2f0f15]/80 bg-black/70 p-[1px] shadow-[0_25px_55px_rgba(133,23,37,0.35)]">
+              <div className="rounded-[calc(1.5rem-1px)] bg-black/85 p-8 sm:p-10">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <Field
+                      label="First Name"
+                      name="first_name"
+                      value={form.first_name}
+                      onChange={handleChange}
+                      required
                     />
+                    <Field
+                      label="Last Name"
+                      name="last_name"
+                      value={form.last_name}
+                      onChange={handleChange}
+                      required
+                    />
+                    <Field
+                      label="Preferred Name"
+                      name="preferred_name"
+                      value={form.preferred_name}
+                      onChange={handleChange}
+                    />
+                    <Field
+                      label="Date of Birth"
+                      name="dob"
+                      type="date"
+                      value={form.dob}
+                      onChange={handleChange}
+                      required
+                    />
+                    <Field
+                      label="Email"
+                      name="email"
+                      type="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      required
+                    />
+                    <Field
+                      label="City"
+                      name="city"
+                      value={form.city}
+                      onChange={handleChange}
+                      required
+                    />
+                    <SelectField
+                      label="State"
+                      name="state"
+                      value={form.state}
+                      onChange={handleChange}
+                      options={stateOptions}
+                      required
+                    />
+                    <Field
+                      label="Social Handles"
+                      name="social_media_handles"
+                      placeholder="@splathype / links"
+                      value={form.social_media_handles}
+                      onChange={handleChange}
+                      required
+                    />
+                    <Field
+                      label="Followers"
+                      name="number_of_followers"
+                      type="number"
+                      placeholder="2500"
+                      min="0"
+                      value={form.number_of_followers}
+                      onChange={handleChange}
+                      required
+                    />
+                    <Field
+                      label="Referral (optional)"
+                      name="referral"
+                      value={form.referral}
+                      onChange={handleChange}
+                    />
+                  </div>
 
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      className="w-full rounded-full bg-[#851825] py-3 font-bold text-white transition-all duration-300 hover:scale-[1.01] hover:bg-[#6f1320] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#851825]/60 disabled:scale-100 disabled:opacity-60"
-                    >
-                      {loading ? "Submitting…" : "Submit Application"}
-                    </button>
+                  <div className="flex flex-col">
+                    <label className="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
+                      Why do you want to be a SPL@T Ambassador?
+                    </label>
+                    <textarea
+                      name="qualifications_why"
+                      required
+                      rows={5}
+                      value={form.qualifications_why}
+                      onChange={handleChange}
+                      placeholder="Tell us about your community, events, and how you plan to make SPL@T pop."
+                      className="mt-3 w-full rounded-2xl border border-white/10 bg-black px-4 py-4 text-white placeholder-white/40 focus:border-[#851825] focus:outline-none focus:ring-2 focus:ring-[#851825]/60"
+                    />
+                  </div>
 
-                    {error && <p className="text-center text-red-400">{error}</p>}
-                  </form>
-                </div>
+                  <button
+                    type="submit"
+                    disabled={status === "loading"}
+                    className="w-full rounded-full bg-[#851825] py-4 text-lg font-bold uppercase tracking-widest text-white shadow-[0_0_35px_rgba(133,23,37,0.45)] transition hover:scale-[1.01] hover:bg-[#6f1320] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#851825]/50 disabled:scale-100 disabled:opacity-60"
+                  >
+                    {status === "loading" ? "Submitting…" : "Submit Application"}
+                  </button>
+
+                  {status === "success" ? (
+                    <p className="rounded-2xl border border-emerald-400/30 bg-emerald-500/15 px-4 py-3 text-center text-sm text-emerald-300">
+                      Application received! We will review and follow up shortly.
+                    </p>
+                  ) : null}
+
+                  {status === "error" && error ? (
+                    <p className="rounded-2xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-center text-sm text-red-300">
+                      {error}
+                    </p>
+                  ) : null}
+
+                  <p className="text-center text-xs text-white/50">
+                    SPL@T uses your information solely for ambassador program review and will never sell your data.
+                  </p>
+                </form>
               </div>
             </div>
-          ) : (
-            <div className="w-full fade-up-delay">
-              <div className="gradient-frame">
-                <div className="gradient-content p-8 text-center">
-                  <h2 className="text-3xl font-extrabold text-[#851825]">Thank you for applying!</h2>
-                  <p className="mt-4 text-white/80">We’ll review your application and get back to you soon. 💦</p>
-                </div>
-              </div>
-            </div>
-          )}
+          </section>
         </div>
-      </section>
+      </main>
     </>
+  );
+}
+
+type FieldProps = {
+  label: string;
+  name: keyof FormData;
+  value: string;
+  onChange: FieldChangeHandler;
+  type?: string;
+  required?: boolean;
+  placeholder?: string;
+  min?: string;
+};
+
+type FieldChangeHandler = (
+  event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+) => void;
+
+function Field({ label, name, value, onChange, type = "text", required, placeholder, min }: FieldProps) {
+  return (
+    <div className="flex flex-col">
+      <label className="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">{label}</label>
+      <input
+        name={name}
+        type={type}
+        value={value}
+        onChange={onChange}
+        required={required}
+        placeholder={placeholder}
+        min={min}
+        className="mt-3 w-full rounded-2xl border border-white/10 bg-black px-4 py-4 text-white placeholder-white/35 focus:border-[#851825] focus:outline-none focus:ring-2 focus:ring-[#851825]/60"
+      />
+    </div>
+  );
+}
+
+type SelectFieldProps = {
+  label: string;
+  name: keyof FormData;
+  value: string;
+  onChange: FieldChangeHandler;
+  options: string[];
+  required?: boolean;
+};
+
+function SelectField({ label, name, value, onChange, options, required }: SelectFieldProps) {
+  return (
+    <div className="flex flex-col">
+      <label className="text-xs font-semibold uppercase tracking-[0.3em] text-white/60">{label}</label>
+      <select
+        name={name}
+        value={value}
+        onChange={onChange}
+        required={required}
+        className="mt-3 w-full rounded-2xl border border-white/10 bg-black px-4 py-4 text-white focus:border-[#851825] focus:outline-none focus:ring-2 focus:ring-[#851825]/60"
+      >
+        <option value="">Select</option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }

@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import { createClient } from "@supabase/supabase-js";
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
+
+const supabase = getSupabaseClient();
 
 type PromoRecord = {
   id: string;

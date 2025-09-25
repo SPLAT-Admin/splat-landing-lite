@@ -1,72 +1,66 @@
-"use client";
-
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
-type Promo = {
+const supabase = getSupabaseClient();
+
+interface Promo {
   id: string;
   title: string;
   subtitle?: string | null;
   cta_label?: string | null;
   cta_href?: string | null;
-};
+  is_active: boolean;
+}
 
-export function HeroFlashSale() {
+export default function HeroFlashSale() {
   const [promo, setPromo] = useState<Promo | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
+    let mounted = true;
 
     const loadPromo = async () => {
       const { data, error } = await supabase
         .from("promos")
-        .select("id,title,subtitle,cta_label,cta_href")
+        .select("*")
         .eq("is_active", true)
         .order("created_at", { ascending: false })
         .limit(1)
         .maybeSingle();
 
-      if (!isMounted) return;
+      if (!mounted) return;
 
-      if (!error && data) {
-        setPromo(data as Promo);
+      if (error) {
+        console.error("HeroFlashSale promo load error", error);
       } else {
-        setPromo(null);
+        setPromo(data);
       }
     };
 
-    loadPromo();
-
-    const channel = supabase
-      .channel("public:promos")
-      .on("postgres_changes", { event: "*", schema: "public", table: "promos" }, () => {
-        void loadPromo();
-      })
-      .subscribe();
+    void loadPromo();
 
     return () => {
-      isMounted = false;
-      supabase.removeChannel(channel);
+      mounted = false;
     };
-  }, []);
+  }, [supabase]); // ✅ fixed dependency warning
 
-  if (!promo) return null;
+  if (!promo) {
+    return null;
+  }
 
   return (
-    <section className="relative bg-gradient-to-br from-red-700 to-black text-white rounded-2xl p-10 shadow-2xl">
-      <div className="max-w-3xl mx-auto text-center space-y-4">
-        <h1 className="text-4xl font-extrabold tracking-tight">{promo.title}</h1>
-        {promo.subtitle && <p className="text-lg opacity-90">{promo.subtitle}</p>}
+    <section className="relative bg-gradient-to-r from-[#851825] to-black text-white py-20 px-6 text-center">
+      <div className="mx-auto max-w-3xl">
+        <h1 className="text-5xl font-extrabold drop-shadow-lg">{promo.title}</h1>
+        {promo.subtitle && (
+          <p className="mt-4 text-lg text-white/80">{promo.subtitle}</p>
+        )}
         {promo.cta_label && promo.cta_href && (
-          <div className="pt-6">
-            <Link
-              href={promo.cta_href}
-              className="inline-block bg-white text-black font-semibold px-6 py-3 rounded-xl shadow hover:scale-105 transition-transform"
-            >
-              {promo.cta_label}
-            </Link>
-          </div>
+          <a
+            href={promo.cta_href}
+            className="mt-8 inline-block rounded-full bg-white px-8 py-3 font-bold text-[#851825] shadow-lg transition hover:scale-105"
+          >
+            {promo.cta_label}
+          </a>
         )}
       </div>
     </section>
