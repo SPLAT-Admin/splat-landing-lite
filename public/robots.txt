@@ -1,0 +1,38 @@
+User-agent: *
+Allow: /
+
+# Important pages
+Allow: /ambassador
+Allow: /storefront
+Allow: /signup
+Allow: /contact
+
+# Sitemap
+Sitemap: https://www.usesplat.com/sitemap.xml
+
+# Block admin and API routes
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /monitoring
+
+# Block development files
+Disallow: /*.json$
+Disallow: /*.xml$
+Disallow: /*.txt$
+
+# Allow social media crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
+
+# Host directive
+Host: https://www.usesplat.com

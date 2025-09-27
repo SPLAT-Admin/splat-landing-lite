@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { motion } from "framer-motion";
 
 interface Feature {
   title: string;
@@ -18,20 +19,32 @@ interface FeatureGridProps {
 export default function FeatureGrid({ features }: FeatureGridProps) {
   return (
     <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      {features.map((feature) => {
+      {features.map((feature, index) => {
         const isPremium =
           feature.premium === true || feature.badge?.toLowerCase() === "premium";
         const badgeText = feature.badge ?? (isPremium ? "Premium" : undefined);
 
         return (
-          <div
+          <motion.div
             key={feature.title}
             className={[
-              "group relative rounded-2xl border bg-gray-900 p-6 shadow-lg transition-all",
-              "border-gray-800 hover:-translate-y-1 hover:shadow-xl",
+              "group relative rounded-2xl border bg-gray-900 p-6 shadow-lg transition-all hover-scale",
+              "border-gray-800 hover:-translate-y-1 hover:shadow-xl hover-glow",
               isPremium ? "ring-1 ring-crimson-primary/30 hover:ring-crimson-primary/50" : "ring-0",
             ].join(" ")}
             aria-label={feature.title}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ 
+              duration: 0.5, 
+              delay: index * 0.1,
+              ease: "easeOut"
+            }}
+            whileHover={{ 
+              scale: 1.02,
+              transition: { duration: 0.2 }
+            }}
           >
             {/* Top Accent Bar */}
             <div
@@ -72,7 +85,7 @@ export default function FeatureGrid({ features }: FeatureGridProps) {
                 <p className="mt-1 text-base text-gray-300">{feature.description}</p>
               </div>
             </div>
-          </div>
+          </motion.div>
         );
       })}
     </div>

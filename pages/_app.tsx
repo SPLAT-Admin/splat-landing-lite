@@ -16,13 +16,22 @@ function MyApp({ Component, pageProps }: AppProps) {
           content="SPL@T is your gateway to the SPL@TVerse – maps, events, ambassadors, and more."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#851725" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="flex min-h-screen flex-col bg-black text-white">
+      <div className="bg-background text-foreground min-h-screen flex flex-col">
+        {/* Skip Navigation Link for Screen Readers */}
+        <a href="#main-content" className="skip-nav">
+          Skip to main content
+        </a>
+        
         <Header />
         <main
-          className="flex-grow main-content"
+          id="main-content"
+          className="flex-grow"
+          role="main"
+          aria-label="Main content"
           style={{
             paddingInline: "clamp(24px, 8vw, 96px)",
           }}

@@ -1,34 +1,34 @@
 /* === GLOBAL HEADER === */
 .global-header {
+  align-items: center;
+  background-color: #0A0A0A; /* Jet Black */
+  box-shadow: 0 2px 5px rgb(0 0 0 / 20%);
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
   position: sticky;
   top: 0;
   z-index: 999;
-  background-color: #0A0A0A; /* Jet Black */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* === LOGO === */
 .logo-container {
-  display: flex;
   align-items: center;
+  display: flex;
 }
 
 .logo {
-  max-height: 160px; /* Boosted from 120px */
   height: auto;
+  max-height: 160px; /* Boosted from 120px */
   width: auto;
 }
 
 /* === NAVIGATION === */
 .global-nav a {
-  color: #FFFFFF;
-  text-decoration: none;
-  margin: 0 15px;
+  color: #FFF;
   font-weight: bold;
+  margin: 0 15px;
+  text-decoration: none;
   transition: opacity 0.2s ease;
 }
 
@@ -41,7 +41,7 @@
   display: block;
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .hamburger-menu {
     display: none; /* Hide on desktop */
   }
@@ -60,23 +60,23 @@
 
 /* === BODY === */
 body {
-  margin: 0;
   background-color: #0A0A0A;
-  font-family: 'Oswald', sans-serif;
-  color: #FFFFFF;
-  text-align: center;
+  color: #FFF;
+  font-family: Oswald, sans-serif;
   line-height: 1.6;
+  margin: 0;
+  text-align: center;
 }
 
 /* === HERO SECTION === */
 .hero {
-  padding: 60px 20px;
   background: #0A0A0A;
+  padding: 60px 20px;
 }
 
 .hero h1 {
+  color: #FFF;
   font-size: 2.8rem;
-  color: #FFFFFF;
   margin: 0;
 }
 
@@ -91,14 +91,14 @@ body {
 
 /* === CTA BUTTON === */
 .cta-button {
-  display: inline-block;
   background: #D80D27;
-  color: #FFFFFF;
+  border-radius: 6px;
+  color: #FFF;
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: bold;
   padding: 14px 30px;
   text-decoration: none;
-  font-weight: bold;
-  font-size: 1rem;
-  border-radius: 6px;
   transition: background 0.3s ease;
 }
 
@@ -108,20 +108,20 @@ body {
 
 /* === PROGRESS SECTION === */
 .progress {
-  padding: 40px 20px;
   background: #0A0A0A;
+  padding: 40px 20px;
 }
 
 .progress h2 {
-  font-size: 1.8rem;
   color: #D80D27;
+  font-size: 1.8rem;
   margin-bottom: 20px;
 }
 
 .progress ul {
+  font-size: 1.1rem;
   list-style: none;
   padding: 0;
-  font-size: 1.1rem;
 }
 
 .progress ul li {
@@ -130,8 +130,8 @@ body {
 
 /* === DONATE SECTION === */
 .donate {
-  padding: 60px 20px;
   background: #0A0A0A;
+  padding: 60px 20px;
 }
 
 .donate h2 {

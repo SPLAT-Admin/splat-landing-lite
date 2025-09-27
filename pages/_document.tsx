@@ -3,9 +3,29 @@ import { Html, Head, Main, NextScript } from "next/document";
 export default function Document() {
   const siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY;
   return (
-    <Html lang="en">
-      <Head />
-      <body className="antialiased">
+    <Html lang="en" className="bg-background text-foreground min-h-screen">
+      <Head>
+        {/* Preload Oswald font for better performance */}
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700;800&display=swap"
+          as="style"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet"
+        />
+        <noscript>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet"
+          />
+        </noscript>
+        {/* Preconnect to Google Fonts for faster loading */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </Head>
+      <body className="bg-background text-foreground min-h-screen antialiased">
         <Main />
         {siteKey ? (
           <script

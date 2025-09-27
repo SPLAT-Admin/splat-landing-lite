@@ -1,5 +1,6 @@
 // components/Section.tsx
 import React from "react";
+import { Headline } from "./Typography";
 
 interface SectionProps {
   id?: string;
@@ -18,27 +19,31 @@ export default function Section({
   className = "",
   title,
   children,
-  titleClassName = "mb-6 text-3xl font-extrabold tracking-tight text-crimson-primary",
+  titleClassName = "",
   subtitle,
   showDivider = true,
-  containerClassName = "mx-auto w-full max-w-[1800px] px-6 lg:px-10",
+  containerClassName = "mx-auto w-full max-w-7xl px-6 lg:px-8",
   innerClassName = "",
 }: SectionProps) {
   const titleId = id ? `${id}-title` : undefined;
 
   return (
-    <section id={id} aria-labelledby={titleId} className={`mb-16 ${className}`}>
+    <section id={id} aria-labelledby={titleId} className={`py-16 ${className}`}>
       <div className={containerClassName}>
-        <div className={`mb-4 ${innerClassName}`}>
-          <h2 id={titleId} className={titleClassName}>
+        <div className={`mb-8 text-center ${innerClassName}`}>
+          <Headline as="h2" className={titleClassName || "mb-4"} {...(titleId && { id: titleId })}>
             {title}
-          </h2>
+          </Headline>
           {subtitle ? (
-            <p className="mt-1 text-base text-white/80">{subtitle}</p>
+            <p className="mt-4 text-lg text-acid-white/80 max-w-3xl mx-auto">{subtitle}</p>
           ) : null}
-          {showDivider ? <div className="mt-2 h-1 w-16 rounded-full bg-crimson-primary" /> : null}
+          {showDivider ? (
+            <div className="mt-6 mx-auto h-1 w-20 rounded-full bg-deep-crimson shadow-sm" />
+          ) : null}
         </div>
-        {children}
+        <div className="text-center">
+          {children}
+        </div>
       </div>
     </section>
   );

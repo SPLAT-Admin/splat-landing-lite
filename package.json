@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:css": "stylelint \"**/*.css\" --fix",
     "log-previews": "./log-vercel-previews.sh",
     "smoke": "playwright test tests/smoke.spec.ts"
   },
@@ -16,6 +17,8 @@
     "@sentry/react": "^10.2.0",
     "@supabase/supabase-js": "^2.55.0",
     "axios": "^1.11.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.22",
     "lucide-react": "^0.536.0",
     "micro": "^10.0.1",
     "next": "15.4.1",
@@ -23,6 +26,7 @@
     "react-dom": "19.0.0",
     "resend": "^4.8.0",
     "stripe": "^18.4.0",
+    "tailwind-merge": "^3.3.1",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
@@ -35,9 +39,14 @@
     "@typescript-eslint/eslint-plugin": "^8.39.0",
     "@typescript-eslint/parser": "^8.39.0",
     "autoprefixer": "^10.4.21",
+    "critters": "^0.0.23",
     "eslint": "^9.0.0",
     "eslint-config-next": "15.4.1",
     "postcss": "^8.5.6",
+    "stylelint": "^16.24.0",
+    "stylelint-config-prettier": "^9.0.5",
+    "stylelint-config-standard": "^36.0.1",
+    "stylelint-order": "^6.0.4",
     "tailwindcss": "^4.1.12",
     "typescript": "^5.4.0",
     "vercel": "^32.0.1"
