@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import HeroFlashSale from "@/components/HeroFlashSale";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 
 interface Product {
@@ -54,6 +55,7 @@ export default function StorefrontPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-black via-[#090106] to-black px-6 py-16 text-white">
+      <HeroFlashSale />
       <div className="mx-auto max-w-6xl">
         <header className="mb-12 text-center">
           <h1 className="text-4xl font-extrabold text-[#851825] drop-shadow-lg">

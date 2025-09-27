@@ -1,0 +1,175 @@
+import { forwardRef } from "react";
+import type {
+  ButtonHTMLAttributes,
+  InputHTMLAttributes,
+  ReactNode,
+  SelectHTMLAttributes,
+  TextareaHTMLAttributes,
+} from "react";
+import SplatCaptcha, { type SplatCaptchaProps } from "./SplatCaptcha";
+
+const labelClass = "text-base font-semibold text-white";
+const helperClass = "mt-2 text-sm text-white/55";
+const baseInputClass =
+  "mt-3 w-full rounded-lg border border-white/20 bg-black/85 px-4 py-3 text-base text-white placeholder-white/50 shadow-[0_18px_45px_rgba(133,23,37,0.18)] focus:border-[#851825] focus:outline-none focus:ring-2 focus:ring-[#851825]/60";
+const textareaClass = baseInputClass;
+
+export const formSectionClass =
+  "w-full rounded-3xl border border-[#2f0f15]/70 bg-black/65 p-[1px] shadow-[0_30px_70px_rgba(133,23,37,0.35)]";
+
+export const formCardBodyClass =
+  "rounded-[calc(1.5rem-1px)] bg-black/92 px-6 py-8 sm:px-10 sm:py-10";
+
+export const formButtonClass =
+  "flex w-full items-center justify-center rounded-lg bg-[#851825] px-6 py-4 text-base font-bold uppercase tracking-[0.35em] text-white shadow-[0_0_45px_rgba(133,23,37,0.45)] transition hover:scale-[1.02] hover:bg-[#6f1320] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#851825]/60 disabled:scale-100 disabled:opacity-60";
+
+type FormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
+  label: string;
+  hint?: string;
+  error?: string | null;
+};
+
+export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
+  ({ label, hint, error, className = "", ...props }, ref) => {
+    return (
+      <label className="flex flex-col text-sm text-white/70">
+        <span className={labelClass}>{label}</span>
+        <input
+          ref={ref}
+          className={`${baseInputClass} ${className}`.trim()}
+          {...props}
+        />
+        {hint ? <span className={helperClass}>{hint}</span> : null}
+        {error ? (
+          <span className="mt-2 rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+            {error}
+          </span>
+        ) : null}
+      </label>
+    );
+  }
+);
+
+FormField.displayName = "FormField";
+
+type FormTextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
+  label: string;
+  hint?: string;
+  error?: string | null;
+};
+
+export const FormTextArea = forwardRef<HTMLTextAreaElement, FormTextAreaProps>(
+  ({ label, hint, error, className = "", ...props }, ref) => {
+    return (
+      <label className="flex flex-col text-sm text-white/70">
+        <span className={labelClass}>{label}</span>
+        <textarea
+          ref={ref}
+          className={`${textareaClass} ${className}`.trim()}
+          {...props}
+        />
+        {hint ? <span className={helperClass}>{hint}</span> : null}
+        {error ? (
+          <span className="mt-2 rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+            {error}
+          </span>
+        ) : null}
+      </label>
+    );
+  }
+);
+
+FormTextArea.displayName = "FormTextArea";
+
+type FormSelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
+  label: string;
+  hint?: string;
+  error?: string | null;
+  options: Array<{ value: string; label: string } | string>;
+};
+
+export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
+  ({ label, hint, error, options, className = "", ...props }, ref) => {
+    return (
+      <label className="flex flex-col text-sm text-white/70">
+        <span className={labelClass}>{label}</span>
+        <select
+          ref={ref}
+          className={`${baseInputClass} appearance-none bg-[url('data:image/svg+xml,%3Csvg width=\'12\' height=\'8\' viewBox=\'0 0 12 8\' fill=\'none\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M1.41 0.589844L6 5.16984L10.59 0.589844L12 1.99984L6 7.99984L0 1.99984L1.41 0.589844Z\' fill=\'%23ffffff\'/%3E%3C/svg%3E')] bg-[length:12px_8px] bg-[position:right_1rem_center] bg-no-repeat ${className}`.trim()}
+          {...props}
+        >
+          <option value="">Select</option>
+          {options.map((option) => {
+            if (typeof option === "string") {
+              return (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              );
+            }
+
+            return (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            );
+          })}
+        </select>
+        {hint ? <span className={helperClass}>{hint}</span> : null}
+        {error ? (
+          <span className="mt-2 rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+            {error}
+          </span>
+        ) : null}
+      </label>
+    );
+  }
+);
+
+FormSelect.displayName = "FormSelect";
+
+type FormButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
+
+export function FormButton({ className = "", ...props }: FormButtonProps) {
+  return (
+    <button className={`${formButtonClass} ${className}`.trim()} {...props} />
+  );
+}
+
+type FormCaptchaProps = SplatCaptchaProps & {
+  label?: string;
+  helper?: string;
+};
+
+export function FormCaptcha({
+  label = "Verify you’re human",
+  helper = "Protected by Cloudflare Turnstile",
+  className = "my-6 flex justify-center",
+  ...props
+}: FormCaptchaProps) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-2 text-sm text-white/70">
+      <span className="text-xs font-semibold uppercase tracking-[0.3em] text-white/50">
+        {label}
+      </span>
+      <SplatCaptcha className={className} {...props} />
+      {helper ? <span className="text-[0.65rem] uppercase tracking-[0.4em] text-white/40">{helper}</span> : null}
+    </div>
+  );
+}
+
+type FormShellProps = {
+  children: ReactNode;
+  className?: string;
+};
+
+export function FormShell({ children, className = "" }: FormShellProps) {
+  return (
+    <div className={`${formSectionClass} ${className}`.trim()}>
+      <div className={formCardBodyClass}>{children}</div>
+    </div>
+  );
+}
+
+export const formStatusMessageClass =
+  "rounded-2xl border px-4 py-3 text-center text-sm";

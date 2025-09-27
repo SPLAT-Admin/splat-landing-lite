@@ -1,156 +1,313 @@
 import Head from "next/head";
-import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import {
+  FormShell,
+  FormField,
+  FormTextArea,
+  FormSelect,
+  FormButton,
+  FormCaptcha,
+  formStatusMessageClass,
+} from "@/components/Form";
+
+const stateOptions = [
+  "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY",
+];
+
+type Status = "idle" | "loading" | "success" | "error";
+
+type FormData = {
+  first_name: string;
+  last_name: string;
+  preferred_name: string;
+  dob: string;
+  email: string;
+  city: string;
+  state: string;
+  social_media_handles: string;
+  number_of_followers: string;
+  qualifications_why: string;
+  referral: string;
+};
+
+const initialForm: FormData = {
+  first_name: "",
+  last_name: "",
+  preferred_name: "",
+  dob: "",
+  email: "",
+  city: "",
+  state: "",
+  social_media_handles: "",
+  number_of_followers: "",
+  qualifications_why: "",
+  referral: "",
+};
 
 export default function AmbassadorPage() {
+  const router = useRouter();
+  const [form, setForm] = useState<FormData>(initialForm);
+  const [status, setStatus] = useState<Status>("idle");
+  const [error, setError] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaKey, setCaptchaKey] = useState(0);
+
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const resetCaptcha = () => {
+    setCaptchaToken(null);
+    setCaptchaKey((prev) => prev + 1);
+  };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!captchaToken) {
+      setStatus("error");
+      setError("Please complete the CAPTCHA before submitting.");
+      return;
+    }
+
+    setStatus("loading");
+    setError(null);
+
+    try {
+      const payload = {
+        ...form,
+        number_of_followers: Number(
+          form.number_of_followers.replace(/,/g, "").trim() || "0"
+        ),
+        captchaToken,
+      };
+
+      const response = await fetch("/api/ambassador-apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error || "Submission failed. Try again soon.");
+      }
+
+      setStatus("success");
+      setForm(initialForm);
+      resetCaptcha();
+
+      setTimeout(() => {
+        void router.push("/thankyou");
+      }, 1500);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Unexpected error. Please try again.";
+      setStatus("error");
+      setError(message);
+      resetCaptcha();
+    }
+  };
+
   return (
     <>
       <Head>
         <title>Ambassador HQ — SPL@TVerse Insider</title>
         <meta
           name="description"
-          content="Everything SPL@T: App features, culture, perks, programs—your insider pass."
+          content="Apply to the SPL@T Ambassador Program and unlock early drops, perks, and collabs."
         />
       </Head>
 
-      <section className="bg-background text-foreground py-16 px-6">
-        <div className="max-w-4xl mx-auto space-y-12">
-          {/* Hero */}
-          <div className="text-center">
-            <h1 className="font-extrabold mb-4 text-[#851825] leading-tight tracking-tight text-[44pt]">
-              SPL@T Ambassador Program
-            </h1>
-            <p className="leading-relaxed text-white text-[18pt]">
-              Your go-to guide for everything SPL@T – from app architecture to
-              perks, terminology, and mission.
-            </p>
-          </div>
+      <main className="min-h-screen bg-gradient-to-b from-black via-[#0b0104] to-black px-6 py-20 text-white">
+        <div className="mx-auto flex max-w-6xl flex-col gap-16 lg:flex-row">
+          <section className="flex-1 space-y-10">
+            <div className="space-y-4">
+              <span className="text-xs uppercase tracking-[0.6em] text-white/40">SPL@T Ambassador Program</span>
+              <h1 className="text-[44pt] font-extrabold tracking-tight text-[#851825] drop-shadow-lg">
+                Amplify the SPL@TVerse <span aria-hidden="true">💦</span>
+              </h1>
+              <p className="text-lg text-white/75">
+                We’re recruiting unapologetic connectors, promoters, event hosts, and bold humans who can ignite the
+                SPL@T vibe in their city. Apply below and the team will reach out with next steps.
+              </p>
+            </div>
 
-          {/* Overview */}
-          <section>
-            <h2 className="font-bold mb-3 text-[#851825] text-[24pt]">
-              What Is SPL@T?
-            </h2>
-            <p className="text-white text-[18pt]">
-              SPL@T is a queer-built, unapologetic, high-energy real-time
-              platform for hookups, meetups, events, and social cruising.
-              Designed for visibility without shame, it’s your digital third
-              place to vibe, connect, or get wild. With live geolocation, chat,
-              and public-private rooms, SPL@T empowers community connection
-              wherever you are.
-            </p>
+            <div className="space-y-6 text-white/80">
+              <article>
+                <h2 className="text-xl font-bold text-[#ff5a71]">Program Highlights</h2>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>• Early access to beta features, SPL@T merch, and ambassador-only drops.</li>
+                  <li>• Revenue opportunities through referral codes and event collabs.</li>
+                  <li>• Direct line to the SPL@T core team for product feedback.</li>
+                </ul>
+              </article>
+
+              <article>
+                <h2 className="text-xl font-bold text-[#ff5a71]">What You’ll Spark</h2>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>• Create content and social buzz at least twice a month using your SPL@T handle.</li>
+                  <li>• Promote sign-ups with your custom ambassador code and track rewards.</li>
+                  <li>• Represent SPL@T at local queer events, clubs, and underground moments.</li>
+                </ul>
+              </article>
+
+              <article>
+                <h2 className="text-xl font-bold text-[#ff5a71]">Program Requirements</h2>
+                <ul className="mt-3 space-y-2 text-sm">
+                  <li>• 21+ and located in the U.S.</li>
+                  <li>• Part of or allied with the LGBTQ+ community.</li>
+                  <li>• Comfortable being visible, loud, and shamelessly bold.</li>
+                </ul>
+              </article>
+            </div>
           </section>
 
-          {/* SPL@TVerse Modules */}
-          <section>
-            <h2 className="font-bold mb-3 text-[#851825] text-[24pt]">
-              SPL@TVerse Features
-            </h2>
-            <ul className="list-disc list-inside space-y-2 text-white text-[18pt]">
-              <li>
-                <strong>SP@T Map Live‑View:</strong> Real-time geolocation of
-                community members.
-              </li>
-              <li>
-                <strong>SPL@T Live Lobby:</strong> Public chat spaces, virtual
-                meet &amp; greet before engagement.
-              </li>
-              <li>
-                <strong>SPL@T Codes &amp; Handles:</strong> Private access codes
-                and user aliases for anonymity.
-              </li>
-              <li>
-                <strong>HotSpots &amp; Events:</strong> Tap into trending
-                locations and upcoming community collabs.
-              </li>
-              <li>
-                <strong>Premium Tools:</strong> Teleport unlock, Stealth Mode,
-                priority placement, private rooms.
-              </li>
-            </ul>
-          </section>
+          <section className="w-full max-w-3xl">
+            <FormShell>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <FormField
+                    label="First Name"
+                    name="first_name"
+                    value={form.first_name}
+                    onChange={handleChange}
+                    required
+                    autoComplete="given-name"
+                  />
+                  <FormField
+                    label="Last Name"
+                    name="last_name"
+                    value={form.last_name}
+                    onChange={handleChange}
+                    required
+                    autoComplete="family-name"
+                  />
+                </div>
 
-          {/* Ambassador Perks */}
-          <section>
-            <h2 className="font-bold mb-3 text-[#851825] text-[24pt]">
-              Ambassador Perks
-            </h2>
-            <ul className="list-disc list-inside space-y-2 text-white text-[18pt]">
-              <li>Priority beta access &amp; feature testing.</li>
-              <li>Promo code generation and exclusive merch bundles.</li>
-              <li>Invites to SPL@T LIVE events and social collab opportunities.</li>
-              <li>Recognition roll: social shout-outs, in-app badges.</li>
-              <li>Ambassador-only community feedback circles.</li>
-            </ul>
-          </section>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <FormField
+                    label="Preferred Name"
+                    name="preferred_name"
+                    value={form.preferred_name}
+                    onChange={handleChange}
+                    placeholder="What should we call you?"
+                  />
+                  <FormField
+                    label="Date of Birth"
+                    name="dob"
+                    type="date"
+                    value={form.dob}
+                    onChange={handleChange}
+                    required
+                    max={new Date().toISOString().split("T")[0]}
+                  />
+                </div>
 
-          {/* Expectations, Benefits, and Bonuses */}
-          <section>
-            <h2 className="font-bold mb-3 text-[#851825] text-[24pt]">
-              Ambassador Expectations &amp; Bonuses
-            </h2>
-            <ul className="list-disc list-inside space-y-2 text-white text-[18pt]">
-              <li>
-                Create content and social media buzz at least 2x/month using
-                your SPL@T handle and assets.
-              </li>
-              <li>Refer 10+ users/month with your custom ambassador code.</li>
-              <li>
-                Represent SPL@T at local queer events, clubs, or scenes when
-                possible.
-              </li>
-              <li>
-                Be sexy, be bold, be loud – while promoting a shame-free vibe.
-              </li>
-              <li>
-                <strong>Referral Bonus:</strong> Get rewarded for every verified
-                user sign-up. The more you SPL@T, the more you earn!
-              </li>
-              <li>
-                Top-performing ambassadors unlock merch, event invites, and
-                spotlight features.
-              </li>
-            </ul>
-          </section>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <FormField
+                    label="Email"
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    required
+                    autoComplete="email"
+                  />
+                  <FormField
+                    label="Social Handles"
+                    name="social_media_handles"
+                    value={form.social_media_handles}
+                    onChange={handleChange}
+                    placeholder="@usesplat"
+                  />
+                </div>
 
-          {/* Program Requirements */}
-          <section>
-            <h2 className="font-bold mb-3 text-[#851825] text-[24pt]">
-              Program Requirements
-            </h2>
-            <ul className="list-disc list-inside space-y-2 text-white text-[18pt]">
-              <li>Must be 21+ and located in the U.S.</li>
-              <li>
-                Must identify within or be allied with the LGBTQ+ community.
-              </li>
-              <li>Willing to be visible and accountable on social media.</li>
-              <li>
-                Follow SPL@T’s code of conduct and branding standards.
-              </li>
-            </ul>
-          </section>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <FormField
+                    label="City"
+                    name="city"
+                    value={form.city}
+                    onChange={handleChange}
+                    required
+                    autoComplete="address-level2"
+                  />
+                  <FormSelect
+                    label="State"
+                    name="state"
+                    value={form.state}
+                    onChange={handleChange}
+                    required
+                    options={stateOptions.map((value) => ({ value, label: value }))}
+                  />
+                </div>
 
-          {/* Call to Action */}
-          <div className="text-center">
-            <Link
-              href="/ambassador-apply"
-              className="
-                inline-block mt-8 rounded-full 
-                bg-[#851825] text-white 
-                px-10 py-5 
-                text-[18pt] md:text-[20pt] 
-                font-extrabold tracking-wide
-                shadow-[0_0_35px_rgba(133,24,37,0.45)]
-                ring-2 ring-[#851825]/70 
-                hover:bg-[#6f1320] hover:shadow-[0_0_45px_rgba(133,24,37,0.55)]
-                focus:outline-none focus-visible:ring-4 
-                transition-all duration-200 ease-out
-              "
-            >
-              APPLY NOW TO BECOME A SPL@T AMBASSADOR!
-            </Link>
-          </div>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <FormField
+                    label="Followers"
+                    name="number_of_followers"
+                    type="number"
+                    min="0"
+                    value={form.number_of_followers}
+                    onChange={handleChange}
+                    placeholder="2500"
+                    hint="Approximate reach across socials"
+                  />
+                  <FormField
+                    label="Referral (optional)"
+                    name="referral"
+                    value={form.referral}
+                    onChange={handleChange}
+                    placeholder="Who told you about SPL@T?"
+                  />
+                </div>
+
+                <FormTextArea
+                  label="Why do you want to be a SPL@T Ambassador?"
+                  name="qualifications_why"
+                  value={form.qualifications_why}
+                  onChange={handleChange}
+                  required
+                  rows={5}
+                  placeholder="Tell us about your community, events, and how you plan to make SPL@T pop."
+                />
+
+                <FormCaptcha
+                  key={captchaKey}
+                  containerId={`ambassador-turnstile-${captchaKey}`}
+                  onVerify={(token) => setCaptchaToken(token)}
+                  onExpire={resetCaptcha}
+                  onError={resetCaptcha}
+                />
+
+                <FormButton type="submit" disabled={status === "loading"}>
+                  {status === "loading" ? "Submitting…" : "Submit Application"}
+                </FormButton>
+
+                {status === "success" ? (
+                  <p className={`${formStatusMessageClass} border-emerald-400/30 bg-emerald-500/15 text-emerald-300`}>
+                    Application received! We will review and follow up shortly.
+                  </p>
+                ) : null}
+
+                {status === "error" && error ? (
+                  <p className={`${formStatusMessageClass} border-red-400/30 bg-red-500/10 text-red-300`}>
+                    {error}
+                  </p>
+                ) : null}
+
+                <p className="text-center text-xs text-white/50">
+                  SPL@T uses your information solely for ambassador review. We will never sell your data.
+                </p>
+              </form>
+            </FormShell>
+          </section>
         </div>
-      </section>
+      </main>
     </>
   );
 }

@@ -1,22 +1,44 @@
 import { useEffect, useState } from "react";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 
-const supabase = getSupabaseClient();
-
 interface Promo {
-  id: string;
+  id?: string;
   title: string;
   subtitle?: string | null;
   cta_label?: string | null;
   cta_href?: string | null;
-  is_active: boolean;
+  is_active?: boolean;
 }
+
+const fallbackPromo: Promo = {
+  title: "💦 Flash Drop Incoming",
+  subtitle: "Join the SPL@T waitlist to get the next drop before it splashes.",
+  cta_label: "Join the Waitlist",
+  cta_href: "/signup",
+};
 
 export default function HeroFlashSale() {
   const [promo, setPromo] = useState<Promo | null>(null);
 
   useEffect(() => {
     let mounted = true;
+
+    const resolveClient = (): SupabaseClient | null => {
+      try {
+        return getSupabaseClient();
+      } catch (error) {
+        console.warn("HeroFlashSale supabase unavailable", error);
+        return null;
+      }
+    };
+
+    const supabase = resolveClient();
+    if (!supabase) {
+      return () => {
+        mounted = false;
+      };
+    }
 
     const loadPromo = async () => {
       const { data, error } = await supabase
@@ -31,7 +53,7 @@ export default function HeroFlashSale() {
 
       if (error) {
         console.error("HeroFlashSale promo load error", error);
-      } else {
+      } else if (data) {
         setPromo(data);
       }
     };
@@ -41,27 +63,29 @@ export default function HeroFlashSale() {
     return () => {
       mounted = false;
     };
-  }, [supabase]); // ✅ fixed dependency warning
+  }, []);
 
-  if (!promo) {
+  const activePromo = promo ?? fallbackPromo;
+
+  if (!activePromo) {
     return null;
   }
 
   return (
     <section className="relative bg-gradient-to-r from-[#851825] to-black text-white py-20 px-6 text-center">
-      <div className="mx-auto max-w-3xl">
-        <h1 className="text-5xl font-extrabold drop-shadow-lg">{promo.title}</h1>
-        {promo.subtitle && (
-          <p className="mt-4 text-lg text-white/80">{promo.subtitle}</p>
-        )}
-        {promo.cta_label && promo.cta_href && (
+      <div className="mx-auto max-w-3xl space-y-4">
+        <h1 className="text-5xl font-extrabold drop-shadow-lg">{activePromo.title}</h1>
+        {activePromo.subtitle ? (
+          <p className="text-lg text-white/80">{activePromo.subtitle}</p>
+        ) : null}
+        {activePromo.cta_label && activePromo.cta_href ? (
           <a
-            href={promo.cta_href}
-            className="mt-8 inline-block rounded-full bg-white px-8 py-3 font-bold text-[#851825] shadow-lg transition hover:scale-105"
+            href={activePromo.cta_href}
+            className="mt-4 inline-block rounded-xl bg-white px-8 py-3 font-bold uppercase tracking-[0.3em] text-[#851825] shadow-lg transition hover:scale-105"
           >
-            {promo.cta_label}
+            {activePromo.cta_label}
           </a>
-        )}
+        ) : null}
       </div>
     </section>
   );
