@@ -8,20 +8,20 @@ import type {
 } from "react";
 import SplatCaptcha, { type SplatCaptchaProps } from "./SplatCaptcha";
 
-const labelClass = "text-base font-semibold text-white";
+const labelClass = "text-lg font-semibold text-white";
 const helperClass = "mt-2 text-sm text-white/55";
 const baseInputClass =
-  "mt-3 w-full rounded-xl border border-white/20 bg-black/85 px-4 py-3 text-lg text-white placeholder-white/50 shadow-[0_18px_45px_rgba(133,23,37,0.18)] focus:border-[#851825] focus:outline-none focus:ring-2 focus:ring-[#851825]/60";
+  "mt-3 w-full rounded-xl border border-white/20 bg-black/85 px-4 py-3 text-2xl font-semibold text-white placeholder-white/50 shadow-[0_25px_55px_rgba(133,23,37,0.18)] focus:border-[#db1d33] focus:outline-none focus:ring-2 focus:ring-[#db1d33]/60";
 const textareaClass = baseInputClass;
 
 export const formSectionClass =
-  "mx-auto w-full max-w-3xl rounded-3xl border border-[#2f0f15]/70 bg-black/65 p-[1px] shadow-[0_30px_70px_rgba(133,23,37,0.35)]";
+  "mx-auto w-full max-w-3xl rounded-3xl border border-white/10 bg-black/70 p-[1px] shadow-[0_40px_90px_rgba(0,0,0,0.45)]";
 
 export const formCardBodyClass =
-  "rounded-[calc(1.5rem-1px)] bg-black/92 px-6 py-8 sm:px-10 sm:py-10";
+  "rounded-[calc(1.5rem-1px)] bg-black/92 px-8 py-10 sm:px-12 sm:py-12";
 
 export const formButtonClass =
-  "flex w-full items-center justify-center rounded-xl bg-[#851825] px-6 py-4 text-base font-bold uppercase tracking-[0.35em] text-white shadow-[0_0_45px_rgba(133,23,37,0.45)] transition hover:scale-[1.02] hover:bg-[#6f1320] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#851825]/60 disabled:scale-100 disabled:opacity-60";
+  "flex w-full items-center justify-center rounded-xl bg-[#db1d33] px-8 py-4 text-sm font-black uppercase tracking-[0.4em] text-white shadow-[0_35px_65px_rgba(219,29,51,0.4)] transition hover:scale-[1.03] hover:bg-[#b8172a] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#db1d33]/60 disabled:scale-100 disabled:opacity-60";
 
 type FormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
@@ -41,7 +41,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
         />
         {hint ? <span className={helperClass}>{hint}</span> : null}
         {error ? (
-          <span className="mt-2 rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+          <span className="mt-2 rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
             {error}
           </span>
         ) : null}
@@ -70,7 +70,7 @@ export const FormTextArea = forwardRef<HTMLTextAreaElement, FormTextAreaProps>(
         />
         {hint ? <span className={helperClass}>{hint}</span> : null}
         {error ? (
-          <span className="mt-2 rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+          <span className="mt-2 rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
             {error}
           </span>
         ) : null}
@@ -117,7 +117,7 @@ export const FormSelect = forwardRef<HTMLSelectElement, FormSelectProps>(
         </select>
         {hint ? <span className={helperClass}>{hint}</span> : null}
         {error ? (
-          <span className="mt-2 rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
+          <span className="mt-2 rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
             {error}
           </span>
         ) : null}
@@ -172,6 +172,6 @@ export function FormShell({ children, className = "" }: FormShellProps) {
 }
 
 export const formStatusMessageClass =
-  "rounded-2xl border px-4 py-3 text-center text-sm";
+  "rounded-2xl border px-4 py-3 text-center text-base";
 
-export const formHeadingClass = "text-2xl font-bold tracking-tight text-[#851825]";
+export const formHeadingClass = "text-[18pt] font-black tracking-[0.2em] text-[#db1d33]";

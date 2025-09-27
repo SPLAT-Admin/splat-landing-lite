@@ -1,6 +1,5 @@
 // components/SplatCaptcha.tsx
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import Script from "next/script";
 
 type TurnstileTheme = "light" | "dark" | "auto";
 
@@ -56,15 +55,22 @@ export default function SplatCaptcha({
     }
   }, [siteKey, theme, action, cData, onVerify, onExpire, onError]);
 
-  // Retry render after delay in case it failed initially
+  // Attempt render until widget is ready
   useEffect(() => {
-    const retry = setTimeout(() => {
-      if (!widgetIdRef.current && window.turnstile) {
+    if (window.turnstile) {
+      render();
+    }
+
+    const interval = setInterval(() => {
+      if (window.turnstile && !widgetIdRef.current) {
         render();
       }
-    }, 1000);
+      if (widgetIdRef.current) {
+        clearInterval(interval);
+      }
+    }, 750);
 
-    return () => clearTimeout(retry);
+    return () => clearInterval(interval);
   }, [render]);
 
   // Cleanup on unmount
@@ -80,19 +86,16 @@ export default function SplatCaptcha({
     };
   }, []);
 
+  if (!siteKey) {
+    throw new Error("NEXT_PUBLIC_CLOUDFLARE_SITE_KEY must be defined to render the SPL@T Turnstile widget.");
+  }
+
   return (
-    <>
-      <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-        strategy="afterInteractive"
-        onLoad={render}
-      />
-      <div
-        id={containerId ?? autoId}
-        ref={widgetRef}
-        className={className}
-        style={{ minHeight: 70 }}
-      />
-    </>
+    <div
+      id={containerId ?? autoId}
+      ref={widgetRef}
+      className={className}
+      style={{ minHeight: 70 }}
+    />
   );
 }

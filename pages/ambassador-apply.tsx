@@ -146,8 +146,8 @@ export default function AmbassadorApplyPage() {
           </header>
 
           <FormShell>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <h2 className={`${formHeadingClass} text-center uppercase`}>Apply Now</h2>
+            <form onSubmit={handleSubmit} className="space-y-8">
+              <h2 className={`${formHeadingClass} text-center`}>Apply Now</h2>
               <div className="grid gap-5 sm:grid-cols-2">
                 <FormField
                   label="First Name"

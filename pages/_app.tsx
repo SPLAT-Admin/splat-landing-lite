@@ -21,7 +21,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 
       <div className="flex min-h-screen flex-col bg-black text-white">
         <Header />
-        <main className="flex-grow main-content">
+        <main
+          className="flex-grow main-content"
+          style={{
+            paddingInline: "clamp(24px, 8vw, 96px)",
+          }}
+        >
           <Component {...pageProps} />
         </main>
         <Footer />

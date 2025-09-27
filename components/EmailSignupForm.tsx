@@ -82,7 +82,7 @@ export default function EmailSignupForm() {
       </header>
 
       <FormShell>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-8">
           <h2 className={`${formHeadingClass} text-center`}>Join the Waitlist</h2>
           <FormField
             label="Email Address"

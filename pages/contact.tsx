@@ -118,7 +118,7 @@ export default function ContactPage() {
           </header>
 
           <FormShell>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-8">
               <h2 className={`${formHeadingClass} text-center`}>Contact Form</h2>
               <div className="grid gap-5 sm:grid-cols-2">
                 <FormField
