@@ -11,6 +11,7 @@ import {
   FormButton,
   FormCaptcha,
   formStatusMessageClass,
+  formHeadingClass,
 } from "@/components/Form";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 
@@ -196,11 +197,11 @@ export default function CheckoutPage() {
       <main className="min-h-screen bg-gradient-to-b from-black via-[#0f0205] to-black px-6 py-24 text-white">
         <div className="mx-auto flex max-w-3xl flex-col gap-10">
           <header className="space-y-4 text-center">
-            <span className="text-sm uppercase tracking-[0.5em] text-white/50">SPL@T Checkout</span>
-            <h1 className="text-4xl font-extrabold tracking-tight text-[#851825] drop-shadow-lg sm:text-5xl">
-              Lock Your SPL@T Drop <span aria-hidden="true">💦</span>
+            <span className="text-xs uppercase tracking-[0.5em] text-white/45">SPL@T Checkout</span>
+            <h1 className="text-2xl font-extrabold uppercase tracking-[0.3em] text-[#851825]">
+              Lock Your SPL@T Drop
             </h1>
-            <p className="text-base text-white/75 sm:text-lg">
+            <p className="text-lg text-white/80">
               Secure the drop with your details. We’ll send confirmation and fulfillment updates straight to your inbox.
             </p>
           </header>
@@ -278,6 +279,7 @@ export default function CheckoutPage() {
 
           <FormShell>
             <form onSubmit={handleSubmit} className="space-y-6">
+              <h2 className={`${formHeadingClass} text-center`}>Complete Your Order</h2>
               <FormField
                 label="Full Name"
                 name="name"

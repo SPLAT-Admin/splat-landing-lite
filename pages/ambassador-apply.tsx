@@ -11,6 +11,7 @@ import {
   FormButton,
   FormCaptcha,
   formStatusMessageClass,
+  formHeadingClass,
 } from "@/components/Form";
 
 const stateOptions = [
@@ -127,22 +128,26 @@ export default function AmbassadorApplyPage() {
       <main className="min-h-screen bg-gradient-to-b from-black via-[#0b0104] to-black px-6 py-24 text-white">
         <div className="mx-auto flex max-w-3xl flex-col gap-10">
           <header className="space-y-4 text-center">
-            <span className="text-sm uppercase tracking-[0.5em] text-white/50">SPL@T Ambassador Program</span>
-            <h1 className="text-4xl font-extrabold tracking-tight text-[#851825] drop-shadow-lg sm:text-5xl">
-              Amplify the SPL@TVerse <span aria-hidden="true">💦</span>
+            <span className="text-xs uppercase tracking-[0.5em] text-white/45">
+              Ambassador Program
+            </span>
+            <h1 className="text-2xl font-extrabold uppercase tracking-[0.35em] text-[#851825]">
+              SPL@T AMBASSADOR
             </h1>
-            <p className="text-base text-white/75 sm:text-lg">
-              We’re recruiting unapologetic connectors ready to spark the SPL@T vibe in their city. Fill out the details and our crew will reach out with next steps.
+            <p className="text-lg text-white/80">
+              Ignite the SPL@TVerse in your city. We’re recruiting bold connectors, promoters, and event hosts who can
+              mobilize community energy fast.
             </p>
-            <ul className="space-y-2 text-left text-sm text-white/70">
-              <li>• Early access to beta features, merch drops, and ambassador-only collabs.</li>
-              <li>• Revenue opportunities through custom referral codes and events.</li>
-              <li>• Direct feedback loop with the SPL@T core team.</li>
+            <ul className="space-y-1 text-left text-sm text-white/70">
+              <li>• Early access to beta features, merch drops, and collabs.</li>
+              <li>• Revenue opportunities with custom referral codes and events.</li>
+              <li>• Direct line to the SPL@T core team for feedback and spotlights.</li>
             </ul>
           </header>
 
           <FormShell>
             <form onSubmit={handleSubmit} className="space-y-6">
+              <h2 className={`${formHeadingClass} text-center uppercase`}>Apply Now</h2>
               <div className="grid gap-5 sm:grid-cols-2">
                 <FormField
                   label="First Name"

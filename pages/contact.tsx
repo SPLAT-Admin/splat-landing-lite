@@ -10,6 +10,7 @@ import {
   FormButton,
   FormCaptcha,
   formStatusMessageClass,
+  formHeadingClass,
 } from "@/components/Form";
 
 const initialForm = {
@@ -93,11 +94,11 @@ export default function ContactPage() {
       <main className="min-h-screen bg-gradient-to-b from-black via-[#100106] to-black px-6 py-24 text-white">
         <div className="mx-auto flex max-w-3xl flex-col gap-10">
           <header className="space-y-4 text-center">
-            <span className="text-sm uppercase tracking-[0.5em] text-white/50">Get in Touch</span>
-            <h1 className="text-4xl font-extrabold tracking-tight text-[#851825] drop-shadow-lg sm:text-5xl">
-              Slide Into SPL@T HQ <span aria-hidden="true">💦</span>
+            <span className="text-xs uppercase tracking-[0.5em] text-white/45">Get in Touch</span>
+            <h1 className="text-2xl font-extrabold uppercase tracking-[0.3em] text-[#851825]">
+              Slide Into SPL@T HQ
             </h1>
-            <p className="text-base text-white/75 sm:text-lg">
+            <p className="text-lg text-white/80">
               Partnerships, press, support, or spicy questions—the SPL@T crew is here for it. Drop a note and we’ll reply fast.
             </p>
             <div className="grid gap-4 text-sm text-white/70 sm:grid-cols-2">
@@ -118,6 +119,7 @@ export default function ContactPage() {
 
           <FormShell>
             <form onSubmit={handleSubmit} className="space-y-6">
+              <h2 className={`${formHeadingClass} text-center`}>Contact Form</h2>
               <div className="grid gap-5 sm:grid-cols-2">
                 <FormField
                   label="Your Name"

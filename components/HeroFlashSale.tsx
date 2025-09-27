@@ -12,7 +12,7 @@ interface Promo {
 }
 
 const fallbackPromo: Promo = {
-  title: "💦 Flash Drop Incoming",
+  title: "Flash Drop Incoming",
   subtitle: "Join the SPL@T waitlist to get the next drop before it splashes.",
   cta_label: "Join the Waitlist",
   cta_href: "/signup",
@@ -66,6 +66,10 @@ export default function HeroFlashSale() {
   }, []);
 
   const activePromo = promo ?? fallbackPromo;
+  const headingText = (() => {
+    const text = activePromo.title?.trim() || fallbackPromo.title;
+    return text.includes("💦") ? text : `💦 ${text}`;
+  })();
 
   if (!activePromo) {
     return null;
@@ -74,7 +78,7 @@ export default function HeroFlashSale() {
   return (
     <section className="relative bg-gradient-to-r from-[#851825] to-black text-white py-20 px-6 text-center">
       <div className="mx-auto max-w-3xl space-y-4">
-        <h1 className="text-5xl font-extrabold drop-shadow-lg">{activePromo.title}</h1>
+        <h1 className="text-5xl font-extrabold drop-shadow-lg">{headingText}</h1>
         {activePromo.subtitle ? (
           <p className="text-lg text-white/80">{activePromo.subtitle}</p>
         ) : null}

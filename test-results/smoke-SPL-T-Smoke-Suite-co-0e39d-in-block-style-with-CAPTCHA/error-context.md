@@ -1,0 +1,176 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - link "SPL@T" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - button "Open Menu" [ref=e7]
+    - main [ref=e8]:
+      - main [ref=e9]:
+        - generic [ref=e10]:
+          - generic [ref=e11]:
+            - generic [ref=e12]: Get in Touch
+            - heading "Slide Into SPL@T HQ" [level=1] [ref=e13]
+            - paragraph [ref=e14]: Partnerships, press, support, or spicy questions—the SPL@T crew is here for it. Drop a note and we’ll reply fast.
+            - generic [ref=e15]:
+              - generic [ref=e16]:
+                - paragraph [ref=e17]: Email
+                - link "hello@usesplat.com" [ref=e18] [cursor=pointer]:
+                  - /url: mailto:hello@usesplat.com
+              - generic [ref=e19]:
+                - paragraph [ref=e20]: Phone
+                - link "844-420-8333" [ref=e21] [cursor=pointer]:
+                  - /url: tel:8444208333
+          - generic [ref=e24]:
+            - heading "Contact Form" [level=2] [ref=e25]
+            - generic [ref=e26]:
+              - generic [ref=e27]:
+                - generic [ref=e28]: Your Name
+                - textbox "Your Name" [ref=e29]
+              - generic [ref=e30]:
+                - generic [ref=e31]: Email
+                - textbox "Email" [ref=e32]
+            - generic [ref=e33]:
+              - generic [ref=e34]: Message
+              - textbox "Message" [ref=e35]
+            - generic [ref=e36]:
+              - generic [ref=e37]: Verify you’re human
+              - generic [ref=e38]: Protected by Cloudflare Turnstile
+            - button "Send Message" [ref=e39]
+            - paragraph [ref=e40]: SPL@T stores your message securely and only uses your email to respond.
+    - contentinfo [ref=e41]:
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - text: ©
+          - time [ref=e44]: "2025"
+          - text: "- SPL@T |"
+          - link "www.fundsplat.com" [ref=e45] [cursor=pointer]:
+            - /url: https://www.fundsplat.com
+          - text: "|"
+          - link "844-420-8333" [ref=e46] [cursor=pointer]:
+            - /url: tel:8444208333
+        - generic [ref=e47]: 971 S University Avenue Suite 1088 Provo, Utah 84601
+        - generic [ref=e48]:
+          - link "Site Map" [ref=e49] [cursor=pointer]:
+            - /url: /sitemap
+          - link "Privacy Policy" [ref=e50] [cursor=pointer]:
+            - /url: /privacy
+          - link "Terms of Service" [ref=e51] [cursor=pointer]:
+            - /url: /terms
+          - link "SPL@T Community Standards" [ref=e52] [cursor=pointer]:
+            - /url: /community
+  - generic [active]:
+    - generic [ref=e57] [cursor=pointer]:
+      - button "Open Next.js Dev Tools" [ref=e58] [cursor=pointer]:
+        - img [ref=e59] [cursor=pointer]
+      - generic [ref=e62] [cursor=pointer]:
+        - button "Open issues overlay" [ref=e63] [cursor=pointer]:
+          - generic [ref=e64] [cursor=pointer]:
+            - generic [ref=e65] [cursor=pointer]: "1"
+            - generic [ref=e66] [cursor=pointer]: "2"
+          - generic [ref=e67] [cursor=pointer]:
+            - text: Issue
+            - generic [ref=e68] [cursor=pointer]: s
+        - button "Collapse issues badge" [ref=e69] [cursor=pointer]:
+          - img [ref=e70] [cursor=pointer]
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - navigation [ref=e77]:
+            - button "previous" [disabled] [ref=e78]:
+              - img "previous" [ref=e79]
+            - generic [ref=e81]:
+              - generic [ref=e82]: 1/
+              - generic [ref=e83]: "2"
+            - button "next" [ref=e84] [cursor=pointer]:
+              - img "next" [ref=e85] [cursor=pointer]
+          - img
+        - generic [ref=e87]:
+          - link "Next.js 15.4.1 (stale) Webpack" [ref=e88] [cursor=pointer]:
+            - /url: https://nextjs.org/docs/messages/version-staleness
+            - img [ref=e89] [cursor=pointer]
+            - generic "There is a newer version (15.5.4) available, upgrade recommended!" [ref=e91] [cursor=pointer]: Next.js 15.4.1 (stale)
+            - generic [ref=e92] [cursor=pointer]: Webpack
+          - img
+      - dialog "Runtime TurnstileError" [ref=e94]:
+        - generic [ref=e97]:
+          - generic [ref=e98]:
+            - generic [ref=e99]:
+              - generic [ref=e101]: Runtime TurnstileError
+              - generic [ref=e102]:
+                - button "Copy Stack Trace" [ref=e103] [cursor=pointer]:
+                  - img [ref=e104] [cursor=pointer]
+                - button "No related documentation found" [disabled] [ref=e106]:
+                  - img [ref=e107]
+                - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools" [ref=e109] [cursor=pointer]:
+                  - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+                  - img [ref=e110] [cursor=pointer]
+            - paragraph [ref=e119]: "[Cloudflare Turnstile] Invalid input for parameter \"sitekey\", got \"\"."
+          - generic [ref=e120]:
+            - generic [ref=e121]:
+              - paragraph [ref=e123]:
+                - img [ref=e125]
+                - generic [ref=e128]: components/SplatCaptcha.tsx (45:46) @ SplatCaptcha.useCallback[render]
+                - button "Open in editor" [ref=e129] [cursor=pointer]:
+                  - img [ref=e131] [cursor=pointer]
+              - generic [ref=e134]:
+                - generic [ref=e137]: 43 |
+                - generic [ref=e138]:
+                  - generic [ref=e140]: 44 |
+                  - generic [ref=e142]: try
+                  - generic [ref=e143]: "{"
+                - generic [ref=e144]:
+                  - generic [ref=e145]: ">"
+                  - generic [ref=e146]: 45 |
+                  - generic [ref=e147]: widgetIdRef
+                  - generic [ref=e148]: .
+                  - generic [ref=e149]: current
+                  - generic [ref=e150]: =
+                  - generic [ref=e151]: window
+                  - generic [ref=e152]: .
+                  - generic [ref=e153]: turnstile
+                  - generic [ref=e154]: .
+                  - generic [ref=e155]: render(widgetRef
+                  - generic [ref=e156]: .
+                  - generic [ref=e157]: current
+                  - generic [ref=e158]: ","
+                  - generic [ref=e159]: "{"
+                - generic [ref=e160]:
+                  - generic [ref=e162]: "|"
+                  - generic [ref=e164]: ^
+                - generic [ref=e165]:
+                  - generic [ref=e167]: 46 |
+                  - generic [ref=e168]: sitekey
+                  - generic [ref=e169]: ":"
+                  - generic [ref=e170]: siteKey
+                  - generic [ref=e171]: ","
+                - generic [ref=e172]:
+                  - generic [ref=e174]: 47 |
+                  - generic [ref=e175]: theme
+                  - generic [ref=e176]: ","
+                - generic [ref=e177]:
+                  - generic [ref=e179]: 48 |
+                  - generic [ref=e180]: action
+                  - generic [ref=e181]: ","
+            - generic [ref=e182]:
+              - generic [ref=e183]:
+                - paragraph [ref=e184]:
+                  - text: Call Stack
+                  - generic [ref=e185]: "4"
+                - button "Show 3 ignore-listed frame(s)" [ref=e186] [cursor=pointer]:
+                  - text: Show 3 ignore-listed frame(s)
+                  - img [ref=e187] [cursor=pointer]
+              - generic [ref=e189]:
+                - generic [ref=e190]:
+                  - text: SplatCaptcha.useCallback[render]
+                  - button "Open SplatCaptcha.useCallback[render] in editor" [ref=e191] [cursor=pointer]:
+                    - img [ref=e192] [cursor=pointer]
+                - generic [ref=e194]: components/SplatCaptcha.tsx (45:46)
+        - generic [ref=e195]:
+          - generic [ref=e196]: "1"
+          - generic [ref=e197]: "2"
+  - alert [ref=e198]
+```

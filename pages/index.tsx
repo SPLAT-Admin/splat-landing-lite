@@ -40,7 +40,7 @@ export default function Home() {
         {/* Hero */}
         <section className="relative flex flex-col items-center px-4 pt-24 pb-12 text-center">
           <h1 className="text-[44pt] font-extrabold tracking-tight text-[#851825]">
-            WELCOME TO SPL@T <span aria-hidden="true">💦</span>
+            WELCOME TO SPL@T
           </h1>
           <p className="mt-4 max-w-4xl text-[22pt] text-gray-300">
             Your back-door pass to the SPL@TVerse — a real-time digital community for connection without shame.

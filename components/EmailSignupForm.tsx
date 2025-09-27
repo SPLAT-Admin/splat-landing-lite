@@ -8,6 +8,7 @@ import {
   FormButton,
   FormCaptcha,
   formStatusMessageClass,
+  formHeadingClass,
 } from "@/components/Form";
 
 export default function EmailSignupForm() {
@@ -71,17 +72,18 @@ export default function EmailSignupForm() {
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-10">
       <header className="space-y-4 text-center">
-        <span className="text-sm uppercase tracking-[0.5em] text-white/50">SPL@T Waitlist</span>
-        <h1 className="text-4xl font-extrabold tracking-tight text-[#851825] drop-shadow-lg sm:text-5xl">
+        <span className="text-xs uppercase tracking-[0.5em] text-white/45">SPL@T Waitlist</span>
+        <h1 className="text-2xl font-extrabold uppercase tracking-[0.3em] text-[#851825]">
           Be the First to SPL@T
         </h1>
-        <p className="text-base text-white/75 sm:text-lg">
+        <p className="text-lg text-white/80">
           Drop your email to get early access, filthy updates, and invites to private beta drops. No spam—just pure SPL@T energy.
         </p>
       </header>
 
       <FormShell>
         <form onSubmit={handleSubmit} className="space-y-6">
+          <h2 className={`${formHeadingClass} text-center`}>Join the Waitlist</h2>
           <FormField
             label="Email Address"
             name="email"

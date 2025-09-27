@@ -54,22 +54,23 @@ export default function StorefrontPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-black via-[#090106] to-black px-6 py-16 text-white">
+    <main className="min-h-screen bg-gradient-to-b from-black via-[#090106] to-black px-6 py-20 text-white">
       <HeroFlashSale />
-      <div className="mx-auto max-w-6xl">
-        <header className="mb-12 text-center">
-          <h1 className="text-4xl font-extrabold text-[#851825] drop-shadow-lg">
+      <div className="mx-auto max-w-6xl space-y-12">
+        <header className="text-center">
+          <h1 className="text-4xl font-extrabold tracking-tight text-[#851825] drop-shadow-lg sm:text-5xl">
             SPL@T Merch Store
           </h1>
-          <p className="mt-3 text-white/70">
-            Exclusive drops. Only while active.
+          <p className="mt-3 text-lg font-semibold text-white">
+            🔥 Merch Drops Coming Soon
+          </p>
+          <p className="mt-2 text-white/70">
+            Exclusive drops, limited runs, and collabs from the SPL@TVerse.
           </p>
         </header>
 
         {products.length === 0 ? (
-          <p className="text-center text-white/60">
-            ❌ No active products. Check back soon!
-          </p>
+          <p className="text-center text-white/60">❌ No active products. Check back soon!</p>
         ) : (
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => (
