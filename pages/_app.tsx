@@ -2,7 +2,7 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import withSplatBoundary from "./_splat-sentry-boundary";
-import Header from "@/components/Header";
+import GlobalHeader from "@/components/GlobalHeader";
 import Footer from "@/components/Footer";
 import "@/styles/globals.css";
 
@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           Skip to main content
         </a>
         
-        <Header />
+        <GlobalHeader />
         <main
           id="main-content"
           className="flex-grow"
