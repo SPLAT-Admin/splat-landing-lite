@@ -1,3 +1,9 @@
+html, body {
+  background-color: #0A0A0A !important;
+  color: #FFFFFF !important;
+  min-height: 100%;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,7 +13,7 @@
   :root {
     --background: #0A0A0A;       /* Jet Black */
     --foreground: #FFF;       /* Acid White */
-    --deep-crimson: #851725;     /* Deep Crimson */
+    --deep-crimson: #851825;     /* Deep Crimson */
     --crimson-primary: #D80D27;  /* CTA / Hero Crimson */
     --crimson-hover: #a00b1f;    /* Button Hover */
     --font-sans: 'Oswald', system-ui, -apple-system, 'Segoe UI', roboto, helvetica, arial, sans-serif;

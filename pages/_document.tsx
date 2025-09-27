@@ -3,7 +3,7 @@ import { Html, Head, Main, NextScript } from "next/document";
 export default function Document() {
   const siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY;
   return (
-    <Html lang="en" className="bg-background text-foreground min-h-screen">
+    <Html lang="en" className="bg-background text-foreground">
       <Head>
         {/* Preload Oswald font for better performance */}
         <link
