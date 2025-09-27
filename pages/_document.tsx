@@ -3,7 +3,7 @@ import { Html, Head, Main, NextScript } from "next/document";
 export default function Document() {
   const siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY;
   return (
-    <Html lang="en" className="bg-background text-foreground">
+    <Html className="bg-background text-foreground">
       <Head>
         {/* Preload Oswald font for better performance */}
         <link
@@ -25,7 +25,7 @@ export default function Document() {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </Head>
-      <body className="bg-background text-foreground min-h-screen antialiased">
+      <body className="bg-background text-foreground min-h-screen">
         <Main />
         {siteKey ? (
           <script
