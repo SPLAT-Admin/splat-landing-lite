@@ -134,7 +134,7 @@ export default function GlobalHeader() {
         <div
           ref={mobileMenuRef}
           id="mobile-menu"
-          className="border-t border-white/10 bg-jet-black/95 backdrop-blur-md px-6 pb-6 text-sm uppercase tracking-[0.3em] text-acid-white lg:hidden focus-trap"
+          className="border-t border-white/10 bg-background backdrop-blur-md px-6 pb-6 text-sm uppercase tracking-[0.3em] text-foreground lg:hidden focus-trap"
           role="navigation"
           aria-label="Mobile navigation menu"
         >
@@ -144,7 +144,7 @@ export default function GlobalHeader() {
                 <button
                   type="button"
                   onClick={() => handleNavigate(link.href)}
-                  className="w-full rounded-xl border border-white/10 bg-jet-black/70 px-4 py-3 text-left font-semibold transition-all duration-200 hover:border-deep-crimson hover:text-deep-crimson hover:bg-deep-crimson/5 focus:border-deep-crimson focus:text-deep-crimson focus:bg-deep-crimson/5"
+                  className="w-full rounded-xl border border-white/10 bg-background/70 px-4 py-3 text-left font-semibold transition-all duration-200 hover:border-deep-crimson hover:text-deep-crimson hover:bg-deep-crimson/5 focus:border-deep-crimson focus:text-deep-crimson focus:bg-deep-crimson/5"
                   aria-label={`Navigate to ${link.label}`}
                   tabIndex={0}
                 >

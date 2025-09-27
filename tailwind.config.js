@@ -15,7 +15,7 @@ module.exports = {
         // SPL@T Brand Colors
         background: "#0A0A0A", // Jet Black
         foreground: "#FFFFFF", // Acid White
-        "deep-crimson": "#851725", // SPL@T Deep Crimson
+        "deep-crimson": "#851825", // SPL@T Deep Crimson
         "crimson-primary": "#D80D27", // Alternate Crimson (hero, CTA)
         "crimson-hover": "#a00b1f", // Hover state
         
