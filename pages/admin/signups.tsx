@@ -3,6 +3,7 @@ import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
+import AdminLayout from "@/components/layouts/AdminLayout";
 
 const PAGE_SIZE = 50;
 
@@ -50,10 +51,10 @@ export default function AdminSignups({ rows, page, total }: Props) {
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   return (
-    <main className="min-h-screen bg-background text-foreground p-6">
+    <>
       <Head><title>SPL@T Admin – Email Signups</title></Head>
-
-      <div className="max-w-6xl mx-auto space-y-6">
+      <AdminLayout>
+        <div className="mx-auto max-w-6xl space-y-6 bg-background text-foreground">
         {/* Header & Export */}
         <header className="flex flex-wrap justify-between items-center gap-4 ">
           <h1 className="text-3xl font-extrabold">Email Signups</h1>
@@ -113,7 +114,8 @@ export default function AdminSignups({ rows, page, total }: Props) {
             );
           })}
         </nav>
-      </div>
-    </main>
+        </div>
+      </AdminLayout>
+    </>
   );
 }

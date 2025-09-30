@@ -1,39 +1,55 @@
-// lib/sendEmail.ts
-import { Resend } from "resend";
+import { resend } from "@/lib/resendClient";
 
-export type EmailParams = {
-  to: string | string[];
+const DEFAULT_FROM = "no-reply@usesplat.com";
+const UNKNOWN_ERROR = "Unknown Resend error";
+
+type SendEmailParams = {
+  to: string;
   subject: string;
   html: string;
-  cc?: string | string[];
-  bcc?: string | string[];
-  from?: string;
 };
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
-const DEFAULT_FROM = "SPL@T <noreply@usesplat.com>";
+type SendEmailResult =
+  | { success: true; id: string }
+  | { success: false; error: string };
 
-export async function sendEmail(
-  params: EmailParams
-): Promise<{ success: true; id?: string } | { success: false; error: string }> {
+/**
+ * Sends an email using Resend while normalising the response shape.
+ * Always resolves with a deterministic result so callers can trust the outcome.
+ */
+export async function sendEmail({ to, subject, html }: SendEmailParams): Promise<SendEmailResult> {
   try {
     const { data, error } = await resend.emails.send({
-      from: params.from ?? DEFAULT_FROM,
-      to: params.to,
-      subject: params.subject,
-      html: params.html,
-      cc: params.cc,
-      bcc: params.bcc,
+      from: DEFAULT_FROM,
+      to,
+      subject,
+      html,
     });
 
     if (error) {
-      console.error("❌ Resend error:", error);
-      return { success: false, error: (error as any)?.message || "Unknown Resend error" };
+      const message =
+        typeof error === "object" && error !== null && "message" in error &&
+        typeof (error as { message?: unknown }).message === "string"
+          ? (error as { message: string }).message
+          : UNKNOWN_ERROR;
+
+      return { success: false, error: message };
     }
 
-    return { success: true, id: (data as any)?.id };
-  } catch (e: any) {
-    console.error("❌ Resend exception:", e);
-    return { success: false, error: e?.message || "Unknown send exception" };
+    const id =
+      typeof data === "object" && data !== null && "id" in data &&
+      typeof (data as { id?: unknown }).id === "string"
+        ? (data as { id: string }).id
+        : "";
+
+    return { success: true, id };
+  } catch (error: unknown) {
+    const message =
+      typeof error === "object" && error !== null && "message" in error &&
+      typeof (error as { message?: unknown }).message === "string"
+        ? (error as { message: string }).message
+        : UNKNOWN_ERROR;
+
+    return { success: false, error: message };
   }
 }

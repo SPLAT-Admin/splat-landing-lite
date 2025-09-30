@@ -9,7 +9,9 @@
     "lint": "next lint",
     "lint:css": "stylelint \"**/*.css\" --fix",
     "log-previews": "./log-vercel-previews.sh",
-    "smoke": "playwright test tests/smoke.spec.ts"
+    "smoke": "playwright test tests/smoke.spec.ts",
+    "smoke:dev": "npm run dev & npx wait-on http://localhost:3000 && playwright test tests/smoke.spec.ts",
+    "smoke:prod": "npm run build && npm run start & npx wait-on http://localhost:3000 && playwright test tests/smoke.spec.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.6",

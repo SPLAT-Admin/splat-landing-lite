@@ -12,7 +12,7 @@ import {
   FormCaptcha,
   formStatusMessageClass,
   formHeadingClass,
-} from "@/components/Form";
+} from "@/components/ui/Form";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 
 interface Product {
@@ -97,7 +97,7 @@ export default function CheckoutPage() {
         setError("We couldn't load this order. Try again or start over.");
         setOrder(null);
       } else if (!data) {
-        setError("Order not found. Start a new checkout from the storefront.");
+        setError("Order not found. Start a new checkout from the merch page.");
         setOrder(null);
       } else {
         const normalized = {
@@ -165,16 +165,19 @@ export default function CheckoutPage() {
         }),
       });
 
-      if (!response.ok) {
-        const data = await response.json().catch(() => null);
-        throw new Error(data?.error || "Checkout failed. Try again soon.");
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok || data?.ok === false) {
+        throw new Error(data?.error || data?.message || "Checkout failed. Try again soon.");
       }
 
       setCheckout((prev) => ({ ...prev, status: "success" }));
       resetCaptcha();
 
+      const redirectTo = data?.data?.redirectTo ?? "/thank-you";
+
       setTimeout(() => {
-        void router.push("/thankyou");
+        void router.push(redirectTo);
       }, 1200);
     } catch (err: unknown) {
       const message =

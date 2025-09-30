@@ -11,7 +11,7 @@ import {
   FormCaptcha,
   formStatusMessageClass,
   formHeadingClass,
-} from "@/components/Form";
+} from "@/components/ui/Form";
 
 const initialForm = {
   name: "",
@@ -54,23 +54,26 @@ export default function ContactPage() {
     setError(null);
 
     try {
-      const response = await fetch("/api/contact-form", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...form, captchaToken }),
       });
 
-      if (!response.ok) {
-        const data = await response.json().catch(() => null);
-        throw new Error(data?.error || "Unable to send your message right now.");
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok || !data?.success) {
+        throw new Error(data?.error || data?.message || "Unable to send your message right now.");
       }
 
       setStatus("success");
       setForm(initialForm);
       resetCaptcha();
 
+      const redirectTo = typeof data?.redirectTo === "string" ? data.redirectTo : "/thank-you";
+
       setTimeout(() => {
-        void router.push("/thankyou");
+        void router.push(redirectTo);
       }, 1500);
     } catch (err: unknown) {
       const message =

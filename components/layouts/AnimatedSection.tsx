@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Headline } from './Typography';
+import { Headline } from '@/components/ui/Typography';
 
 interface AnimatedSectionProps {
   id?: string;

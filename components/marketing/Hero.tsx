@@ -18,7 +18,7 @@ const fallbackPromo: Promo = {
   cta_href: "/signup",
 };
 
-export default function HeroFlashSale() {
+export default function Hero() {
   const [promo, setPromo] = useState<Promo | null>(null);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function HeroFlashSale() {
       try {
         return getSupabaseClient();
       } catch (error) {
-        console.warn("HeroFlashSale supabase unavailable", error);
+        console.warn("Hero supabase unavailable", error);
         return null;
       }
     };
@@ -52,7 +52,7 @@ export default function HeroFlashSale() {
       if (!mounted) return;
 
       if (error) {
-        console.error("HeroFlashSale promo load error", error);
+        console.error("Hero promo load error", error);
       } else if (data) {
         setPromo(data);
       }

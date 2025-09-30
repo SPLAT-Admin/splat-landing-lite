@@ -7,7 +7,6 @@ const supabaseService = getSupabaseServiceClient();
 
 const CLOUDFLARE_SECRET_KEY = process.env.CLOUDFLARE_SECRET_KEY!;
 
-const FROM_EMAIL = "SPL@T <noreply@usesplat.com>";
 const BRAND_NAME = process.env.BRAND_NAME || "SPL@T";
 
 const isValidEmail = (v: string) => /.+@.+\..+/.test(v.trim()) && v.trim().length <= 320;
@@ -155,7 +154,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     try {
       await sendEmail({
-        from: FROM_EMAIL,
         to: email,
         subject: `You're on the list — ${BRAND_NAME}`,
         html: `

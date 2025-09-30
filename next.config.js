@@ -58,6 +58,19 @@ const nextConfig = {
       },
     ];
   },
+
+  async rewrites() {
+    return [
+      {
+        source: '/storefront',
+        destination: '/merch',
+      },
+      {
+        source: '/storefront/:path*',
+        destination: '/merch/:path*',
+      },
+    ];
+  },
 };
 
 module.exports = withSentryConfig(

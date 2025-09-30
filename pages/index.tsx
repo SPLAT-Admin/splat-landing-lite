@@ -1,12 +1,12 @@
 import Head from "next/head";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import HeroFlashSale from "../components/HeroFlashSale";
-import AnimatedSection from "../components/AnimatedSection";
-import FeatureGrid from "../components/FeatureGrid";
-import Timeline from "../components/Timeline";
-import { Hero, BodyLarge, Body } from "../components/Typography";
-import Button from "../components/Button";
+import HeroBanner from "@/components/marketing/Hero";
+import AnimatedSection from "@/components/layouts/AnimatedSection";
+import FeatureGrid from "@/components/marketing/FeatureGrid";
+import Timeline from "@/components/marketing/Timeline";
+import { Hero as HeroHeading, BodyLarge, Body } from "@/components/ui/Typography";
+import Button from "@/components/ui/Button";
 
 export default function Home() {
   const features = [
@@ -107,7 +107,7 @@ export default function Home() {
       </Head>
 
       <main className="bg-jet-black text-acid-white overflow-x-hidden">
-        <HeroFlashSale />
+        <HeroBanner />
 
         {/* Hero Section */}
         <section 
@@ -128,9 +128,9 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <Hero id="hero-heading">
+            <HeroHeading id="hero-heading">
               WELCOME TO SPL@T
-            </Hero>
+            </HeroHeading>
           </motion.div>
           
           <motion.div
@@ -159,7 +159,7 @@ export default function Home() {
               Join the Waitlist
             </Button>
             <Button
-              href="/storefront"
+              href="/merch"
               variant="outline"
               size="xl"
               aria-label="Browse SPL@T merchandise store"

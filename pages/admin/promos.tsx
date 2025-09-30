@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import { createClient } from "@supabase/supabase-js";
+import AdminLayout from "@/components/layouts/AdminLayout";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 
 const supabase = getSupabaseClient();
@@ -287,12 +288,13 @@ export default function AdminPromos({ initialPromos }: Props) {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-black via-[#20030a] to-black text-white p-10">
+    <>
       <Head>
         <title>SPL@T Admin – Promos</title>
       </Head>
-
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
+      <AdminLayout>
+        <div className="min-h-screen bg-gradient-to-br from-black via-[#20030a] to-black text-white p-10">
+          <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
         <header className="flex flex-col gap-2">
           <h1 className="text-4xl font-extrabold tracking-tight text-crimson">Promo Control Center</h1>
           <p className="text-base text-gray-300">
@@ -518,7 +520,9 @@ export default function AdminPromos({ initialPromos }: Props) {
             </div>
           </section>
         )}
-      </div>
-    </main>
+          </div>
+        </div>
+      </AdminLayout>
+    </>
   );
 }

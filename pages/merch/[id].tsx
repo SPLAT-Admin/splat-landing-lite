@@ -90,11 +90,12 @@ export default function ProductDetailPage() {
       setTimeout(() => {
         setWaitlist({ email: "", status: "idle", error: null });
       }, 2000);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Something went wrong. Please try again.";
       setWaitlist((prev) => ({
         ...prev,
         status: "error",
-        error: err?.message || "Something went wrong. Please try again.",
+        error: message,
       }));
     }
   };
@@ -104,7 +105,7 @@ export default function ProductDetailPage() {
   return (
     <>
       <Head>
-        <title>{product ? `${product.name} — SPL@T Storefront` : "SPL@T Product"}</title>
+        <title>{product ? `${product.name} — SPL@T Merch` : "SPL@T Product"}</title>
         {product?.description ? <meta name="description" content={product.description} /> : null}
       </Head>
       <main className="min-h-screen bg-gradient-to-b from-black via-[#0b0207] to-black px-6 py-16 text-white">
@@ -144,8 +145,8 @@ export default function ProductDetailPage() {
             ) : null}
 
             <div className="space-y-4">
-              <Link href="/storefront" className="text-xs uppercase tracking-[0.4em] text-white/50 hover:text-white">
-                ← Back to Storefront
+              <Link href="/merch" className="text-xs uppercase tracking-[0.4em] text-white/50 hover:text-white">
+                ← Back to Merch
               </Link>
               <h1 className="text-[36pt] font-extrabold tracking-tight text-[#851825] drop-shadow-lg">
                 {loading ? "Loading…" : product?.name ?? "Unknown SPL@T Drop"}
@@ -210,3 +211,4 @@ export default function ProductDetailPage() {
     </>
   );
 }
+

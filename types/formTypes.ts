@@ -11,6 +11,7 @@ export interface AmbassadorForm {
   qualifications_why: string;
   referral?: string;
   captchaToken: string;
+  [key: string]: unknown;
 }
 
 export interface ContactForm {
@@ -18,4 +19,5 @@ export interface ContactForm {
   email: string;
   message: string;
   captchaToken: string;
+  [key: string]: unknown;
 }

@@ -12,7 +12,7 @@ import {
   FormCaptcha,
   formStatusMessageClass,
   formHeadingClass,
-} from "@/components/Form";
+} from "@/components/ui/Form";
 
 const stateOptions = [
   "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY",
@@ -105,7 +105,7 @@ export default function AmbassadorApplyPage() {
       resetCaptcha();
 
       setTimeout(() => {
-        void router.push("/thankyou");
+        void router.push("/thank-you");
       }, 1500);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Unexpected error. Please try again.";

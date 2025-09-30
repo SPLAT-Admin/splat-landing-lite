@@ -9,7 +9,7 @@ import {
   FormCaptcha,
   formStatusMessageClass,
   formHeadingClass,
-} from "@/components/Form";
+} from "@/components/ui/Form";
 
 export default function EmailSignupForm() {
   const router = useRouter();
@@ -59,7 +59,7 @@ export default function EmailSignupForm() {
       resetCaptcha();
 
       setTimeout(() => {
-        void router.push("/thankyou");
+        void router.push("/thank-you");
       }, 1200);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Something went wrong.";

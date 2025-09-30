@@ -26,7 +26,7 @@ export default function GlobalHeader() {
           {[
             ["Ambassador", "/ambassador"],
             ["Program", "/ambassador"],
-            ["Merch", "/storefront"],
+            ["Merch", "/merch"],
             ["Advertise", "/advertise"],
             ["Contact", "/contact"],
           ].map(([label, href]) => (
@@ -56,7 +56,7 @@ export default function GlobalHeader() {
           {[
             ["Ambassador", "/ambassador"],
             ["Program", "/ambassador"],
-            ["Merch", "/storefront"],
+            ["Merch", "/merch"],
             ["Advertise", "/advertise"],
             ["Contact", "/contact"],
           ].map(([label, href]) => (

@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSupabaseServiceClient } from "@/lib/supabaseClient";
 import { sendEmail } from "@/lib/sendEmail";
+import { verifyCaptcha } from "@/lib/verifyCaptcha";
 
 const supabaseService = getSupabaseServiceClient();
 
@@ -33,6 +34,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (!isValidEmail(body.email)) {
       return res.status(400).json({ ok: false, error: "Invalid email address." });
+    }
+
+    if (!body.captchaToken || typeof body.captchaToken !== "string") {
+      return res.status(400).json({ ok: false, error: "CAPTCHA token is required." });
+    }
+
+    const forwardedFor = req.headers["x-forwarded-for"];
+    const remoteIp = typeof forwardedFor === "string" ? forwardedFor : Array.isArray(forwardedFor) ? forwardedFor[0] : undefined;
+    const captchaValid = await verifyCaptcha(body.captchaToken, remoteIp);
+    if (!captchaValid) {
+      return res.status(403).json({ ok: false, error: "CAPTCHA verification failed." });
     }
 
     const followerCount = Number(body.number_of_followers);

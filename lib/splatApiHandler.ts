@@ -1,12 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { sendError, type APIResponse } from './apiResponse';
 
-export function splatApiHandler(handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void>) {
-  return async (req: NextApiRequest, res: NextApiResponse) => {
+export function splatApiHandler<T = unknown>(
+  handler: (req: NextApiRequest, res: NextApiResponse<APIResponse<T>>) => Promise<void> | void
+) {
+  return async (req: NextApiRequest, res: NextApiResponse<APIResponse<T>>) => {
     try {
       await handler(req, res);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ success: false, error: 'Internal Server Error' });
+      if (!res.headersSent) {
+        sendError(res, 500, 'Internal Server Error');
+      }
     }
   };
 }

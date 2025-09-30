@@ -2,8 +2,7 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import withSplatBoundary from "./_splat-sentry-boundary";
-import GlobalHeader from "@/components/GlobalHeader";
-import Footer from "@/components/Footer";
+import GlobalLayout from "@/components/layouts/GlobalLayout";
 import "@/styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -20,26 +19,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="bg-background text-foreground min-h-screen flex flex-col">
-        {/* Skip Navigation Link for Screen Readers */}
-        <a href="#main-content" className="skip-nav">
-          Skip to main content
-        </a>
-        
-        <GlobalHeader />
-        <main
-          id="main-content"
-          className="flex-grow"
-          role="main"
-          aria-label="Main content"
-          style={{
-            paddingInline: "clamp(24px, 8vw, 96px)",
-          }}
-        >
-          <Component {...pageProps} />
-        </main>
-        <Footer />
-      </div>
+      <GlobalLayout>
+        <Component {...pageProps} />
+      </GlobalLayout>
     </>
   );
 }

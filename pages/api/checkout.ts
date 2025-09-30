@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSupabaseServiceClient } from "@/lib/supabaseClient";
 import { sendEmail } from "@/lib/sendEmail";
+import { verifyCaptcha } from "@/lib/verifyCaptcha";
 
 const supabase = getSupabaseServiceClient();
 
@@ -12,9 +13,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const { orderId, customer } = req.body ?? {};
+    const { orderId, customer, captchaToken } = req.body ?? {};
     const name = customer?.name as string | undefined;
     const email = customer?.email as string | undefined;
+    const forwardedFor = req.headers["x-forwarded-for"];
+    const remoteIp = typeof forwardedFor === "string" ? forwardedFor : Array.isArray(forwardedFor) ? forwardedFor[0] : undefined;
 
     if (!orderId || typeof orderId !== "string") {
       return res.status(400).json({ ok: false, error: "orderId is required." });
@@ -24,6 +27,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     if (!email || !isValidEmail(email)) {
       return res.status(400).json({ ok: false, error: "Valid customer email is required." });
+    }
+    if (!captchaToken || typeof captchaToken !== "string") {
+      return res.status(400).json({ ok: false, error: "CAPTCHA token is required." });
+    }
+
+    const captchaOk = await verifyCaptcha(captchaToken, remoteIp);
+    if (!captchaOk) {
+      return res.status(403).json({ ok: false, error: "CAPTCHA verification failed." });
     }
 
     const normalizedEmail = email.trim().toLowerCase();
@@ -46,7 +57,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(404).json({ ok: false, error: "Order not found." });
     }
     if (order.status === "completed") {
-      return res.status(200).json({ ok: true, data: { orderId: order.id, redirectTo: "/thankyou" } });
+      return res.status(200).json({ ok: true, data: { orderId: order.id, redirectTo: "/thank-you" } });
     }
 
     // Upsert customer row
@@ -119,7 +130,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.warn("checkout confirmation email failed", emailErr);
     }
 
-    return res.status(200).json({ ok: true, data: { orderId, redirectTo: "/thankyou" } });
+    return res.status(200).json({ ok: true, data: { orderId, redirectTo: "/thank-you" } });
   } catch (error) {
     console.error("checkout unhandled", error);
     return res.status(500).json({ ok: false, error: "Unexpected server error." });

@@ -6,7 +6,7 @@ import type {
   SelectHTMLAttributes,
   TextareaHTMLAttributes,
 } from "react";
-import SplatCaptcha, { type SplatCaptchaProps } from "./SplatCaptcha";
+import SplatCaptcha, { type SplatCaptchaProps } from "@/components/SplatCaptcha";
 
 const labelClass = "text-lg font-semibold text-white";
 const helperClass = "mt-2 text-sm text-white/55";

@@ -3,7 +3,7 @@ Allow: /
 
 # Important pages
 Allow: /ambassador
-Allow: /storefront
+Allow: /merch
 Allow: /signup
 Allow: /contact
 

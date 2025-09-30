@@ -5,10 +5,10 @@ export default function SiteMapPage() {
     { href: '/ambassador-apply', label: 'Ambassador Apply' },
     { href: '/merch', label: 'Merch' },
     { href: '/advertise', label: 'Advertise' },
-    { href: '/contactus', label: 'Contact Us' },
+    { href: '/contact', label: 'Contact' },
     { href: '/terms', label: 'Terms of Service' },
     { href: '/privacy', label: 'Privacy Policy' },
-    { href: '/community-standards', label: 'SPL@T Community Standards' },
+    { href: '/community', label: 'SPL@T Community Standards' },
   ];
 
   return (

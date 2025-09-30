@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import AdminLayout from "@/components/layouts/AdminLayout";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 
 const supabase = getSupabaseClient();
@@ -333,23 +334,27 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className={`${brand.background} min-h-screen flex items-center justify-center text-white`}>
-        <p className="animate-pulse tracking-[0.4em] uppercase text-xs text-white/60">Loading SPL@T admin…</p>
-      </div>
+      <AdminLayout>
+        <div className={`${brand.background} flex min-h-[60vh] items-center justify-center rounded-3xl border border-white/10 text-white`}>
+          <p className="animate-pulse tracking-[0.4em] uppercase text-xs text-white/60">Loading SPL@T admin…</p>
+        </div>
+      </AdminLayout>
     );
   }
 
   if (authError) {
     return (
-      <div className={`${brand.background} min-h-screen flex items-center justify-center text-white`}>
-        <div className="max-w-md space-y-4 text-center">
-          <h1 className="text-3xl font-bold text-[#851825]">Access Error</h1>
-          <p className="text-white/80">{authError}</p>
-          <Link href="/login" className="inline-flex items-center justify-center rounded-full bg-[#851825] px-6 py-2 font-semibold shadow hover:bg-[#6f1320]">
-            Go to Login
-          </Link>
+      <AdminLayout>
+        <div className={`${brand.background} flex min-h-[60vh] items-center justify-center rounded-3xl border border-white/10 p-12 text-white`}>
+          <div className="max-w-md space-y-4 text-center">
+            <h1 className="text-3xl font-bold text-[#851825]">Access Error</h1>
+            <p className="text-white/80">{authError}</p>
+            <Link href="/login" className="inline-flex items-center justify-center rounded-full bg-[#851825] px-6 py-2 font-semibold shadow hover:bg-[#6f1320]">
+              Go to Login
+            </Link>
+          </div>
         </div>
-      </div>
+      </AdminLayout>
     );
   }
 
@@ -358,7 +363,8 @@ export default function AdminDashboard() {
       <Head>
         <title>SPL@T Admin Dashboard</title>
       </Head>
-      <div className={`${brand.background} min-h-screen text-white`}>
+      <AdminLayout>
+        <div className={`${brand.background} min-h-screen text-white`}>
         <header className="sticky top-0 z-40 border-b border-white/10 bg-black/80 backdrop-blur">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
             <h1 className="text-xl font-extrabold uppercase tracking-[0.35em]">SPL@T Admin</h1>
@@ -776,7 +782,8 @@ export default function AdminDashboard() {
             {toast.message}
           </div>
         )}
-      </div>
+        </div>
+      </AdminLayout>
     </>
   );
 }

@@ -1,87 +1,55 @@
-// lib/validateForm.ts — prod-ready
-// This file exposes TWO validators so existing imports keep working:
-// 1) validateForm(data, requiredFields[, options]) -> { valid, errors }
-// 2) validateWaitlist(input) -> { ok, data } | { ok: false, error }
-
-export type WaitlistInput = {
-  email: string;
-  name?: string;
-  marketing?: boolean;
-  tos: boolean;
+export type ValidationRules = {
+  patterns?: Record<string, RegExp>;
+  min?: Record<string, number>;
+  max?: Record<string, number>;
 };
 
-export type WaitlistValidationResult =
-  | { ok: true; data: WaitlistInput }
-  | { ok: false; error: string };
-
-export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-/**
- * Your original waitlist validator (kept intact for backwards compatibility)
- */
-export function validateWaitlist(input: Record<string, unknown>): WaitlistValidationResult {
-  const email = String(input.email ?? "").trim();
-  const name = String(input.name ?? "").trim() || undefined;
-  const marketing = Boolean(input.marketing);
-  const tos = Boolean(input.tos);
-
-  if (!email) return { ok: false, error: "Email is required." };
-  if (!EMAIL_RE.test(email)) return { ok: false, error: "Invalid email." };
-  if (!tos) return { ok: false, error: "You must accept the Terms." };
-  if (name && name.length > 120) return { ok: false, error: "Name too long." };
-
-  return { ok: true, data: { email, name, marketing, tos } };
-}
-
-// ------------------------------------------------------------------------------------------
-// Ambassador/API-friendly validator used like: validateForm(body, ["first_name","email",...])
-// Returns a simple shape that matches your /pages/api/ambassador.ts expectations
-
-export type SimpleValidation = { valid: boolean; errors: string[] };
-
-export type ValidateFormOptions = {
-  patterns?: Record<string, RegExp>; // e.g., { email: EMAIL_RE }
-  min?: Record<string, number>;      // e.g., { qualifications_why: 5 }
-  max?: Record<string, number>;      // e.g., { first_name: 100 }
-  labels?: Record<string, string>;   // pretty names for error messages
-};
-
-export function validateForm<T extends Record<string, any>>(
-  data: T,
+export function validateForm<T extends Record<string, unknown>>(
+  body: T,
   required: string[] = [],
-  opts: ValidateFormOptions = {}
-): SimpleValidation {
+  rules: ValidationRules = {}
+): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
-  const val = (v: any) => (typeof v === "string" ? v.trim() : v);
 
-  // Required fields
+  const isEmpty = (value: unknown): boolean => {
+    if (value === undefined || value === null) return true;
+    if (typeof value === "string") return value.trim().length === 0;
+    return false;
+  };
+
   for (const field of required) {
-    const v = val((data as any)[field]);
-    if (v === undefined || v === null || v === "") {
-      errors.push(`${opts.labels?.[field] || field} is required`);
+    const value = body[field as keyof T];
+    if (isEmpty(value)) {
+      errors.push(`${field} is required`);
     }
   }
 
-  // Patterns (default email check if email exists)
-  const patterns = { email: EMAIL_RE, ...(opts.patterns || {}) };
-  for (const [field, re] of Object.entries(patterns)) {
-    const v = (data as any)[field];
-    if (v != null && String(v).trim() !== "" && !re.test(String(v).trim())) {
-      errors.push(`${opts.labels?.[field] || field} is invalid`);
+  if (rules.patterns) {
+    for (const [field, pattern] of Object.entries(rules.patterns)) {
+      const rawValue = body[field as keyof T];
+      if (rawValue === undefined || rawValue === null) continue;
+      const stringValue = typeof rawValue === "string" ? rawValue.trim() : String(rawValue);
+      if (stringValue.length > 0 && !pattern.test(stringValue)) {
+        errors.push(`${field} is invalid`);
+      }
     }
   }
 
-  // Min/Max length checks on strings
-  for (const [field, min] of Object.entries(opts.min || {})) {
-    const v = (data as any)[field];
-    if (typeof v === "string" && v.trim().length < min) {
-      errors.push(`${opts.labels?.[field] || field} must be at least ${min} characters`);
+  if (rules.min) {
+    for (const [field, min] of Object.entries(rules.min)) {
+      const rawValue = body[field as keyof T];
+      if (typeof rawValue === "string" && rawValue.trim().length < min) {
+        errors.push(`${field} must be at least ${min} characters`);
+      }
     }
   }
-  for (const [field, max] of Object.entries(opts.max || {})) {
-    const v = (data as any)[field];
-    if (typeof v === "string" && v.trim().length > max) {
-      errors.push(`${opts.labels?.[field] || field} must be at most ${max} characters`);
+
+  if (rules.max) {
+    for (const [field, max] of Object.entries(rules.max)) {
+      const rawValue = body[field as keyof T];
+      if (typeof rawValue === "string" && rawValue.trim().length > max) {
+        errors.push(`${field} must be at most ${max} characters`);
+      }
     }
   }
 

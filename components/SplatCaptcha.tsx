@@ -21,8 +21,11 @@ declare global {
   }
 }
 
+const ENV_SITE_KEY = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY;
+const DEFAULT_SITE_KEY = ENV_SITE_KEY && ENV_SITE_KEY.trim().length > 0 ? ENV_SITE_KEY : "fake-dev-key";
+
 export default function SplatCaptcha({
-  siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY ?? "",
+  siteKey,
   containerId,
   action,
   cData,
@@ -32,6 +35,13 @@ export default function SplatCaptcha({
   onExpire,
   onError,
 }: SplatCaptchaProps) {
+  const resolvedSiteKey = useMemo(() => {
+    if (siteKey && siteKey.trim().length > 0) {
+      return siteKey.trim();
+    }
+    return DEFAULT_SITE_KEY;
+  }, [siteKey]);
+
   // Stable auto ID fallback (avoids hydration mismatch from useId())
   const autoId = useMemo(() => `splat-turnstile-${Math.random().toString(36).substring(2)}`, []);
   const widgetRef = useRef<HTMLDivElement | null>(null);
@@ -42,7 +52,7 @@ export default function SplatCaptcha({
 
     try {
       widgetIdRef.current = window.turnstile.render(widgetRef.current, {
-        sitekey: siteKey,
+        sitekey: resolvedSiteKey,
         theme,
         action,
         cData,
@@ -53,7 +63,7 @@ export default function SplatCaptcha({
     } catch (error) {
       console.error("Turnstile render error:", error);
     }
-  }, [siteKey, theme, action, cData, onVerify, onExpire, onError]);
+  }, [resolvedSiteKey, theme, action, cData, onVerify, onExpire, onError]);
 
   // Attempt render until widget is ready
   useEffect(() => {
@@ -85,10 +95,6 @@ export default function SplatCaptcha({
       }
     };
   }, []);
-
-  if (!siteKey) {
-    throw new Error("NEXT_PUBLIC_CLOUDFLARE_SITE_KEY must be defined to render the SPL@T Turnstile widget.");
-  }
 
   return (
     <div

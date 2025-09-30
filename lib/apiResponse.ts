@@ -1,27 +1,27 @@
 // lib/apiResponse.ts
 import type { NextApiResponse } from 'next';
 
-type APIResponse<T = any> = {
+export interface APIResponse<T = unknown> {
   success: boolean;
   message?: string;
   data?: T;
   redirectTo?: string;
   error?: string;
-};
+}
 
 /**
  * Sends a structured error response.
  */
-export function sendError(
-  res: NextApiResponse,
+export function sendError<T = unknown>(
+  res: NextApiResponse<APIResponse<T>>,
   status: number,
   message: string,
-  data?: any
-) {
-  const payload: APIResponse = {
+  data?: T
+): void {
+  const payload: APIResponse<T> = {
     success: false,
     error: message,
-    ...(data ? { data } : {})
+    ...(data !== undefined ? { data } : {}),
   };
   res.status(status).json(payload);
 }
@@ -29,17 +29,17 @@ export function sendError(
 /**
  * Sends a structured success response.
  */
-export function sendSuccess<T = any>(
-  res: NextApiResponse,
+export function sendSuccess<T = unknown>(
+  res: NextApiResponse<APIResponse<T>>,
   message: string,
   data?: T,
   redirectTo?: string
-) {
+): void {
   const payload: APIResponse<T> = {
     success: true,
     message,
-    ...(data ? { data } : {}),
-    ...(redirectTo ? { redirectTo } : {})
+    ...(data !== undefined ? { data } : {}),
+    ...(redirectTo ? { redirectTo } : {}),
   };
   res.status(200).json(payload);
 }

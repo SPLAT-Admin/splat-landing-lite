@@ -13,15 +13,15 @@ module.exports = {
     extend: {
       colors: {
         // SPL@T Brand Colors
-        background: "#0A0A0A", // Jet Black
-        foreground: "#FFFFFF", // Acid White
-        "deep-crimson": "#851825", // SPL@T Deep Crimson
-        "crimson-primary": "#D80D27", // Alternate Crimson (hero, CTA)
+        background: "#000000", // Jet Black base
+        foreground: "#FFFFFF", // Acid White base
+        "deep-crimson": "#A20021", // Primary SPL@T crimson
+        "crimson-primary": "#D80D27", // Supporting crimson (hero, CTA)
         "crimson-hover": "#a00b1f", // Hover state
-        
+
         // Extended palette for better design system
         "acid-white": "#FFFFFF",
-        "jet-black": "#0A0A0A",
+        "jet-black": "#000000",
         gray: {
           50: "#FAFAFA",
           100: "#F5F5F5",
