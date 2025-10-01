@@ -20,7 +20,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
 
       <GlobalLayout>
-        <Component {...pageProps} />
+        <div className="bg-jet-black text-acid-white min-h-screen">
+          <Component {...pageProps} />
+        </div>
       </GlobalLayout>
     </>
   );

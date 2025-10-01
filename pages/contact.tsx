@@ -92,32 +92,22 @@ export default function ContactPage() {
           name="description"
           content="Reach the SPL@T crew for partnerships, support, or collabs."
         />
+        {/* Cloudflare Turnstile script for Captcha */}
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
       </Head>
 
-      <main className="min-h-screen bg-gradient-to-b from-black via-[#100106] to-black px-6 py-24 text-white">
+      <main className="min-h-screen bg-jet-black px-6 py-24 text-acid-white">
         <div className="mx-auto flex max-w-3xl flex-col gap-10">
-          <header className="space-y-4 text-center">
-            <span className="text-xs uppercase tracking-[0.5em] text-white/45">Get in Touch</span>
-            <h1 className="text-2xl font-extrabold uppercase tracking-[0.3em] text-[#851825]">
-              Slide Into SPL@T HQ
+          <header className="space-y-6 text-center">
+            <h1 className="text-[44pt] font-extrabold tracking-tight text-deep-crimson drop-shadow-lg">
+              Get in Touch
             </h1>
-            <p className="text-lg text-white/80">
-              Partnerships, press, support, or spicy questions—the SPL@T crew is here for it. Drop a note and we’ll reply fast.
+            <p className="text-[22pt] font-bold text-acid-white">
+              Partnerships, press, support, or spicy questions — the SPL@T crew is here for it.
             </p>
-            <div className="grid gap-4 text-sm text-white/70 sm:grid-cols-2">
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                <p className="text-xs uppercase tracking-[0.4em] text-white/50">Email</p>
-                <a href="mailto:hello@usesplat.com" className="mt-2 block text-base font-semibold text-white hover:text-[#ff5a71]">
-                  hello@usesplat.com
-                </a>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                <p className="text-xs uppercase tracking-[0.4em] text-white/50">Phone</p>
-                <a href="tel:8444208333" className="mt-2 block text-base font-semibold text-white hover:text-[#ff5a71]">
-                  844-420-8333
-                </a>
-              </div>
-            </div>
+            <p className="text-lg text-acid-white/80 max-w-2xl mx-auto">
+              Drop us a note below and we’ll hit you back fast.
+            </p>
           </header>
 
           <FormShell>
@@ -177,7 +167,7 @@ export default function ContactPage() {
                 </p>
               ) : null}
 
-              <p className="text-center text-xs text-white/50">
+              <p className="text-center text-xs text-acid-white/50">
                 SPL@T stores your message securely and only uses your email to respond.
               </p>
             </form>

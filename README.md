@@ -36,3 +36,45 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+
+---
+
+## 🔒 Dev-only Admin Endpoints
+
+For development and local bootstrapping, SPL@T exposes two helper APIs:
+
+- `POST /api/admin/create-admin`
+  - Create an initial admin user with email/password.
+- `POST /api/admin/reset-password`
+  - Reset the password of an existing admin user.
+
+### ⚠️ Safety
+- Both endpoints are **protected by `devOnlyGuard`** (`lib/devOnlyGuard.ts`).
+- In **production** (`NODE_ENV=production`), they will immediately return:
+
+```json
+{ "success": false, "error": "This endpoint is disabled in production" }
+```
+
+- This ensures sensitive helpers cannot be abused outside local/dev.
+
+### Usage
+1. Ensure Supabase is running with your local dev database.
+2. Call the endpoints via curl, Postman, or frontend forms.
+3. Once bootstrapped, log in with the created/reset admin credentials.
+
+### Quick Examples
+
+#### Create Admin
+```bash
+curl -X POST http://localhost:3000/api/admin/create-admin \
+  -H "Content-Type: application/json" \
+  -d '{"email":"trent@usesplat.com","password":"SuperSecretPassword123"}'
+```
+
+#### Reset Admin Password
+```bash
+curl -X POST http://localhost:3000/api/admin/reset-password \
+  -H "Content-Type: application/json" \
+  -d '{"email":"trent@usesplat.com","newPassword":"EvenMoreSecret456"}'
+```

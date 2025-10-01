@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { devOnlyGuard } from "../../../lib/devOnlyGuard";
 import { getSupabaseServiceClient } from "@/lib/supabaseClient";
 
 const supabase = getSupabaseServiceClient();
@@ -8,9 +9,7 @@ type ResponseData =
   | { success: false; error: string };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
-  if (process.env.NODE_ENV === "production") {
-    return res.status(403).json({ success: false, error: "Forbidden" });
-  }
+  if (devOnlyGuard(res)) return;
 
   if (req.method !== "POST") {
     return res.status(405).json({ success: false, error: "Method Not Allowed" });
@@ -25,17 +24,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    const { data: userLookup, error: lookupError } = await supabase.auth.admin.listUsers({
-      email: normalizedEmail,
-      page: 1,
-      perPage: 1,
-    });
-
+    const { data: users, error: lookupError } = await supabase.auth.admin.listUsers();
     if (lookupError) {
       return res.status(500).json({ success: false, error: lookupError.message });
     }
 
-    const user = userLookup?.users?.[0];
+    const user = users?.users?.find((u) => u.email?.toLowerCase() === normalizedEmail);
     if (!user?.id) {
       return res.status(404).json({ success: false, error: "User not found" });
     }

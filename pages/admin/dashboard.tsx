@@ -689,7 +689,7 @@ export default function AdminDashboard() {
                               disabled={togglePending}
                               className={`relative inline-flex h-6 w-11 items-center rounded-full transition ${product.is_active ? "bg-[#851825]" : "bg-white/20"} ${togglePending ? "opacity-60" : ""}`}
                             >
-                              <span className={`inline-block h-5 w-5 transform rounded-full bg-white transition ${product.is_active ? "translate-x-5" : "translate-x-1"}`} />
+                              <span className={`inline-block h-5 w-5 transform rounded-full bg-acid-white transition ${product.is_active ? "translate-x-5" : "translate-x-1"}`} />
                             </button>
                           </div>
                         </td>

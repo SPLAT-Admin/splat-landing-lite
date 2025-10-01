@@ -14,15 +14,15 @@ export default function Community() {
         <meta name="description" content="The SPL@T Community Standards keep our spaces bold, safe, and unapologetically queer." />
       </Head>
 
-      <section className="bg-black text-white px-6 py-16">
+      <section className="bg-jet-black text-acid-white px-6 py-16">
         <div className="mx-auto max-w-4xl space-y-8">
           <header className="text-center">
-            <h1 className="text-[44pt] font-extrabold tracking-tight text-[#851825] drop-shadow-lg">
+            <h1 className="text-[44pt] font-extrabold tracking-tight text-deep-crimson drop-shadow-lg">
               SPL@T Community Standards
             </h1>
           </header>
 
-          <div className="rounded-3xl border border-gray-800 bg-acid-white px-6 py-12 text-black md:px-10 md:py-14">
+          <div className="rounded-3xl border border-deep-crimson bg-jet-black px-6 py-12 text-acid-white md:px-10 md:py-14">
             <section className="space-y-8">
               <Standard title="Consent is Non-Negotiable">
                 Clear, enthusiastic, ongoing. Consent must be explicit and can be withdrawn at any time. Engaging without
@@ -66,7 +66,7 @@ export default function Community() {
                 intended use of the SPL@Tverse™ will be addressed through moderation actions.
               </Standard>
 
-              <p className="italic text-gray-400">
+              <p className="italic text-acid-white/70">
                 These standards aren't suggestions--they're the foundation of a fierce, safe, and radically real digital
                 experience. SPL@T™ enforces them through a blend of community moderation, AI-driven flagging tools, and
                 direct user reporting. Violations lead to warnings, suspensions, or bans, ensuring a protected and
@@ -111,7 +111,7 @@ function Standard({ title, children }: SectionProps) {
   return (
     <div className="mb-6">
       <h3 className="mb-2 text-lg font-bold text-deep-crimson">{title}</h3>
-      <p className="text-gray-800">{children}</p>
+      <p className="text-acid-white/80">{children}</p>
     </div>
   );
 }
@@ -120,7 +120,7 @@ function Value({ title, children }: SectionProps) {
   return (
     <div className="mb-4">
       <h4 className="mb-1 text-md font-bold text-deep-crimson">{title}</h4>
-      <p className="text-gray-800">{children}</p>
+      <p className="text-acid-white/80">{children}</p>
     </div>
   );
 }

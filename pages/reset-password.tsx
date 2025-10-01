@@ -157,7 +157,7 @@ export default function ResetPasswordPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-full bg-crimson py-3 text-center text-sm font-semibold uppercase tracking-wide text-black transition hover:bg-crimson/90 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-full bg-crimson py-3 text-center text-sm font-semibold uppercase tracking-wide text-acid-white transition hover:bg-crimson/90 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? "Sending…" : "Send Reset Link"}
               </button>
@@ -189,7 +189,7 @@ export default function ResetPasswordPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-full bg-crimson py-3 text-center text-sm font-semibold uppercase tracking-wide text-black transition hover:bg-crimson/90 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-full rounded-full bg-crimson py-3 text-center text-sm font-semibold uppercase tracking-wide text-acid-white transition hover:bg-crimson/90 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? "Updating…" : "Update Password"}
               </button>
@@ -205,7 +205,7 @@ export default function ResetPasswordPage() {
               )}
               <button
                 onClick={() => router.replace("/login")}
-                className="w-full rounded-full bg-crimson py-3 text-center text-sm font-semibold uppercase tracking-wide text-black transition hover:bg-crimson/90"
+                className="w-full rounded-full bg-crimson py-3 text-center text-sm font-semibold uppercase tracking-wide text-acid-white transition hover:bg-crimson/90"
               >
                 Head to Login
               </button>

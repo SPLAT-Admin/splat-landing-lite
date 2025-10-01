@@ -107,7 +107,7 @@ export default function AdminSignups({ rows, page, total }: Props) {
               <Link
                 key={n}
                 href={`?p=${n}`}
-                className={`px-3 py-1 rounded-full ${active ? "bg-crimson text-black" : "bg-gray-800 text-gray-400 hover:bg-gray-700"}`}
+                className={`px-3 py-1 rounded-full ${active ? "bg-crimson text-acid-white" : "bg-gray-800 text-gray-400 hover:bg-gray-700"}`}
               >
                 {n}
               </Link>

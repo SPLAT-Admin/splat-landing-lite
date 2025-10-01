@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getSupabaseClient } from "@/lib/supabaseClient";
+import { Typography } from "@/components/Typography";
 
 interface Promo {
   id?: string;
@@ -76,20 +77,35 @@ export default function Hero() {
   }
 
   return (
-    <section className="relative bg-gradient-to-r from-[#851825] to-black text-white py-20 px-6 text-center">
-      <div className="mx-auto max-w-3xl space-y-4">
-        <h1 className="text-5xl font-extrabold drop-shadow-lg">{headingText}</h1>
+    <section className="bg-gradient-to-br from-deep-crimson via-jet-black to-jet-black text-center py-24 px-6">
+      <div className="mx-auto max-w-3xl space-y-6">
+        <Typography
+          as="h1"
+          variant="title"
+          className="text-[44pt] font-bold text-deep-crimson"
+        >
+          {headingText}
+        </Typography>
         {activePromo.subtitle ? (
-          <p className="text-lg text-white/80">{activePromo.subtitle}</p>
+          <Typography
+            as="p"
+            variant="body"
+            className="text-[22pt] font-bold text-acid-white"
+          >
+            {activePromo.subtitle}
+          </Typography>
         ) : null}
         {activePromo.cta_label && activePromo.cta_href ? (
           <a
             href={activePromo.cta_href}
-            className="mt-4 inline-block rounded-xl bg-white px-8 py-3 font-bold uppercase tracking-[0.3em] text-[#851825] shadow-lg transition hover:scale-105"
+            className="inline-flex items-center justify-center rounded-full bg-acid-white px-9 py-3 font-bold uppercase tracking-[0.3em] text-deep-crimson shadow-lg transition-transform hover:scale-105"
           >
             {activePromo.cta_label}
           </a>
         ) : null}
+        <Typography variant="body" className="text-sm uppercase tracking-[0.4em] text-acid-white/60">
+          Bold. Fast. Unapologetic.
+        </Typography>
       </div>
     </section>
   );

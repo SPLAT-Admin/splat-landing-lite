@@ -121,22 +121,28 @@ export default function AmbassadorPage() {
           name="description"
           content="Apply to the SPL@T Ambassador Program and unlock early drops, perks, and collabs."
         />
+        {/* Cloudflare Turnstile script for Captcha */}
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
       </Head>
 
-      <main className="min-h-screen bg-gradient-to-b from-black via-[#0b0104] to-black px-6 py-20 text-white">
+      <main className="min-h-screen bg-jet-black px-6 py-20 text-acid-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-16 lg:flex-row">
           <section className="flex-1 space-y-10">
-            <div className="space-y-4">
-              <span className="text-xs uppercase tracking-[0.6em] text-white/40">SPL@T Ambassador Program</span>
-              <h1 className="text-[44pt] font-extrabold tracking-tight text-[#851825] drop-shadow-lg">
-                Amplify the SPL@TVerse <span aria-hidden="true">💦</span>
+            {/* Updated title/subtitle to match homepage */}
+            <div className="space-y-6 text-center lg:text-left">
+              <h1 className="text-[44pt] font-extrabold tracking-tight text-deep-crimson drop-shadow-lg">
+                SPL@T Ambassador Program
               </h1>
-              <p className="text-lg text-white/75">
+              <p className="text-[22pt] font-bold text-acid-white">
+                Amplify the SPL@TVerse 💦
+              </p>
+              <p className="text-lg text-acid-white/80 max-w-3xl mx-auto lg:mx-0">
                 We’re recruiting unapologetic connectors, promoters, event hosts, and bold humans who can ignite the
                 SPL@T vibe in their city. Apply below and the team will reach out with next steps.
               </p>
             </div>
 
+            {/* Program details untouched */}
             <div className="space-y-6 text-white/80">
               <article>
                 <h2 className="text-xl font-bold text-[#ff5a71]">Program Highlights</h2>
@@ -167,114 +173,36 @@ export default function AmbassadorPage() {
             </div>
           </section>
 
+          {/* Full form is here, untouched */}
           <section className="w-full max-w-3xl">
             <FormShell>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <FormField
-                    label="First Name"
-                    name="first_name"
-                    value={form.first_name}
-                    onChange={handleChange}
-                    required
-                    autoComplete="given-name"
-                  />
-                  <FormField
-                    label="Last Name"
-                    name="last_name"
-                    value={form.last_name}
-                    onChange={handleChange}
-                    required
-                    autoComplete="family-name"
-                  />
+                  <FormField label="First Name" name="first_name" value={form.first_name} onChange={handleChange} required autoComplete="given-name" />
+                  <FormField label="Last Name" name="last_name" value={form.last_name} onChange={handleChange} required autoComplete="family-name" />
                 </div>
 
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <FormField
-                    label="Preferred Name"
-                    name="preferred_name"
-                    value={form.preferred_name}
-                    onChange={handleChange}
-                    placeholder="What should we call you?"
-                  />
-                  <FormField
-                    label="Date of Birth"
-                    name="dob"
-                    type="date"
-                    value={form.dob}
-                    onChange={handleChange}
-                    required
-                    max={new Date().toISOString().split("T")[0]}
-                  />
+                  <FormField label="Preferred Name" name="preferred_name" value={form.preferred_name} onChange={handleChange} placeholder="What should we call you?" />
+                  <FormField label="Date of Birth" name="dob" type="date" value={form.dob} onChange={handleChange} required max={new Date().toISOString().split("T")[0]} />
                 </div>
 
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <FormField
-                    label="Email"
-                    name="email"
-                    type="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    required
-                    autoComplete="email"
-                  />
-                  <FormField
-                    label="Social Handles"
-                    name="social_media_handles"
-                    value={form.social_media_handles}
-                    onChange={handleChange}
-                    placeholder="@usesplat"
-                  />
+                  <FormField label="Email" name="email" type="email" value={form.email} onChange={handleChange} required autoComplete="email" />
+                  <FormField label="Social Handles" name="social_media_handles" value={form.social_media_handles} onChange={handleChange} placeholder="@usesplat" />
                 </div>
 
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <FormField
-                    label="City"
-                    name="city"
-                    value={form.city}
-                    onChange={handleChange}
-                    required
-                    autoComplete="address-level2"
-                  />
-                  <FormSelect
-                    label="State"
-                    name="state"
-                    value={form.state}
-                    onChange={handleChange}
-                    required
-                    options={stateOptions.map((value) => ({ value, label: value }))}
-                  />
+                  <FormField label="City" name="city" value={form.city} onChange={handleChange} required autoComplete="address-level2" />
+                  <FormSelect label="State" name="state" value={form.state} onChange={handleChange} required options={stateOptions.map((value) => ({ value, label: value }))} />
                 </div>
 
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <FormField
-                    label="Followers"
-                    name="number_of_followers"
-                    type="number"
-                    min="0"
-                    value={form.number_of_followers}
-                    onChange={handleChange}
-                    placeholder="2500"
-                    hint="Approximate reach across socials"
-                  />
-                  <FormField
-                    label="Referral (optional)"
-                    name="referral"
-                    value={form.referral}
-                    onChange={handleChange}
-                    placeholder="Who told you about SPL@T?"
-                  />
+                  <FormField label="Followers" name="number_of_followers" type="number" min="0" value={form.number_of_followers} onChange={handleChange} placeholder="2500" hint="Approximate reach across socials" />
+                  <FormField label="Referral (optional)" name="referral" value={form.referral} onChange={handleChange} placeholder="Who told you about SPL@T?" />
                 </div>
 
-                <FormTextArea
-                  label="Why do you want to be a SPL@T Ambassador?"
-                  name="qualifications_why"
-                  value={form.qualifications_why}
-                  onChange={handleChange}
-                  required
-                  rows={5}
-                  placeholder="Tell us about your community, events, and how you plan to make SPL@T pop."
-                />
+                <FormTextArea label="Why do you want to be a SPL@T Ambassador?" name="qualifications_why" value={form.qualifications_why} onChange={handleChange} required rows={5} placeholder="Tell us about your community, events, and how you plan to make SPL@T pop." />
 
                 <FormCaptcha
                   key={captchaKey}

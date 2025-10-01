@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { devOnlyGuard } from "../../../lib/devOnlyGuard";
 import { getSupabaseServiceClient } from "@/lib/supabaseClient";
 
 const supabase = getSupabaseServiceClient();
@@ -8,16 +9,14 @@ type ResponseData =
   | { success: false; error: string };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
-  if (process.env.NODE_ENV === "production") {
-    return res.status(403).json({ success: false, error: "Forbidden" });
-  }
-
   if (req.method !== "POST") {
     return res.status(405).json({ success: false, error: "Method Not Allowed" });
   }
 
   try {
     const { email, password } = req.body ?? {};
+
+    if (devOnlyGuard(res)) return;
 
     if (typeof email !== "string" || typeof password !== "string" || !email.trim() || !password.trim()) {
       return res.status(400).json({ success: false, error: "Email and password are required" });

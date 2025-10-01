@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import Hero from "@/components/marketing/Hero";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 
 interface Product {
@@ -62,7 +61,7 @@ export default function MerchPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-black text-white">
+      <main className="min-h-screen flex items-center justify-center bg-jet-black text-acid-white">
         <p>💦 Loading merch…</p>
       </main>
     );
@@ -78,23 +77,32 @@ export default function MerchPage() {
         />
       </Head>
 
-      <main className="min-h-screen bg-gradient-to-b from-black via-[#090106] to-black px-6 py-20 text-white">
-        <Hero />
+      <main className="min-h-screen bg-jet-black px-6 py-20 text-acid-white">
         <div className="mx-auto max-w-6xl space-y-12">
-          <header className="text-center">
-            <h1 className="text-4xl font-extrabold tracking-tight text-[#851825] drop-shadow-lg sm:text-5xl">
+          {/* Page Header */}
+          <header className="text-center space-y-6">
+            <h1 className="text-[44pt] font-extrabold tracking-tight text-deep-crimson drop-shadow-lg">
               SPL@T Merch Store
             </h1>
-            <p className="mt-3 text-lg font-semibold text-white">
-              🔥 Merch Drops Coming Soon
+            <p className="text-[22pt] font-bold text-acid-white">
+              🔥 Exclusive Drops & Bold Collabs
             </p>
-            <p className="mt-2 text-white/70">
-              Exclusive drops, limited runs, and collabs from the SPL@TVerse.
+            <p className="text-lg text-acid-white/80 max-w-3xl mx-auto">
+              Limited runs, seasonal heat, and bold SPL@T collabs. Our drops are rare, loud, and
+              never boring. Grab yours before it vanishes.
             </p>
           </header>
 
+          {/* Products */}
           {products.length === 0 ? (
-            <p className="text-center text-white/60">❌ No active products. Check back soon!</p>
+            <div className="rounded-3xl border border-white/10 bg-black/60 p-12 text-center shadow-lg">
+              <p className="text-lg text-acid-white/80">
+                ❌ No active products at the moment. New drops are coming soon.
+              </p>
+              <p className="mt-3 text-acid-white/60">
+                Expect staples like T-shirts, hoodies, hats, and a seasonal Christmas stocking 🎄💦.
+              </p>
+            </div>
           ) : (
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {products.map((product) => (
@@ -115,13 +123,13 @@ export default function MerchPage() {
                     )}
                   </div>
                   <h2 className="mt-4 text-lg font-semibold">{product.name}</h2>
-                  <p className="text-sm text-white/70">
+                  <p className="text-sm text-acid-white/70">
                     {product.description || "Exclusive SPL@T merch drop."}
                   </p>
                   <p className="mt-2 font-bold">${product.price.toFixed(2)}</p>
                   <Link
                     href={`/merch/${product.id}`}
-                    className="mt-4 inline-block w-full rounded-full bg-[#851825] py-2 text-center text-sm font-bold uppercase tracking-wider text-white shadow transition hover:bg-[#6f1320]"
+                    className="mt-4 inline-block w-full rounded-full bg-deep-crimson py-2 text-center text-sm font-bold uppercase tracking-wider text-white shadow transition hover:bg-[#6f1320]"
                   >
                     View
                   </Link>
