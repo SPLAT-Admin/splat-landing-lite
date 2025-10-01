@@ -137,7 +137,7 @@ export default function AmbassadorPage() {
                 Amplify the SPL@TVerse 💦
               </p>
               <p className="text-lg text-acid-white/80 max-w-3xl mx-auto lg:mx-0">
-                We’re recruiting unapologetic connectors, promoters, event hosts, and bold humans who can ignite the
+                We&apos;re recruiting unapologetic connectors, promoters, event hosts, and bold humans who can ignite the
                 SPL@T vibe in their city. Apply below and the team will reach out with next steps.
               </p>
             </div>
