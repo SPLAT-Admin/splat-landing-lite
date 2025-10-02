@@ -7,6 +7,12 @@ on:
     branches: [ main ]
   schedule:
     - cron: "0 5 * * *" # Every night at 5 AM UTC (~midnight PT)
+  workflow_dispatch:
+    inputs:
+      trigger:
+        description: "Reason for run (manual, nightly, push)"
+        required: false
+        default: manual
 
 jobs:
   smoke:
@@ -25,8 +31,10 @@ jobs:
 
       - name: Run smoke tests
         run: npx playwright test tests/smoke.spec.ts --reporter=json > smoke-results.json
+
       - name: Run dev-only endpoint tests
         run: npx playwright test tests/devOnlyEndpoints.spec.ts --reporter=json > dev-only-results.json
+
       - name: Push Dev-only Endpoint Results to Notion
         run: |
           node - <<'EON'
@@ -88,7 +96,7 @@ jobs:
             await fetch('https://api.notion.com/v1/pages', {
               method: 'POST',
               headers: {
-                'Authorization': \`Bearer \${notionToken}\`,
+                'Authorization': `Bearer ${notionToken}`,
                 'Content-Type': 'application/json',
                 'Notion-Version': '2022-06-28'
               },
@@ -115,5 +123,5 @@ jobs:
           })();
           EON
         env:
-          NOTION_TOKEN: \${{ secrets.NOTION_TOKEN }}
-          NOTION_QA_DB: \${{ secrets.NOTION_QA_DB }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_QA_DB: ${{ secrets.NOTION_QA_DB }}
