@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Typography } from "@/components/Typography";
 
@@ -17,11 +18,8 @@ export default function Hero() {
   useEffect(() => {
     const fetchPromos = async () => {
       const { data, error } = await supabase.from("promos").select("*");
-      if (error) {
-        console.error("Error fetching promos:", error.message);
-      } else {
-        setPromos(data || []);
-      }
+      if (error) console.error("Error fetching promos:", error.message);
+      else setPromos(data || []);
     };
     fetchPromos();
   }, [supabase]);
@@ -32,27 +30,31 @@ export default function Hero() {
         {promos.length > 0 ? (
           promos.map((promo) => (
             <div key={promo.id} className="mb-8">
-              <Typography variant="h1" className="text-5xl font-bold mb-4">
+              <Typography variant="heading" className="text-5xl font-bold mb-4">
                 {promo.title}
               </Typography>
-              <Typography variant="body1" className="text-lg mb-6 text-gray-300">
+              <Typography variant="body" className="text-lg mb-6 text-gray-300">
                 {promo.subtitle}
               </Typography>
               {promo.image_url && (
-                <img
-                  src={promo.image_url}
-                  alt={promo.title}
-                  className="mx-auto rounded-lg shadow-lg max-h-[400px] object-cover"
-                />
+                <div className="mx-auto max-w-3xl">
+                  <Image
+                    src={promo.image_url}
+                    alt={promo.title}
+                    width={1200}
+                    height={600}
+                    className="rounded-lg shadow-lg object-cover"
+                  />
+                </div>
               )}
             </div>
           ))
         ) : (
           <>
-            <Typography variant="h1" className="text-5xl font-bold mb-4">
+            <Typography variant="heading" className="text-5xl font-bold mb-4">
               Welcome to SPL@T
             </Typography>
-            <Typography variant="body1" className="text-lg text-gray-300">
+            <Typography variant="body" className="text-lg text-gray-300">
               Get wet. Get noticed. Get connected.
             </Typography>
           </>
