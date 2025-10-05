@@ -29,6 +29,9 @@ jobs:
       - name: Install deps
         run: npm install
 
+      - name: Check for missing/unused dependencies
+        run: pnpm dlx depcheck || true
+
       - name: Run smoke tests
         run: npx playwright test tests/smoke.spec.ts --reporter=json > smoke-results.json
 

@@ -1,50 +1,40 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { devOnlyGuard } from "../../../lib/devOnlyGuard";
-import { getSupabaseServiceClient } from "@/lib/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
 
-const supabase = getSupabaseServiceClient();
+console.log("🔑 ENV CHECK (reset-password):", {
+  url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+  anon: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? "✅" : "❌",
+  serviceRole: process.env.SUPABASE_SERVICE_ROLE_KEY ? "✅" : "❌",
+  nodeEnv: process.env.NODE_ENV,
+});
 
-type ResponseData =
-  | { success: true }
-  | { success: false; error: string };
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY! // must be service role key
+);
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ResponseData>) {
-  if (devOnlyGuard(res)) return;
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (process.env.NODE_ENV === "production") {
+    return res.status(403).json({ error: "Forbidden in production" });
+  }
 
   if (req.method !== "POST") {
-    return res.status(405).json({ success: false, error: "Method Not Allowed" });
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
-  try {
-    const { email, newPassword } = req.body ?? {};
-
-    if (typeof email !== "string" || typeof newPassword !== "string" || !email.trim() || !newPassword.trim()) {
-      return res.status(400).json({ success: false, error: "Email and newPassword are required" });
-    }
-
-    const normalizedEmail = email.trim().toLowerCase();
-
-    const { data: users, error: lookupError } = await supabase.auth.admin.listUsers();
-    if (lookupError) {
-      return res.status(500).json({ success: false, error: lookupError.message });
-    }
-
-    const user = users?.users?.find((u) => u.email?.toLowerCase() === normalizedEmail);
-    if (!user?.id) {
-      return res.status(404).json({ success: false, error: "User not found" });
-    }
-
-    const { error: updateError } = await supabase.auth.admin.updateUserById(user.id, {
-      password: newPassword.trim(),
-    });
-
-    if (updateError) {
-      return res.status(500).json({ success: false, error: updateError.message });
-    }
-
-    return res.status(200).json({ success: true });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "Unexpected server error";
-    return res.status(500).json({ success: false, error: message });
+  const { email, newPassword } = req.body;
+  if (!email || !newPassword) {
+    return res.status(400).json({ error: "Missing email or newPassword" });
   }
+
+  const { data, error } = await supabase.auth.admin.updateUserByEmail(email, {
+    password: newPassword,
+  });
+
+  if (error) {
+    console.error("❌ Reset error:", error.message);
+    return res.status(400).json({ error: error.message });
+  }
+
+  return res.status(200).json({ success: true, user: data });
 }

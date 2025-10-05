@@ -1,44 +1,33 @@
-import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 
-/**
- * Global middleware to protect /admin/* and /api/admin/* with a single shared token.
- *
- * Auth is satisfied by EITHER:
- *  - Authorization: Bearer <ADMIN_DASH_TOKEN>
- *  - Cookie: admin_dash_token=<ADMIN_DASH_TOKEN>
- *  - Query string token (for CSV export compatibility): ?token=<ADMIN_DASH_TOKEN>
- */
-export function middleware(req: NextRequest) {
-  const { pathname, searchParams } = req.nextUrl;
+export async function middleware(req: NextRequest) {
+  const res = NextResponse.next();
+  const supabase = createMiddlewareClient({ req, res });
 
-  // Only guard admin areas
-  const isAdminPath = pathname.startsWith("/admin/") || pathname === "/admin";
-  const isAdminApi = pathname.startsWith("/api/admin/");
-  if (!isAdminPath && !isAdminApi) return NextResponse.next();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  const TOKEN = process.env.ADMIN_DASH_TOKEN;
-  if (!TOKEN) {
-    return new NextResponse("Server misconfigured: ADMIN_DASH_TOKEN is missing.", { status: 500 });
+  const { pathname } = req.nextUrl;
+
+  // Protect /admin/* and /landingadmin/* routes
+  if (pathname.startsWith("/admin") || pathname.startsWith("/landingadmin")) {
+    if (!session || session.user?.app_metadata?.role !== "admin") {
+      const loginUrl = new URL("/login", req.url);
+      return NextResponse.redirect(loginUrl);
+    }
   }
 
-  // Accept header, cookie, or query param (for CSV export links)
-  const header = req.headers.get("authorization");
-  const cookie = req.cookies.get("admin_dash_token")?.value;
-  const qsToken = searchParams.get("token");
-
-  const ok = header === `Bearer ${TOKEN}` || cookie === TOKEN || qsToken === TOKEN;
-  if (ok) return NextResponse.next();
-
-  // API routes: return 401 with WWW-Authenticate
-  if (isAdminApi) {
-    return new NextResponse("Unauthorized", { status: 401, headers: { "WWW-Authenticate": "Bearer" } });
+  // Custom 404 for /admin root
+  if (pathname === "/admin") {
+    return NextResponse.rewrite(new URL("/404", req.url));
   }
 
-  // Browser routes: simple 401 page
-  return new NextResponse("Unauthorized", { status: 401 });
+  return res;
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
