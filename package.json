@@ -14,7 +14,8 @@
     "smoke:prod": "npm run build && npm run start & npx wait-on http://localhost:3000 && playwright test tests/smoke.spec.ts",
     "check-env": "tsx scripts/check-env.ts",
     "lint-env": "tsx scripts/lint-env.ts",
-    "reset-dev": "bash scripts/reset-dev.sh"
+    "reset-dev": "bash scripts/reset-dev.sh",
+    "postinstall": "pnpm approve-builds -g || true"
   },
   "dependencies": {
     "@faker-js/faker": "^10.0.0",

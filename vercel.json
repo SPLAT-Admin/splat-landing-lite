@@ -1,12 +1,13 @@
 {
+  "$schema": "https://openapi.vercel.sh/configuration/3.1/schema.json",
   "buildCommand": "pnpm run build",
-  "installCommand": "pnpm install --frozen-lockfile",
+  "installCommand": "pnpm install --frozen-lockfile && pnpm approve-builds -g || true",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "git": {
-    "deploymentEnabled": {
-      "main": true
-    }
-  },
-  "ignoreCommand": "echo 'Skipping dev-only files' && exit 0"
+  "builds": [
+    { "src": "package.json", "use": "@vercel/next" }
+  ],
+  "env": {
+    "CI": "false"
+  }
 }

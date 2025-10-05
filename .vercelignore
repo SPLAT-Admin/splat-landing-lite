@@ -1,22 +1,6 @@
-# 🧹 SPL@T Production Ignore Rules
-# Keep Vercel builds fast, clean, and secure.
-
-# Node / Next build cache
-.next/
-node_modules/
-out/
-dist/
-pnpm-lock.yaml
-
-# Local config & tooling
+node_modules
+.cache
+.next/cache
+.vercel
 .env.local
-.env.development
-.env.test
-*.log
-*.DS_Store
-
-# Dev scripts
-scripts/
-tmp/
-__tests__/
-coverage/
+.env.development.local
