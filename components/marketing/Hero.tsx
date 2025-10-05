@@ -1,111 +1,62 @@
+"use client";
 import { useEffect, useState } from "react";
-import type { SupabaseClient } from "@supabase/supabase-js";
-import { getSupabaseClient } from "@/lib/supabaseClient";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Typography } from "@/components/Typography";
 
 interface Promo {
-  id?: string;
+  id: number;
   title: string;
-  subtitle?: string | null;
-  cta_label?: string | null;
-  cta_href?: string | null;
-  is_active?: boolean;
+  subtitle: string;
+  image_url: string;
 }
 
-const fallbackPromo: Promo = {
-  title: "Flash Drop Incoming",
-  subtitle: "Join the SPL@T waitlist to get the next drop before it splashes.",
-  cta_label: "Join the Waitlist",
-  cta_href: "/signup",
-};
-
 export default function Hero() {
-  const [promo, setPromo] = useState<Promo | null>(null);
+  const [promos, setPromos] = useState<Promo[]>([]);
+  const supabase = createClientComponentClient();
 
   useEffect(() => {
-    let mounted = true;
-
-    const resolveClient = (): SupabaseClient | null => {
-      try {
-        return getSupabaseClient();
-      } catch (error) {
-        console.warn("Hero supabase unavailable", error);
-        return null;
-      }
-    };
-
-    const supabase = resolveClient();
-    if (!supabase) {
-      return () => {
-        mounted = false;
-      };
-    }
-
-    const loadPromo = async () => {
-      const { data, error } = await supabase
-        .from("promos")
-        .select("*")
-        .eq("is_active", true)
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (!mounted) return;
-
+    const fetchPromos = async () => {
+      const { data, error } = await supabase.from("promos").select("*");
       if (error) {
-        console.error("Hero promo load error", error);
-      } else if (data) {
-        setPromo(data);
+        console.error("Error fetching promos:", error.message);
+      } else {
+        setPromos(data || []);
       }
     };
-
-    void loadPromo();
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  const activePromo = promo ?? fallbackPromo;
-  const headingText = (() => {
-    const text = activePromo.title?.trim() || fallbackPromo.title;
-    return text.includes("💦") ? text : `💦 ${text}`;
-  })();
-
-  if (!activePromo) {
-    return null;
-  }
+    fetchPromos();
+  }, [supabase]);
 
   return (
-    <section className="bg-gradient-to-br from-deep-crimson via-jet-black to-jet-black text-center py-24 px-6">
-      <div className="mx-auto max-w-3xl space-y-6">
-        <Typography
-          as="h1"
-          variant="title"
-          className="text-[44pt] font-bold text-deep-crimson"
-        >
-          {headingText}
-        </Typography>
-        {activePromo.subtitle ? (
-          <Typography
-            as="p"
-            variant="body"
-            className="text-[22pt] font-bold text-acid-white"
-          >
-            {activePromo.subtitle}
-          </Typography>
-        ) : null}
-        {activePromo.cta_label && activePromo.cta_href ? (
-          <a
-            href={activePromo.cta_href}
-            className="inline-flex items-center justify-center rounded-full bg-acid-white px-9 py-3 font-bold uppercase tracking-[0.3em] text-deep-crimson shadow-lg transition-transform hover:scale-105"
-          >
-            {activePromo.cta_label}
-          </a>
-        ) : null}
-        <Typography variant="body" className="text-sm uppercase tracking-[0.4em] text-acid-white/60">
-          Bold. Fast. Unapologetic.
-        </Typography>
+    <section className="relative bg-black text-white py-16 px-4 text-center overflow-hidden">
+      <div className="container mx-auto">
+        {promos.length > 0 ? (
+          promos.map((promo) => (
+            <div key={promo.id} className="mb-8">
+              <Typography variant="h1" className="text-5xl font-bold mb-4">
+                {promo.title}
+              </Typography>
+              <Typography variant="body1" className="text-lg mb-6 text-gray-300">
+                {promo.subtitle}
+              </Typography>
+              {promo.image_url && (
+                <img
+                  src={promo.image_url}
+                  alt={promo.title}
+                  className="mx-auto rounded-lg shadow-lg max-h-[400px] object-cover"
+                />
+              )}
+            </div>
+          ))
+        ) : (
+          <>
+            <Typography variant="h1" className="text-5xl font-bold mb-4">
+              Welcome to SPL@T
+            </Typography>
+            <Typography variant="body1" className="text-lg text-gray-300">
+              Get wet. Get noticed. Get connected.
+            </Typography>
+          </>
+        )}
       </div>
     </section>
   );
