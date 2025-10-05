@@ -27,7 +27,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: "Missing email or newPassword" });
   }
 
-  const { data, error } = await supabase.auth.admin.updateUserByEmail(email, {
+  const {
+    data: { users } = { users: [] },
+    error: listError,
+  } = await supabase.auth.admin.listUsers();
+
+  if (listError) {
+    console.error("❌ User lookup error:", listError.message);
+    return res.status(400).json({ error: listError.message });
+  }
+
+  const user = users.find((u) => u.email?.toLowerCase() === email.toLowerCase());
+
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  const { data, error } = await supabase.auth.admin.updateUserById(user.id, {
     password: newPassword,
   });
 

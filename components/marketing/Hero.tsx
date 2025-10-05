@@ -30,7 +30,7 @@ export default function Hero() {
         {promos.length > 0 ? (
           promos.map((promo) => (
             <div key={promo.id} className="mb-8">
-              <Typography variant="heading" className="text-5xl font-bold mb-4">
+              <Typography variant="title" className="text-5xl font-bold mb-4">
                 {promo.title}
               </Typography>
               <Typography variant="body" className="text-lg mb-6 text-gray-300">
@@ -51,7 +51,7 @@ export default function Hero() {
           ))
         ) : (
           <>
-            <Typography variant="heading" className="text-5xl font-bold mb-4">
+            <Typography variant="title" className="text-5xl font-bold mb-4">
               Welcome to SPL@T
             </Typography>
             <Typography variant="body" className="text-lg text-gray-300">
