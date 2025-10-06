@@ -1,6 +1,0 @@
-node_modules
-.cache
-.next/cache
-.vercel
-.env.local
-.env.development.local

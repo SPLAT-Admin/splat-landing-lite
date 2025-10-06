@@ -15,7 +15,7 @@
     "check-env": "tsx scripts/check-env.ts",
     "lint-env": "tsx scripts/lint-env.ts",
     "reset-dev": "bash scripts/reset-dev.sh",
-    "postinstall": "pnpm approve-builds -g || true"
+    "postinstall": "echo \"✅ pnpm 10.x active; skipping approve-builds (handled by Corepack)\""
   },
   "dependencies": {
     "@faker-js/faker": "^10.0.0",

@@ -1,13 +1,10 @@
 {
-  "$schema": "https://openapi.vercel.sh/configuration/3.1/schema.json",
-  "buildCommand": "pnpm run build",
-  "installCommand": "pnpm install --frozen-lockfile && pnpm approve-builds -g || true",
-  "outputDirectory": ".next",
+  "buildCommand": "corepack enable && corepack prepare pnpm@10.14.0 --activate && pnpm run build",
+  "installCommand": "corepack enable && corepack prepare pnpm@10.14.0 --activate && pnpm install --frozen-lockfile",
   "framework": "nextjs",
-  "builds": [
-    { "src": "package.json", "use": "@vercel/next" }
-  ],
-  "env": {
-    "CI": "false"
+  "regions": ["iad1"],
+  "ignoreCommand": "pnpm run lint",
+  "github": {
+    "autoJobCancelation": true
   }
 }
