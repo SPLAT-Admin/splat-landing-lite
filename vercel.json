@@ -4,7 +4,14 @@
   "framework": "nextjs",
   "regions": ["iad1"],
   "ignoreCommand": "pnpm run lint",
-  "github": {
-    "autoJobCancelation": true
+  "github": { "autoJobCancelation": true },
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": "@next_public_supabase_url",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@next_public_supabase_anon_key",
+    "SUPABASE_SERVICE_ROLE_KEY": "@supabase_service_role_key",
+    "SUPABASE_URL": "@supabase_url",
+    "RESEND_API_KEY": "@resend_api_key",
+    "PRINTIFY_API_KEY": "@printify_api_key",
+    "NEXT_PUBLIC_PRINTIFY_API_URL": "@next_public_printify_api_url"
   }
 }
