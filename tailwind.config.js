@@ -16,8 +16,8 @@ module.exports = {
     extend: {
       colors: {
         "jet-black": "#0A0A0A",
-        "acid-white": "#FFFFFF",
-        "deep-crimson": "#851025",
+        "acid-white": "#F5F5F5",
+        "deep-crimson": "#8A0E1D",
       },
     },
   },
