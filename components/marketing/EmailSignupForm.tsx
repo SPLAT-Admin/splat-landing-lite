@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Turnstile } from "@marsidev/react-turnstile";
+import dynamic from "next/dynamic";
+
+const Turnstile = dynamic(() => import("@marsidev/react-turnstile"), { ssr: false });
 
 export default function EmailSignupForm() {
   const [email, setEmail] = useState("");
@@ -37,7 +39,7 @@ export default function EmailSignupForm() {
       />
       <Turnstile
         siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!}
-        onSuccess={(token) => setToken(token)}
+        onSuccess={(value) => setToken(value)}
       />
       <button
         type="submit"

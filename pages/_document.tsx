@@ -5,6 +5,7 @@ export default function Document() {
   return (
     <Html className="bg-jet-black text-acid-white">
       <Head>
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
         {/* Preload Oswald font for better performance */}
         <link
           rel="preload"
@@ -31,7 +32,7 @@ export default function Document() {
           <script
             async
             defer
-            src={`https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit`}
+            src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
             data-sitekey={siteKey}
           />
         ) : null}
