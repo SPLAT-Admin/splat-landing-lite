@@ -1,7 +1,6 @@
+"use client";
 import { useState } from "react";
-import dynamic from "next/dynamic";
-
-const Turnstile = dynamic(() => import("@marsidev/react-turnstile"), { ssr: false });
+import { Turnstile } from "@marsidev/react-turnstile";
 
 export default function EmailSignupForm() {
   const [email, setEmail] = useState("");
