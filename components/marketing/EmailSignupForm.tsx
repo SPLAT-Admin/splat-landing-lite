@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Turnstile } from "@marsidev/react-turnstile";
 
-export default function EmailSignupForm() {
+export default function EmailSignupForm({ isOpen = true }: { isOpen?: boolean }) {
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
 
@@ -22,7 +22,7 @@ export default function EmailSignupForm() {
       setToken("");
     } else {
       const { error } = await res.json();
-      alert(error || "CAPTCHA or signup failed—try again.");
+      alert(error || "Signup failed—try again.");
     }
   }
 
@@ -36,10 +36,16 @@ export default function EmailSignupForm() {
         onChange={(e) => setEmail(e.target.value)}
         className="w-full rounded-lg p-3 bg-neutral-900 text-white"
       />
-      <Turnstile
-        siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!}
-        onSuccess={(value) => setToken(value)}
-      />
+
+      {/* Mount Turnstile only when modal is visible */}
+      {isOpen && (
+        <Turnstile
+          siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!}
+          onSuccess={(value) => setToken(value)}
+          options={{ theme: "dark" }}
+        />
+      )}
+
       <button
         type="submit"
         className="w-full bg-deep-crimson text-white font-semibold rounded-xl p-3"
