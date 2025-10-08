@@ -1,52 +1,29 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getSupabaseServiceClient } from "@/lib/supabaseClient";
-import { sendEmail } from "@/lib/sendEmail";
+import { supabase } from "@/lib/supabaseClient";
 
-const supabaseService = getSupabaseServiceClient();
+async function verifyTurnstile(token: string) {
+  const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+    method: "POST",
+    body: new URLSearchParams({
+      secret: process.env.CLOUDFLARE_SECRET_KEY!,
+      response: token,
+    }),
+  });
+  const data = await res.json();
+  return data.success === true;
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, error: "Method Not Allowed" });
-  }
+  if (req.method !== "POST") return res.status(405).end();
 
-  try {
-    const { email } = req.body as { email?: string };
-    if (!email || !/.+@.+\..+/.test(email.trim())) {
-      return res.status(400).json({ ok: false, error: "Valid email is required." });
-    }
+  const { email, token } = req.body;
+  if (!email || !token) return res.status(400).json({ error: "Missing email or CAPTCHA" });
 
-    const normalized = email.trim().toLowerCase();
+  const valid = await verifyTurnstile(token);
+  if (!valid) return res.status(400).json({ error: "CAPTCHA validation failed" });
 
-    const { error: insertError } = await supabaseService
-      .from("email_signups")
-      .upsert({ email: normalized }, { onConflict: "email" });
+  const { error } = await supabase.from("email_signups").insert({ email });
+  if (error) return res.status(500).json({ error: error.message });
 
-    if (insertError) {
-      console.error("Signup insert error", insertError);
-      return res.status(500).json({ ok: false, error: "Unable to save your signup right now." });
-    }
-
-    try {
-      await sendEmail({
-        to: normalized,
-        subject: "Welcome to SPL@T",
-        html: `
-          <div style="font-family:Inter,system-ui,sans-serif;color:#0a0a0a">
-            <h1 style="color:#851825;margin-bottom:16px">You're in the SPL@TVerse 💦</h1>
-            <p style="margin:0 0 12px;line-height:1.6">
-              Thanks for joining the SPL@T email list. Expect bold updates, beta drops, and filthy-good news soon.
-            </p>
-            <p style="margin:0;color:#555;font-size:13px">Stay shameless,<br/>Team SPL@T</p>
-          </div>
-        `.trim(),
-      });
-    } catch (emailErr) {
-      console.warn("Resend welcome email failed", emailErr);
-    }
-
-    return res.status(200).json({ ok: true });
-  } catch (error) {
-    console.error("Unhandled signup error", error);
-    return res.status(500).json({ ok: false, error: "Unexpected server error." });
-  }
+  return res.status(200).json({ success: true });
 }
