@@ -1,14 +1,23 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Turnstile } from "@marsidev/react-turnstile";
 
-export default function EmailSignupForm({ isOpen = true }: { isOpen?: boolean }) {
+export default function EmailSignupForm() {
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
+  const [shouldRender, setShouldRender] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShouldRender(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!token) return alert("Please complete the CAPTCHA first.");
+    if (!token) {
+      alert("Please complete the CAPTCHA first.");
+      return;
+    }
 
     const res = await fetch("/api/signup-email", {
       method: "POST",
@@ -20,6 +29,8 @@ export default function EmailSignupForm({ isOpen = true }: { isOpen?: boolean })
       alert("Thanks for joining SPL@T!");
       setEmail("");
       setToken("");
+      setShouldRender(false);
+      setTimeout(() => setShouldRender(true), 100);
     } else {
       const { error } = await res.json();
       alert(error || "Signup failed—try again.");
@@ -37,8 +48,7 @@ export default function EmailSignupForm({ isOpen = true }: { isOpen?: boolean })
         className="w-full rounded-lg p-3 bg-neutral-900 text-white"
       />
 
-      {/* Mount Turnstile only when modal is visible */}
-      {isOpen && (
+      {shouldRender && (
         <Turnstile
           siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_SITE_KEY!}
           onSuccess={(value) => setToken(value)}
@@ -50,7 +60,7 @@ export default function EmailSignupForm({ isOpen = true }: { isOpen?: boolean })
         type="submit"
         className="w-full bg-deep-crimson text-white font-semibold rounded-xl p-3"
       >
-        Join SPL@T Today
+        Sign me up
       </button>
     </form>
   );
