@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
-import SignupModal from "./SignupModal";
+import Link from "next/link";
 
 interface Promo {
   id: string;
@@ -14,7 +14,6 @@ interface Promo {
 export default function Hero() {
   const supabase = createClientComponentClient();
   const [promos, setPromos] = useState<Promo[]>([]);
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchPromos = async () => {
@@ -22,7 +21,7 @@ export default function Hero() {
       if (data) setPromos(data);
     };
     fetchPromos();
-  }, []);
+  }, [supabase]);
 
   const promo = promos[0];
 
@@ -42,14 +41,13 @@ export default function Hero() {
         <p className="text-lg text-gray-300 mb-10">
           {promo?.subtitle || "Join the SPL@T movement — sign up for exclusive updates."}
         </p>
-        <button
-          onClick={() => setOpen(true)}
-          className="bg-purple-600 hover:bg-purple-700 text-white font-medium px-8 py-3 rounded-xl shadow-lg transition"
+        <Link
+          href="/signup"
+          className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium px-8 py-3 rounded-xl shadow-lg transition"
         >
           Join SPL@T Today
-        </button>
+        </Link>
       </div>
-      <SignupModal open={open} onClose={() => setOpen(false)} />
     </section>
   );
 }
