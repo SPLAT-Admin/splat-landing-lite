@@ -4,30 +4,30 @@ import AdminLayout from "@/components/layouts/AdminLayout";
 import { withAdminAuth } from "@/components/withAdminAuth";
 import { supabase } from "@/lib/supabaseClient";
 
-interface CustomerRow {
+interface EmailSignup {
   id: string;
   email: string;
-  name?: string | null;
+  signup_source?: string;
   created_at: string;
 }
 
-function CustomersPage() {
-  const [customers, setCustomers] = useState<CustomerRow[]>([]);
+function EmailsPage() {
+  const [emails, setEmails] = useState<EmailSignup[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function load() {
       setLoading(true);
       const { data, error } = await supabase
-        .from("customers")
-        .select("id,email,name,created_at")
+        .from("email_signups")
+        .select("id,email,signup_source,created_at")
         .order("created_at", { ascending: false })
         .limit(500);
       if (error) {
-        console.error("Failed to load customers", error.message);
-        setCustomers([]);
+        console.error("Failed to load email signups", error.message);
+        setEmails([]);
       } else {
-        setCustomers(data || []);
+        setEmails(data || []);
       }
       setLoading(false);
     }
@@ -38,33 +38,33 @@ function CustomersPage() {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold text-white">Customers</h1>
+        <h1 className="text-2xl font-bold text-white">Email Signups</h1>
         {loading ? (
-          <p className="text-gray-400">Loading customers…</p>
+          <p className="text-gray-400">Loading subscribers…</p>
         ) : (
           <div className="overflow-x-auto rounded-xl border border-white/5 bg-black/70">
             <table className="w-full text-left text-sm text-gray-200">
               <thead className="bg-white/5 uppercase text-xs tracking-wider text-acid-white/70">
                 <tr>
                   <th className="px-4 py-3">Email</th>
-                  <th className="px-4 py-3">Name</th>
+                  <th className="px-4 py-3">Source</th>
                   <th className="px-4 py-3">Joined</th>
                 </tr>
               </thead>
               <tbody>
-                {customers.map((customer) => (
-                  <tr key={customer.id} className="border-t border-white/10">
-                    <td className="px-4 py-3 font-semibold">{customer.email}</td>
-                    <td className="px-4 py-3">{customer.name || "—"}</td>
+                {emails.map((signup) => (
+                  <tr key={signup.id} className="border-t border-white/10">
+                    <td className="px-4 py-3 font-semibold">{signup.email}</td>
+                    <td className="px-4 py-3">{signup.signup_source || "—"}</td>
                     <td className="px-4 py-3">
-                      {customer.created_at ? new Date(customer.created_at).toLocaleString() : "—"}
+                      {signup.created_at ? new Date(signup.created_at).toLocaleString() : "—"}
                     </td>
                   </tr>
                 ))}
-                {customers.length === 0 && (
+                {emails.length === 0 && (
                   <tr>
                     <td className="px-4 py-6 text-center text-gray-500" colSpan={3}>
-                      No customers yet.
+                      No email signups yet.
                     </td>
                   </tr>
                 )}
@@ -77,4 +77,4 @@ function CustomersPage() {
   );
 }
 
-export default withAdminAuth(CustomersPage);
+export default withAdminAuth(EmailsPage);
