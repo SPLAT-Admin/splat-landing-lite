@@ -1,31 +1,20 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 
-export async function middleware(req: NextRequest) {
-  const res = NextResponse.next();
-  const supabase = createMiddlewareClient({ req, res });
+export function middleware(req: NextRequest) {
+  const url = req.nextUrl.clone();
+  const { pathname } = url;
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const isAdminPath = pathname.startsWith("/admin");
+  const isLandingAdminPath = pathname.startsWith("/landingadmin");
+  const isLoginPath = pathname.startsWith("/admin/login");
 
-  const { pathname } = req.nextUrl;
-
-  // Protect /admin/* and /landingadmin/* routes
-  if (pathname.startsWith("/admin") || pathname.startsWith("/landingadmin")) {
-    if (!session || session.user?.app_metadata?.role !== "admin") {
-      const loginUrl = new URL("/login", req.url);
-      return NextResponse.redirect(loginUrl);
-    }
+  if ((isAdminPath || isLandingAdminPath) && !isLoginPath) {
+    url.pathname = "/admin/login";
+    return NextResponse.redirect(url);
   }
 
-  // Custom 404 for /admin root
-  if (pathname === "/admin") {
-    return NextResponse.rewrite(new URL("/404", req.url));
-  }
-
-  return res;
+  return NextResponse.next();
 }
 
 export const config = {

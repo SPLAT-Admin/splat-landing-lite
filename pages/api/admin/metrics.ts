@@ -1,28 +1,23 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import {
-  getEmailSignupStats,
-  getAmbassadorCount,
-  getMerchSalesCount,
-  getActivePromos,
-} from "@/lib/adminMetrics";
+import { supabase } from "@/lib/supabaseClient";
 
-export default async function handler(_: NextApiRequest, res: NextApiResponse) {
+export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   try {
-    const [emailStats, ambassadors, merch, promos] = await Promise.all([
-      getEmailSignupStats(),
-      getAmbassadorCount(),
-      getMerchSalesCount(),
-      getActivePromos(),
+    const [{ count: signups }, { count: ambassadors }, { count: customers }, { count: merch }] = await Promise.all([
+      supabase.from("email_signups").select("*", { count: "exact", head: true }),
+      supabase.from("ambassador").select("*", { count: "exact", head: true }),
+      supabase.from("customers").select("*", { count: "exact", head: true }),
+      supabase.from("merch_sales").select("*", { count: "exact", head: true }),
     ]);
 
     res.status(200).json({
-      emailsTotal: emailStats.total,
-      emailsToday: emailStats.today,
-      ambassadors,
-      merch,
-      promosCount: promos.length,
+      total_signups: signups || 0,
+      ambassadors: ambassadors || 0,
+      customers: customers || 0,
+      merch_sales: merch || 0,
     });
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
+  } catch (err) {
+    console.error("metrics error", err);
+    res.status(500).json({ error: "Metrics failed" });
   }
 }
