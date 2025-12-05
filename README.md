@@ -1,80 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+<p align="center">
+  <img src="https://www.usesplat.com/assets/logo.svg" width="120" alt="SPL@T Logo" />
+</p>
 
-## Getting Started
+<h1 align="center">💥 SPL@T — No-Shame Connection. Real. Fast. Now.</h1>
 
-First, run the development server:
-yep
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) live under `pages/api`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+<p align="center">
+  <b>The boldest social platform built for connection without apology.</b><br/>
+  <a href="https://www.usesplat.com">usesplat.com</a> • <a href="https://twitter.com/usesplat">Twitter</a> • <a href="mailto:contact@usesplat.com">Contact</a>
+</p>
 
 ---
 
-## 🔒 Dev-only Admin Endpoints
+## 🚀 What Is SPL@T
 
-For development and local bootstrapping, SPL@T exposes two helper APIs:
+SPL@T is a sleek, inclusive, high-velocity social app that combines the best of **Grindr**, **Scruff**, and **Sniffies**, but with its own unapologetic energy.  
+It’s built to make meeting, chatting, and cruising intuitive — all powered by a private, modern stack.
 
-- `POST /api/admin/create-admin`
-  - Create an initial admin user with email/password.
-- `POST /api/admin/reset-password`
-  - Reset the password of an existing admin user.
+**Core technologies**
+- **Next.js + React 18**
+- **Supabase** for realtime data
+- **pnpm** for fast, reproducible builds
+- **TailwindCSS** + **shadcn/ui**
+- **Vercel** for zero-downtime deploys
+- **RevenueCat** for subscription sync on mobile
 
-### ⚠️ Safety
-- Both endpoints are **protected by `devOnlyGuard`** (`lib/devOnlyGuard.ts`).
-- In **production** (`NODE_ENV=production`), they will immediately return:
+---
 
-```json
-{ "success": false, "error": "This endpoint is disabled in production" }
-```
+## 🧱 Repo Structure
 
-- This ensures sensitive helpers cannot be abused outside local/dev.
+| Path | Purpose |
+|------|----------|
+| `/pages` | App routes (Next.js 13) |
+| `/components` | Shared UI components |
+| `/api` | API routes for app functions |
+| `/scripts` | Deployment & rollback scripts |
+| `/public` | Static assets |
+| `/.vscode/` | Standardized dev environment |
+| `/README_DEV.md` | Internal developer setup guide |
 
-### Usage
-1. Ensure Supabase is running with your local dev database.
-2. Call the endpoints via curl, Postman, or frontend forms.
-3. Once bootstrapped, log in with the created/reset admin credentials.
+---
 
-### Quick Examples
+## 💻 Local Development
 
-#### Create Admin
+See **[README_DEV.md](README_DEV.md)** for setup instructions and extension requirements.
+
+Quick start:
 ```bash
-curl -X POST http://localhost:3000/api/admin/create-admin \
-  -H "Content-Type: application/json" \
-  -d '{"email":"trent@usesplat.com","password":"SuperSecretPassword123"}'
+pnpm install
+pnpm dev
 ```
 
-#### Reset Admin Password
-```bash
-curl -X POST http://localhost:3000/api/admin/reset-password \
-  -H "Content-Type: application/json" \
-  -d '{"email":"trent@usesplat.com","newPassword":"EvenMoreSecret456"}'
-```
