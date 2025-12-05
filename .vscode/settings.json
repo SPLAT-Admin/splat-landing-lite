@@ -1,0 +1,67 @@
+{
+  // 🧠 GitLens & Blame Indicators
+  "git.blame.editorDecoration.enabled": true,
+
+  // 💅 Formatting Rules
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true
+  },
+
+  // 🎨 Prettier Consistency
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "es5",
+  "prettier.semi": false,
+  "prettier.printWidth": 100,
+  "prettier.tabWidth": 2,
+
+  // 🧩 Language Formatting
+  "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[javascript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[javascriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[json]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[css]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+  "[html]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
+
+  // 🪶 Tailwind CSS IntelliSense
+  "tailwindCSS.experimental.classRegex": [
+    "clsx\\(([^)]*)\\)",
+    "cva\\(([^)]*)\\)",
+    "cn\\(([^)]*)\\)"
+  ],
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+
+  // 🚀 Project Setup
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "eslint.validate": ["javascript", "typescript", "typescriptreact", "json"],
+  "eslint.alwaysShowStatus": true,
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+
+  // 🧩 pnpm Enforcement
+  "npm.packageManager": "pnpm",
+
+  // 🧼 File Hygiene
+  "explorer.compactFolders": false,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true
+  },
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.vercel": true,
+    "**/.turbo": true
+  }
+}
+

@@ -1,0 +1,19 @@
+{
+  // 💾 Recommended extensions for all SPL@T developers
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "GitHub.vscode-pull-request-github",
+    "GitLens.gitlens",
+    "streetsidesoftware.code-spell-checker",
+    "usernamehw.errorlens",
+    "eamodio.gitlens",
+    "ms-vscode.vscode-typescript-next"
+  ],
+  "unwantedRecommendations": [
+    "formulahendry.auto-close-tag",
+    "ms-vscode-remote.remote-wsl"
+  ]
+}
+
