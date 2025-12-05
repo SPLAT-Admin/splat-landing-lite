@@ -55,3 +55,11 @@ export function validateForm<T extends Record<string, unknown>>(
 
   return { valid: errors.length === 0, errors };
 }
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export function validateEmail(value: string | undefined | null): boolean {
+  if (typeof value !== "string") return false;
+  const trimmed = value.trim();
+  return trimmed.length > 0 && trimmed.length <= 320 && EMAIL_REGEX.test(trimmed.toLowerCase());
+}

@@ -102,7 +102,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const sanitizedLast = typeof lastName === "string" ? lastName.trim() : "";
 
     let existingMetadata: Record<string, any> | undefined;
-    const { data: existingRow, error: existingError } = await supabaseService
+    const { data: existingRow, error: existingError } = await supabaseService.schema('marketing')
       .from("email_signups")
       .select("metadata")
       .eq("email", sanitizedEmail)
@@ -136,7 +136,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!history.includes(src)) history.push(src);
     metadata.signup_source_history = history;
 
-    const { error: dbError } = await supabaseService
+    const { error: dbError } = await supabaseService.schema('marketing')
       .from("email_signups")
       .upsert([
         {

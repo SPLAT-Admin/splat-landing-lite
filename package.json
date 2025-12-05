@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "rollback-stable": "bash scripts/rollback-stable.sh",
+    "rollback-latest-stable": "bash scripts/rollback-latest-stable.sh",
+    "tag-stable": "bash scripts/tag-stable.sh",
+    "release-stats": "bash scripts/release-stats.sh"
   },
   "dependencies": {
     "@faker-js/faker": "^10.0.0",

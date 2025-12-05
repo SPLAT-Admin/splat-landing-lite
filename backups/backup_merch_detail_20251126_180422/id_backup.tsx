@@ -75,7 +75,7 @@ export default function ProductDetailPage() {
     setWaitlist((prev) => ({ ...prev, status: "loading", error: null }));
 
     try {
-      const response = await fetch("/api/email-signup", {
+      const response = await fetch("/api/signup-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: waitlist.email }),
@@ -211,3 +211,4 @@ export default function ProductDetailPage() {
     </>
   );
 }
+

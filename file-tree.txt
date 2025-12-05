@@ -1,0 +1,265 @@
+.
+├── api_backup_archive
+│   ├── api_backup_20251123_161453
+│   │   ├── admin
+│   │   ├── ambassador-apply.ts
+│   │   ├── ambassador.ts
+│   │   ├── checkout.ts
+│   │   ├── contact.ts
+│   │   ├── create-order.ts
+│   │   ├── fulfillment-webhook.ts
+│   │   ├── payments
+│   │   ├── printify-order.ts
+│   │   ├── printify-products.ts
+│   │   ├── products
+│   │   ├── promos.ts
+│   │   ├── sentry-example-api.ts
+│   │   ├── sentry-tunnel.ts
+│   │   ├── signup-email.ts
+│   │   ├── signup.ts
+│   │   ├── status-history.ts
+│   │   ├── status.ts
+│   │   └── uptime-90days.ts
+│   └── api_backup_20251123_161924
+│       ├── admin
+│       ├── ambassador-apply.ts
+│       ├── ambassador.ts
+│       ├── checkout.ts
+│       ├── contact.ts
+│       ├── create-order.ts
+│       ├── fulfillment-webhook.ts
+│       ├── payments
+│       ├── printify-order.ts
+│       ├── printify-products.ts
+│       ├── products
+│       ├── promos.ts
+│       ├── sentry-example-api.ts
+│       ├── sentry-tunnel.ts
+│       ├── signup-email.ts
+│       ├── signup.ts
+│       ├── status-history.ts
+│       ├── status.ts
+│       └── uptime-90days.ts
+├── cleanup_and_deploy.sh
+├── codex-fix-tailwind.sh
+├── components
+│   ├── layouts
+│   │   ├── AdminLayout.tsx
+│   │   ├── AnimatedSection.tsx
+│   │   ├── GlobalLayout.tsx
+│   │   └── LegalLayout.tsx
+│   ├── marketing
+│   │   ├── EmailSignupForm.tsx
+│   │   ├── FeatureGrid.tsx
+│   │   ├── Hero.tsx
+│   │   ├── MerchShowcase.tsx
+│   │   ├── SignupModal.tsx
+│   │   └── Timeline.tsx
+│   ├── navigation
+│   │   ├── Footer.tsx
+│   │   └── GlobalHeader.tsx
+│   ├── SplatCaptcha.tsx
+│   ├── TurnstileScript.tsx
+│   ├── Typography.tsx
+│   ├── ui
+│   │   ├── Button.tsx
+│   │   ├── card.tsx
+│   │   ├── Form.tsx
+│   │   ├── PasswordField.tsx
+│   │   ├── Section.tsx
+│   │   └── Typography.tsx
+│   └── withAdminAuth.tsx
+├── env-sync.sh
+├── env.d.ts
+├── file-tree.txt
+├── fix-splat-brand.sh
+├── instrumentation-client.ts
+├── instrumentation.ts
+├── lib
+│   ├── adminMetrics.ts
+│   ├── apiResponse.ts
+│   ├── devOnlyGuard.ts
+│   ├── greenMoneyClient.ts
+│   ├── index.ts
+│   ├── printifyClient.ts
+│   ├── printifySync.ts
+│   ├── resendClient.ts
+│   ├── sendConfirmationEmail.ts
+│   ├── sendEmail.ts
+│   ├── splatApiHandler.ts
+│   ├── supabaseClient.ts
+│   ├── supabaseService.ts
+│   ├── utils.ts
+│   ├── validateForm.ts
+│   ├── verifyCaptcha.ts
+│   └── withAdminAuth.tsx
+├── log-vercel-previews.sh
+├── middleware.ts
+├── migrations
+│   └── ensure_single_active_promo.sql
+├── next-env.d.ts
+├── next.config.js
+├── package.json
+├── pages
+│   ├── _app.tsx
+│   ├── _document.tsx
+│   ├── _error.tsx
+│   ├── _splat-sentry-boundary.tsx
+│   ├── 404.tsx
+│   ├── admin
+│   │   ├── customers.tsx
+│   │   ├── dashboard.tsx
+│   │   ├── emails.tsx
+│   │   ├── index.tsx
+│   │   ├── login.tsx
+│   │   ├── promos.tsx
+│   │   └── signups.tsx
+│   ├── admin-select.tsx
+│   ├── advertise.tsx
+│   ├── ambassador-apply.tsx
+│   ├── ambassador.tsx
+│   ├── api
+│   │   ├── admin
+│   │   ├── ambassador-apply.ts
+│   │   ├── ambassador.ts
+│   │   ├── checkout.ts
+│   │   ├── contact.ts
+│   │   ├── create-order.ts
+│   │   ├── fulfillment-webhook.ts
+│   │   ├── landingadmin
+│   │   ├── payments
+│   │   ├── printify-order.ts
+│   │   ├── printify-products.ts
+│   │   ├── printify-sync.ts
+│   │   ├── products
+│   │   ├── promos.ts
+│   │   ├── public-merch-feed.ts
+│   │   ├── sentry-example-api.ts
+│   │   ├── sentry-tunnel.ts
+│   │   ├── signup-email.ts
+│   │   ├── signup.ts
+│   │   ├── status-history.ts
+│   │   ├── status.ts
+│   │   ├── test-send-email.ts
+│   │   ├── uptime-90days.ts
+│   │   └── verify-merch-feed.ts
+│   ├── api_backup_20251126_080532
+│   │   ├── ambassador-apply.ts
+│   │   ├── ambassador.ts
+│   │   ├── checkout.ts
+│   │   ├── contact.ts
+│   │   ├── create-order.ts
+│   │   ├── fulfillment-webhook.ts
+│   │   ├── printify-order.ts
+│   │   ├── printify-products.ts
+│   │   ├── printify-sync.ts
+│   │   ├── promos.ts
+│   │   ├── sentry-example-api.ts
+│   │   ├── sentry-tunnel.ts
+│   │   ├── signup-email.ts
+│   │   ├── signup.ts
+│   │   ├── status-history.ts
+│   │   ├── status.ts
+│   │   ├── test-send-email.ts
+│   │   └── uptime-90days.ts
+│   ├── api_backup_printify_publishedfix_20251126_154209
+│   │   └── printify-sync.ts
+│   ├── api_backup_schemafix_20251126_081242
+│   │   └── verify-merch-feed.ts
+│   ├── checkout.tsx
+│   ├── community.tsx
+│   ├── contact.tsx
+│   ├── contact.tsx.bak
+│   ├── debug-supabase.tsx
+│   ├── email-preview
+│   │   └── index.tsx
+│   ├── index.tsx
+│   ├── landingadmin
+│   │   ├── _layout.tsx
+│   │   ├── analytics.tsx
+│   │   ├── categories.tsx
+│   │   ├── customers.tsx
+│   │   ├── dashboard.tsx
+│   │   ├── email.tsx
+│   │   ├── emails.tsx
+│   │   ├── index.tsx
+│   │   ├── merch.tsx
+│   │   └── promos.tsx
+│   ├── login.tsx
+│   ├── merch
+│   │   ├── [id].tsx
+│   │   └── index.tsx
+│   ├── merch.tsx
+│   ├── privacy.tsx
+│   ├── reset-password.tsx
+│   ├── sentry-example-page.tsx
+│   ├── signup.tsx
+│   ├── sitemap.tsx
+│   ├── status.tsx
+│   ├── terms.tsx
+│   ├── thank-you.backup.20251123_184104.tsx
+│   └── thank-you.tsx
+├── pages_backup_merch_displayfix_20251126_153047
+│   └── merch.tsx
+├── pages_backup_merch_filterpolish_20251126_082830
+│   └── merch.tsx
+├── pages_backup_merch_finalfix_20251126_152333
+│   └── merch.tsx
+├── pages_backup_merch_proxyfix_20251126_083202
+│   └── merch.tsx
+├── pages_backup_merch_proxyfix_20251126_151539
+│   └── merch.tsx
+├── pages_backup_merch_schemafix_20251126_082242
+│   └── merch.tsx
+├── pages_backup_merch_schemafix_final_20251126_082714
+│   └── merch.tsx
+├── pages_backup_merch_ssr_20251126_153351
+│   └── merch.tsx
+├── pages_backup_merchfix_20251126_081725
+│   └── merch.tsx
+├── playwright.config.ts
+├── pnpm-lock.yaml
+├── postcss.config.js
+├── preview-domains.txt
+├── public
+│   ├── favicon.ico
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── next.svg
+│   ├── robots.txt
+│   ├── sitemap.xml
+│   ├── splat-logo.png
+│   ├── vercel.svg
+│   └── window.svg
+├── README.md
+├── scripts
+│   ├── check-env.ts
+│   ├── lint-env.ts
+│   ├── reset-dev.sh
+│   ├── rotate-vercel-token.sh
+│   ├── seed-dummy.ts
+│   ├── show-vercel-info.sh
+│   └── sync-printify-to-supabase.ts
+├── sentry.edge.config.ts
+├── sentry.server.config.ts
+├── styles
+│   ├── globals.css
+│   └── theme.css
+├── supabase_grants_patch.sql
+├── tailwind.config.js
+├── test-results
+├── tests
+│   ├── devOnlyEndpoints.spec.ts
+│   └── smoke.spec.ts
+├── tsconfig.json
+├── tsconfig.tsbuildinfo
+├── types
+│   ├── formTypes.ts
+│   ├── global.d.ts
+│   ├── index.ts
+│   ├── styled-jsx.d.ts
+│   └── zxcvbn.d.ts
+├── vercel-rebuild.txt
+└── vercel.json
+
+45 directories, 218 files
